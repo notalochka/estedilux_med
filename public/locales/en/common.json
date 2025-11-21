@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "home": "Home",
+    "courses": "Courses",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Medical Training Abroad",
+    "subtitle": "Professional medical programs for your career development",
+    "cta": "View Courses"
+  },
+  "footer": {
+    "copyright": "© 2024 Estedilux Med. All rights reserved.",
+    "description": "Educational programs for doctors"
+  }
+}
+
