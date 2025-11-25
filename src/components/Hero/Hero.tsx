@@ -12,21 +12,21 @@ const Hero: React.FC = () => {
       <div className={styles.container}>
         <div className={styles.content}>
           <h1 className={styles.title}>
-            {locale === 'uk'
-              ? 'Навчання лікарів за кордоном'
+            {locale === 'ru'
+              ? 'Обучение врачей за рубежом'
               : 'Medical Training Abroad'}
           </h1>
           <p className={styles.subtitle}>
-            {locale === 'uk'
-              ? 'Професійні медичні програми для розвитку вашої кар\'єри'
+            {locale === 'ru'
+              ? 'Профессиональные медицинские программы для развития вашей карьеры'
               : 'Professional medical programs for your career development'}
           </p>
           <div className={styles.cta}>
             <Link href="/events" className={styles.button}>
-              {locale === 'uk' ? 'Переглянути події' : 'View Events'}
+              {locale === 'ru' ? 'Посмотреть события' : 'View Events'}
             </Link>
             <Link href="/contact" className={styles.buttonSecondary}>
-              {locale === 'uk' ? 'Зв\'язатися з нами' : 'Contact Us'}
+              {locale === 'ru' ? 'Связаться с нами' : 'Contact Us'}
             </Link>
           </div>
         </div>

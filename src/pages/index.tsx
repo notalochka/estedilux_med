@@ -14,15 +14,15 @@ const Home: NextPage = () => {
     <>
       <Head>
         <title>
-          {locale === 'uk'
-            ? 'Estedilux Med - Навчання лікарів за кордоном'
+          {locale === 'ru'
+            ? 'Estedilux Med - Обучение врачей за рубежом'
             : 'Estedilux Med - Medical Training Abroad'}
         </title>
         <meta
           name="description"
           content={
-            locale === 'uk'
-              ? 'Професійні медичні програми для розвитку кар\'єри лікарів'
+            locale === 'ru'
+              ? 'Профессиональные медицинские программы для развития карьеры врачей'
               : 'Professional medical programs for doctors career development'
           }
         />
@@ -36,7 +36,7 @@ const Home: NextPage = () => {
           <section style={{ padding: '4rem 0', background: 'var(--color-bg-light)' }}>
             <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
               <h2 style={{ fontSize: 'var(--font-size-3xl)', marginBottom: '2rem', textAlign: 'center' }}>
-                {locale === 'uk' ? 'Наші переваги' : 'Our Advantages'}
+                {locale === 'ru' ? 'Наши преимущества' : 'Our Advantages'}
               </h2>
               <div style={{ 
                 display: 'grid', 
@@ -50,11 +50,11 @@ const Home: NextPage = () => {
                   boxShadow: 'var(--shadow-md)' 
                 }}>
                   <h3 style={{ fontSize: 'var(--font-size-xl)', marginBottom: '1rem' }}>
-                    {locale === 'uk' ? 'Професійні викладачі' : 'Professional Instructors'}
+                    {locale === 'ru' ? 'Профессиональные преподаватели' : 'Professional Instructors'}
                   </h3>
                   <p style={{ color: 'var(--color-text-light)' }}>
-                    {locale === 'uk'
-                      ? 'Досвідчені лікарі та експерти з різних медичних спеціальностей'
+                    {locale === 'ru'
+                      ? 'Опытные врачи и эксперты из различных медицинских специальностей'
                       : 'Experienced doctors and experts from various medical specialties'}
                   </p>
                 </div>
@@ -66,11 +66,11 @@ const Home: NextPage = () => {
                   boxShadow: 'var(--shadow-md)' 
                 }}>
                   <h3 style={{ fontSize: 'var(--font-size-xl)', marginBottom: '1rem' }}>
-                    {locale === 'uk' ? 'Сучасні методики' : 'Modern Methods'}
+                    {locale === 'ru' ? 'Современные методики' : 'Modern Methods'}
                   </h3>
                   <p style={{ color: 'var(--color-text-light)' }}>
-                    {locale === 'uk'
-                      ? 'Актуальні програми навчання з використанням новітніх технологій'
+                    {locale === 'ru'
+                      ? 'Актуальные программы обучения с использованием новейших технологий'
                       : 'Up-to-date training programs using the latest technologies'}
                   </p>
                 </div>
@@ -82,11 +82,11 @@ const Home: NextPage = () => {
                   boxShadow: 'var(--shadow-md)' 
                 }}>
                   <h3 style={{ fontSize: 'var(--font-size-xl)', marginBottom: '1rem' }}>
-                    {locale === 'uk' ? 'Міжнародне визнання' : 'International Recognition'}
+                    {locale === 'ru' ? 'Международное признание' : 'International Recognition'}
                   </h3>
                   <p style={{ color: 'var(--color-text-light)' }}>
-                    {locale === 'uk'
-                      ? 'Сертифікати та дипломи, визнані у всьому світі'
+                    {locale === 'ru'
+                      ? 'Сертификаты и дипломы, признанные во всем мире'
                       : 'Certificates and diplomas recognized worldwide'}
                   </p>
                 </div>

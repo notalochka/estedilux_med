@@ -87,19 +87,19 @@ const Header: React.FC = () => {
         {/* Десктоп навігація */}
         <nav className={styles.nav}>
           <Link href="/" className={styles.navLink}>
-            {locale === 'uk' ? 'Головна' : 'Home'}
+            {locale === 'ru' ? 'Главная' : 'Home'}
           </Link>
           <Link href="/about" className={styles.navLink}>
-            {locale === 'uk' ? 'Про нас' : 'About'}
+            {locale === 'ru' ? 'О нас' : 'About'}
           </Link>
           <Link href="/events" className={styles.navLink}>
-            {locale === 'uk' ? 'Події' : 'Events'}
+            {locale === 'ru' ? 'События' : 'Events'}
           </Link>
           <Link href="/blog" className={styles.navLink}>
-            {locale === 'uk' ? 'Блог' : 'Blog'}
+            {locale === 'ru' ? 'Блог' : 'Blog'}
           </Link>
           <Link href="/contact" className={styles.navLink}>
-            {locale === 'uk' ? 'Контакти' : 'Contact'}
+            {locale === 'ru' ? 'Контакты' : 'Contact'}
           </Link>
         </nav>
 
@@ -122,19 +122,19 @@ const Header: React.FC = () => {
       <div className={`${styles.mobileMenu} ${isMenuOpen ? styles.mobileMenuOpen : ''}`}>
         <nav className={styles.mobileNav}>
           <Link href="/" className={styles.mobileNavLink} onClick={closeMenu}>
-            {locale === 'uk' ? 'Головна' : 'Home'}
+            {locale === 'ru' ? 'Главная' : 'Home'}
           </Link>
           <Link href="/about" className={styles.mobileNavLink} onClick={closeMenu}>
-            {locale === 'uk' ? 'Про нас' : 'About'}
+            {locale === 'ru' ? 'О нас' : 'About'}
           </Link>
           <Link href="/events" className={styles.mobileNavLink} onClick={closeMenu}>
-            {locale === 'uk' ? 'Події' : 'Events'}
+            {locale === 'ru' ? 'События' : 'Events'}
           </Link>
           <Link href="/blog" className={styles.mobileNavLink} onClick={closeMenu}>
-            {locale === 'uk' ? 'Блог' : 'Blog'}
+            {locale === 'ru' ? 'Блог' : 'Blog'}
           </Link>
           <Link href="/contact" className={styles.mobileNavLink} onClick={closeMenu}>
-            {locale === 'uk' ? 'Контакти' : 'Contact'}
+            {locale === 'ru' ? 'Контакты' : 'Contact'}
           </Link>
         </nav>
         <div className={styles.mobileLanguageSwitcher}>

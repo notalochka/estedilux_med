@@ -14,7 +14,7 @@ const NotFound: NextPage = () => {
     <>
       <Head>
         <title>
-          {locale === 'uk' ? '404 - Сторінку не знайдено' : '404 - Page Not Found'}
+          {locale === 'ru' ? '404 - Страница не найдена' : '404 - Page Not Found'}
         </title>
       </Head>
 
@@ -32,8 +32,8 @@ const NotFound: NextPage = () => {
           <div style={{ textAlign: 'center' }}>
             <h1 style={{ fontSize: 'var(--font-size-4xl)', marginBottom: '1rem' }}>404</h1>
             <p style={{ fontSize: 'var(--font-size-xl)', marginBottom: '2rem', color: 'var(--color-text-light)' }}>
-              {locale === 'uk'
-                ? 'Сторінку не знайдено'
+              {locale === 'ru'
+                ? 'Страница не найдена'
                 : 'Page not found'}
             </p>
             <Link
@@ -47,7 +47,7 @@ const NotFound: NextPage = () => {
                 display: 'inline-block',
               }}
             >
-              {locale === 'uk' ? 'Повернутися на головну' : 'Return to Home'}
+              {locale === 'ru' ? 'Вернуться на главную' : 'Return to Home'}
             </Link>
           </div>
         </main>

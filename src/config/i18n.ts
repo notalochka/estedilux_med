@@ -1,7 +1,7 @@
-// Конфігурація інтернаціоналізації
+// Конфигурация интернационализации
 
-export const defaultLocale = 'uk' as const;
-export const locales = ['uk', 'en'] as const;
+export const defaultLocale = 'ru' as const;
+export const locales = ['ru', 'en'] as const;
 
 export type Locale = typeof locales[number];
 

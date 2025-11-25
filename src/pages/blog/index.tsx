@@ -13,13 +13,13 @@ const Blog: NextPage = () => {
     <>
       <Head>
         <title>
-          {locale === 'uk' ? 'Блог - Estedilux Med' : 'Blog - Estedilux Med'}
+          {locale === 'ru' ? 'Блог - Estedilux Med' : 'Blog - Estedilux Med'}
         </title>
         <meta
           name="description"
           content={
-            locale === 'uk'
-              ? 'Статті та новини про медичну освіту'
+            locale === 'ru'
+              ? 'Статьи и новости о медицинском образовании'
               : 'Articles and news about medical education'
           }
         />
@@ -30,11 +30,11 @@ const Blog: NextPage = () => {
         <main style={{ flex: 1, padding: '4rem 0' }}>
           <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
             <h1 style={{ fontSize: 'var(--font-size-4xl)', marginBottom: '2rem', textAlign: 'center' }}>
-              {locale === 'uk' ? 'Блог' : 'Blog'}
+              {locale === 'ru' ? 'Блог' : 'Blog'}
             </h1>
             <p style={{ textAlign: 'center', color: 'var(--color-text-light)', marginBottom: '3rem' }}>
-              {locale === 'uk'
-                ? 'Скоро тут з\'являться статті та новини'
+              {locale === 'ru'
+                ? 'Скоро здесь появятся статьи и новости'
                 : 'Articles and news will appear here soon'}
             </p>
           </div>
