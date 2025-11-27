@@ -1,214 +1,284 @@
 .footer {
-  background: var(--color-bg-dark);
-  color: var(--color-text-inverse);
-  margin-top: auto;
-  padding: var(--spacing-2xl) 0 var(--spacing-lg);
+  position: relative;
+  overflow: hidden;
+  background: #0f172a;
+  color: white;
+  padding: 5rem 0;
+}
+
+.gradientOverlay1 {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(56, 189, 248, 0.18) 0%, rgba(2, 6, 23, 0) 55%);
+}
+
+.gradientOverlay2 {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    140deg,
+    rgba(56, 189, 248, 0.12) 0%,
+    rgba(56, 189, 248, 0) 55%
+  ),
+  linear-gradient(
+    320deg,
+    rgba(129, 140, 248, 0.2) 0%,
+    rgba(129, 140, 248, 0) 60%
+  );
 }
 
 .container {
-  max-width: 1200px;
+  position: relative;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 1.5rem;
 }
 
-.content {
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--spacing-xl);
-  margin-bottom: var(--spacing-xl);
+  gap: 3rem;
+  grid-template-columns: 2fr 1fr 1.5fr;
 }
 
 .section {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: 1.5rem;
 }
 
-.logoContainer {
-  margin-bottom: var(--spacing-sm);
+.logoLink {
+  display: flex;
+  align-items: center;
 }
 
 .logo {
+  height: 3rem;
   width: auto;
-  height: auto;
-  max-width: 250px;
-  max-height: 80px;
   object-fit: contain;
 }
 
-.title {
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
-  color: var(--color-text-inverse);
-  margin-bottom: var(--spacing-sm);
+.description {
+  max-width: 28rem;
+  font-size: 0.875rem;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.7);
 }
 
-.description {
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.6;
+.ctaButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: white;
+  text-decoration: none;
+  transition: all 0.5s;
+  width: fit-content;
+}
+
+.ctaButton:hover {
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.ctaText {
+  position: relative;
+  z-index: 10;
+}
+
+.ctaIcon {
+  position: relative;
+  z-index: 10;
+  transition: transform 0.5s;
+}
+
+.ctaButton:hover .ctaIcon {
+  transform: translate(-2px, -2px);
+}
+
+.ctaGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.25) 0%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.25) 100%
+  );
+  opacity: 0.7;
+  transition: opacity 0.5s;
+}
+
+.ctaButton:hover .ctaGradient {
+  opacity: 0.9;
+}
+
+.navSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .sectionTitle {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--color-text-inverse);
-  margin-bottom: var(--spacing-sm);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
 }
 
-.nav {
+.navGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.navLink {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.navLink:hover {
+  color: white;
+}
+
+.contactSection {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: 2rem;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  backdrop-filter: blur(16px);
 }
 
-.link {
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  transition: color var(--transition-fast);
-}
-
-.link:hover {
-  color: var(--color-text-inverse);
-  text-decoration: none;
-}
-
-.contactInfo {
+.contactList {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: 0.75rem;
 }
 
-.contactItem {
+.contactLink {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.9);
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
-  transition: all var(--transition-base);
-  cursor: pointer;
+  transition: color 0.3s;
 }
 
-.contactItem:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: var(--color-primary);
-  color: var(--color-text-inverse);
-  transform: translateX(4px);
+.contactLink:hover {
+  color: white;
 }
 
 .contactIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(93, 182, 232, 0.1);
-  border-radius: 8px;
-  color: var(--color-primary);
   flex-shrink: 0;
-  transition: all var(--transition-base);
-}
-
-.contactItem:hover .contactIcon {
-  background: var(--color-primary);
-  color: var(--color-text-inverse);
-  transform: scale(1.1);
-}
-
-.contactText {
-  font-size: var(--font-size-base);
-  font-weight: 500;
-}
-
-.socialLinks {
-  display: flex;
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-sm);
-}
-
-.socialLink {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.9);
-  text-decoration: none;
-  transition: all var(--transition-base);
-  font-weight: 500;
-  font-size: var(--font-size-sm);
-  flex: 1;
-  justify-content: center;
-}
-
-.socialLink:hover {
-  transform: translateY(-2px);
-  border-color: currentColor;
-}
-
-.socialLink.instagram:hover {
-  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-  color: white;
-  border-color: transparent;
-}
-
-.socialLink.facebook:hover {
-  background: #1877f2;
-  color: white;
-  border-color: transparent;
-}
-
-.socialLink svg {
-  transition: transform var(--transition-base);
-}
-
-.socialLink:hover svg {
-  transform: scale(1.15);
 }
 
 .bottom {
+  margin-top: 4rem;
+  padding-top: 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: var(--spacing-lg);
-  text-align: center;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .copyright {
+  font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.6);
-  font-size: var(--font-size-sm);
+}
+
+.developed {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.developedLink {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.developedLink:hover {
+  color: white;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .section {
+    grid-column: 1 / -1;
+  }
+
+  .contactSection {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 768px) {
-  .content {
+  .footer {
+    padding: 3rem 0;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .grid {
     grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
+    gap: 2rem;
   }
 
-  .logo {
-    max-width: 200px;
-    max-height: 70px;
+  .section {
+    grid-column: 1;
   }
 
-  .contactItem {
-    padding: var(--spacing-sm) var(--spacing-md);
+  .navSection {
+    grid-column: 1;
   }
 
-  .contactIcon {
-    width: 36px;
-    height: 36px;
+  .contactSection {
+    grid-column: 1;
   }
 
-  .socialLinks {
-    flex-direction: column;
-    gap: var(--spacing-sm);
+  .navGrid {
+    grid-template-columns: 1fr;
   }
 
-  .socialLink {
-    width: 100%;
+  .bottom {
+    flex-direction: column-reverse;
+    text-align: center;
+    gap: 1rem;
   }
 }
 
+@media (min-width: 768px) {
+  .bottom {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

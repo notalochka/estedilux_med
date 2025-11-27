@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
@@ -10,14 +11,21 @@ import styles from './Contact.module.css';
 const Contact: NextPage = () => {
   const router = useRouter();
   const { locale } = router;
+  const [contactType, setContactType] = useState<'phone' | 'email'>('phone');
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
-    email: '',
     phone: '',
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const scrollToContactForm = () => {
+    const element = document.getElementById('contact-form-section');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -26,8 +34,29 @@ const Contact: NextPage = () => {
     setFormData((prev: ContactFormData) => ({ ...prev, [name]: value }));
   };
 
+  const handleContactTypeChange = (type: 'phone' | 'email') => {
+    setContactType(type);
+    // Очищаємо поле, яке не використовується
+    if (type === 'phone') {
+      setFormData((prev) => ({ ...prev, email: '', phone: '' }));
+    } else {
+      setFormData((prev) => ({ ...prev, phone: '', email: '' }));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // Валідація: перевіряємо наявність телефону або email
+    if (contactType === 'phone' && !formData.phone) {
+      setSubmitStatus('error');
+      return;
+    }
+    if (contactType === 'email' && !formData.email) {
+      setSubmitStatus('error');
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
@@ -35,7 +64,7 @@ const Contact: NextPage = () => {
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitStatus('success');
-      setFormData({ name: '', email: '', phone: '', message: '' });
+      setFormData({ name: '', phone: '', email: '', message: '' });
     }, 1000);
   };
 
@@ -58,96 +87,119 @@ const Contact: NextPage = () => {
       <div className={styles.contactPage}>
         <Header />
         <main className={styles.main}>
-          <div className={styles.container}>
-            <div className={styles.hero}>
-              <h1 className={styles.title}>
-                {locale === 'ru' ? 'Свяжитесь с нами' : 'Contact Us'}
-              </h1>
-              <p className={styles.subtitle}>
-                {locale === 'ru'
-                  ? 'Заполните форму ниже, и мы свяжемся с вами в ближайшее время'
-                  : 'Fill out the form below and we will contact you soon'}
-              </p>
+          {/* Hero Section */}
+          <section className={styles.hero}>
+            <div className={styles.heroBackground}>
+              <Image
+                src="/photo5.jpg"
+                alt="Estedilux Med Background"
+                fill
+                className={styles.heroBannerImage}
+                priority
+                quality={90}
+              />
+              <div className={styles.heroOverlay}></div>
             </div>
-
-            {submitStatus === 'success' && (
-              <div className={styles.successMessage}>
-                {locale === 'ru'
-                  ? 'Спасибо! Ваше сообщение отправлено.'
-                  : 'Thank you! Your message has been sent.'}
+            <div className={styles.heroContainer}>
+              <div className={styles.heroContent}>
+                <div className={styles.heroTitleWrapper}>
+                  <h1 className={styles.heroTitle}>
+                    {locale === 'ru' ? 'Связаться с нами' : 'Contact Us'}
+                  </h1>
+                  <div className={styles.heroChevron} onClick={scrollToContactForm}>
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </div>
+                </div>
               </div>
-            )}
+            </div>
+          </section>
 
-            <div className={styles.formWrapper}>
+          <div id="contact-form-section" className={styles.container}>
+            <div className={styles.contentGrid}>
+              <div className={styles.formWrapper}>
+              <div className={styles.formHeader}>
+                <h2 className={styles.formTitle}>
+                  {locale === 'ru' ? ' Свяжитесь с командой Estedilux Med' : 'Contact the Estedilux Med team'}
+                </h2>
+                <p className={styles.formDescription}>
+                  {locale === 'ru'
+                    ? 'Если у вас есть вопросы, пожалуйста, заполните форму, и мы свяжемся с вами в ближайшее время.'
+                    : 'If you have questions, please fill out the form, and we will contact you shortly.'}
+                </p>
+              </div>
               <form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.formGroup}>
                   <label htmlFor="name" className={styles.label}>
-                    <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                    {locale === 'ru' ? 'Имя' : 'Name'}
+                    {locale === 'ru' ? 'Ваши ПІБ' : 'Your Full Name'}
                   </label>
-                  <div className={styles.inputWrapper}>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      placeholder={locale === 'ru' ? 'Введите ваше имя' : 'Enter your name'}
-                      className={styles.input}
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    placeholder={locale === 'ru' ? 'Введите текст...' : 'Enter text...'}
+                    className={styles.input}
+                  />
                 </div>
 
                 <div className={styles.formGroup}>
-                  <label htmlFor="email" className={styles.label}>
-                    <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    Email
+                  <label className={styles.label}>
+                    {locale === 'ru' ? 'Контакт' : 'Contact'}
                   </label>
-                  <div className={styles.inputWrapper}>
+                  <div className={styles.contactTypeSelector}>
+                    <button
+                      type="button"
+                      onClick={() => handleContactTypeChange('phone')}
+                      className={`${styles.contactTypeButton} ${
+                        contactType === 'phone' ? styles.active : ''
+                      }`}
+                    >
+                      {locale === 'ru' ? 'Телефон' : 'Phone'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleContactTypeChange('email')}
+                      className={`${styles.contactTypeButton} ${
+                        contactType === 'email' ? styles.active : ''
+                      }`}
+                    >
+                      Email
+                    </button>
+                  </div>
+                  {contactType === 'phone' ? (
+                    <div className={styles.phoneInputWrapper}>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone || ''}
+                        onChange={handleChange}
+                        required
+                        placeholder='+380 (00) 000-00-00'
+                        className={styles.phoneInput}
+                      />
+                    </div>
+                  ) : (
                     <input
                       type="email"
                       id="email"
                       name="email"
-                      value={formData.email}
+                      value={formData.email || ''}
                       onChange={handleChange}
                       required
                       placeholder={locale === 'ru' ? 'your.email@example.com' : 'your.email@example.com'}
                       className={styles.input}
                     />
-                  </div>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label htmlFor="phone" className={styles.label}>
-                    <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                    {locale === 'ru' ? 'Телефон' : 'Phone'}
-                  </label>
-                  <div className={styles.inputWrapper}>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder={locale === 'ru' ? '+380 50 123 45 67' : '+1 234 567 8900'}
-                      className={styles.input}
-                    />
-                  </div>
+                  )}
                 </div>
 
                 <div className={styles.formGroup}>
                   <label htmlFor="message" className={styles.label}>
-                    <svg className={styles.labelIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                    {locale === 'ru' ? 'Сообщение' : 'Message'}
+                    {locale === 'ru' ? 'Поставьте свой вопрос' : 'Ask Your Question'}
                   </label>
                   <textarea
                     id="message"
@@ -155,7 +207,7 @@ const Contact: NextPage = () => {
                     value={formData.message}
                     onChange={handleChange}
                     required
-                    placeholder={locale === 'ru' ? 'Расскажите нам о вашем запросе...' : 'Tell us about your request...'}
+                    placeholder={locale === 'ru' ? 'Введите текст...' : 'Enter text...'}
                     className={styles.textarea}
                   />
                 </div>
@@ -170,41 +222,28 @@ const Contact: NextPage = () => {
                       ? 'Отправка...'
                       : 'Sending...'
                     : locale === 'ru'
-                    ? 'Отправить сообщение'
-                    : 'Send Message'}
+                    ? 'Надіслати'
+                    : 'Send'}
                 </button>
               </form>
-            </div>
+              {submitStatus === 'success' && (
+                <div className={styles.successMessage}>
+                  {locale === 'ru'
+                    ? 'Спасибо! Ваше сообщение отправлено.'
+                    : 'Thank you! Your message has been sent.'}
+                </div>
+              )}
+              </div>
+              
 
-            <div className={styles.contactInfo}>
-              <h3 className={styles.contactInfoTitle}>
-                {locale === 'ru' ? 'Другие способы связи' : 'Other Ways to Contact Us'}
-              </h3>
-              <div className={styles.contactInfoGrid}>
-                <div className={styles.contactInfoItem}>
-                  <div className={styles.contactInfoIcon}>
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <div className={styles.contactInfoText}>
-                    <a href="mailto:estediluxmed@ukr.net" style={{ color: 'inherit', textDecoration: 'none' }}>
-                      estediluxmed@ukr.net
-                    </a>
-                  </div>
-                </div>
-                <div className={styles.contactInfoItem}>
-                  <div className={styles.contactInfoIcon}>
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                  </div>
-                  <div className={styles.contactInfoText}>
-                    <a href="tel:+380509994349" style={{ color: 'inherit', textDecoration: 'none' }}>
-                      +380 50 999 43 49
-                    </a>
-                  </div>
-                </div>
+              <div className={styles.imageWrapper}>
+                <Image
+                  src="/photo1.jpg"
+                  alt={locale === 'ru' ? 'Estedilux Med' : 'Estedilux Med'}
+                  fill
+                  className={styles.contactImage}
+                  quality={90}
+                />
               </div>
             </div>
           </div>

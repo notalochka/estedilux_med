@@ -1,32 +1,36 @@
 .header {
-  background: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
-  position: sticky;
-  position: -webkit-sticky;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   width: 100%;
-  z-index: 1000;
-  box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  z-index: 50;
+  transition: all 0.3s ease;
+}
+
+.header.scrolled {
+  background: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.header.transparent {
+  background: transparent;
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 70px;
+  height: 80px;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  height: 50px;
+  height: 48px;
 }
 
 .logo a {
@@ -34,223 +38,272 @@
   display: flex;
   align-items: center;
   height: 100%;
+  transition: opacity 0.3s ease;
 }
 
 .logo a:hover {
   text-decoration: none;
-  opacity: 0.9;
+  opacity: 0.8;
 }
 
 .logoImage {
   height: auto;
   width: auto;
-  max-height: 50px;
+  max-height: 48px;
   object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+
+.header.scrolled .logoImage {
+  opacity: 0.8;
+}
+
+.header.scrolled .logoImage:hover {
+  opacity: 1;
 }
 
 .nav {
   display: flex;
-  gap: var(--spacing-lg);
+  gap: 32px;
   align-items: center;
 }
 
 .navLink {
-  color: var(--color-text);
+  font-size: 14px;
   font-weight: 500;
-  transition: color var(--transition-fast);
+  transition: color 0.3s ease;
   text-decoration: none;
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.header.transparent .navLink {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.header.scrolled .navLink {
+  color: #4b5563;
 }
 
 .navLink:hover {
-  color: var(--color-primary-dark);
+  color: white;
   text-decoration: none;
+}
+
+.header.scrolled .navLink:hover {
+  color: #111827;
+}
+
+.navLink.active {
+  border-bottom: 2px solid currentColor;
+}
+
+.header.transparent .navLink.active {
+  border-bottom-color: white;
+}
+
+.header.scrolled .navLink.active {
+  border-bottom-color: #111827;
 }
 
 .languageSwitcher {
   display: flex;
-  gap: var(--spacing-xs);
+  gap: 8px;
   align-items: center;
 }
 
 .langButton {
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border: 1px solid var(--color-primary-dark);
-  background: var(--color-bg);
-  color: var(--color-text);
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
   cursor: pointer;
-  border-radius: 4px;
-  font-size: var(--font-size-sm);
+  border-radius: 8px;
+  font-size: 14px;
   font-weight: 500;
-  transition: all var(--transition-fast);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.header.transparent .langButton {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.header.scrolled .langButton {
+  color: #4b5563;
 }
 
 .langButton:hover {
-  background: var(--color-bg-light);
-  border-color: var(--color-primary-dark);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.header.scrolled .langButton:hover {
+  background: #f3f4f6;
+  color: #111827;
 }
 
 .langButton.active {
-  background: var(--color-primary-dark);
-  color: var(--color-text-inverse);
-  border-color: var(--color-primary-dark);
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.header.scrolled .langButton.active {
+  background: #111827;
+  color: white;
 }
 
 /* Бургер-меню кнопка */
 .burgerButton {
   display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 30px;
-  height: 30px;
+  border-radius: 8px;
+  padding: 8px;
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 0;
-  z-index: 1001;
-  position: relative;
+  transition: background 0.3s ease;
 }
 
-.burgerLine {
-  width: 24px;
-  height: 3px;
-  background: var(--color-text);
-  border-radius: 2px;
-  transition: all var(--transition-base);
-  transform-origin: center;
+.header.transparent .burgerButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.header.scrolled .burgerButton:hover {
+  background: #f3f4f6;
+}
+
+.burgerIcon {
+  color: white;
+}
+
+.burgerIconScrolled {
+  color: #111827;
+}
+
+/* Мобільне меню Overlay */
+.mobileOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 40;
+}
+
+/* Кнопка закриття */
+.mobileCloseButton {
+  display: none;
   position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 60;
 }
 
-.burgerLine:nth-child(1) {
-  top: 8px;
+.closeButton {
+  margin: 24px;
+  padding: 8px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.burgerLine:nth-child(2) {
-  top: 50%;
-  transform: translateY(-50%);
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
-.burgerLine:nth-child(3) {
-  bottom: 8px;
-}
-
-.burgerButton.active .burgerLine:nth-child(1) {
-  top: 50%;
-  transform: translateY(-50%) rotate(45deg);
-}
-
-.burgerButton.active .burgerLine:nth-child(2) {
-  opacity: 0;
-  transform: translateY(-50%) scale(0);
-}
-
-.burgerButton.active .burgerLine:nth-child(3) {
-  bottom: auto;
-  top: 50%;
-  transform: translateY(-50%) rotate(-45deg);
+.closeIcon {
+  color: white;
 }
 
 /* Мобільне меню */
 .mobileMenu {
   display: none;
-  position: fixed;
-  top: 70px;
-  left: 0;
-  width: 100%;
-  max-width: 300px;
-  height: calc(100vh - 70px);
-  background: var(--color-bg);
-  box-shadow: var(--shadow-lg);
-  transform: translateX(-100%);
-  transition: transform var(--transition-base);
-  z-index: 999;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch; /* Плавна прокрутка на iOS */
+  position: relative;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 50;
+  background: transparent;
 }
 
-.mobileMenuOpen {
-  transform: translateX(0);
-}
-
-.mobileNav {
+.mobileMenuContent {
   display: flex;
   flex-direction: column;
-  padding: var(--spacing-lg);
-  gap: var(--spacing-md);
+  gap: 12px;
+  padding: 24px;
 }
 
 .mobileNavLink {
-  color: var(--color-text);
+  display: block;
+  padding: 8px 0;
+  color: rgba(255, 255, 255, 0.9);
   font-weight: 500;
-  font-size: var(--font-size-lg);
-  padding: var(--spacing-md);
-  border-radius: 8px;
+  font-size: 16px;
   text-decoration: none;
-  transition: all var(--transition-fast);
+  transition: color 0.3s ease;
 }
 
 .mobileNavLink:hover {
-  background: var(--color-bg-light);
-  color: var(--color-primary-dark);
+  color: white;
   text-decoration: none;
+}
+
+.mobileNavLink.active {
+  color: white;
 }
 
 .mobileLanguageSwitcher {
   display: flex;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-lg);
-  border-top: 1px solid var(--color-border);
+  gap: 12px;
+  padding: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   justify-content: center;
 }
 
 .mobileLangButton {
-  padding: var(--spacing-sm) var(--spacing-md);
-  border: 1px solid var(--color-primary-dark);
-  background: var(--color-bg);
-  color: var(--color-text);
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
   cursor: pointer;
-  border-radius: 4px;
-  font-size: var(--font-size-base);
+  border-radius: 8px;
+  font-size: 14px;
   font-weight: 500;
-  transition: all var(--transition-fast);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .mobileLangButton:hover {
-  background: var(--color-bg-light);
-  border-color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
 }
 
 .mobileLangButton.active {
-  background: var(--color-primary-dark);
-  color: var(--color-text-inverse);
-  border-color: var(--color-primary-dark);
-}
-
-/* Overlay */
-.overlay {
-  display: none;
-  position: fixed;
-  top: 70px;
-  left: 0;
-  width: 100%;
-  height: calc(100vh - 70px);
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 998;
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 /* Адаптивні стилі для мобільних */
-@media (max-width: 768px) {
-  .header {
-    position: sticky;
-    position: -webkit-sticky; /* Для Safari */
-    top: 0;
-    z-index: 1000;
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 20px;
   }
 
+  .nav {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
   .container {
-    height: 70px;
+    height: 80px;
     padding: 0 20px;
     position: relative;
   }
@@ -258,7 +311,7 @@
   .logo {
     height: 40px;
     flex: 1;
-    min-width: 0; /* Запобігає переповненню */
+    min-width: 0;
   }
 
   .logoImage {
@@ -279,7 +332,7 @@
   /* Показуємо бургер-меню */
   .burgerButton {
     display: flex;
-    flex-shrink: 0; /* Запобігає стисканню */
+    flex-shrink: 0;
   }
 
   /* Показуємо мобільне меню */
@@ -287,8 +340,11 @@
     display: block;
   }
 
-  .overlay {
+  .mobileOverlay {
+    display: block;
+  }
+
+  .mobileCloseButton {
     display: block;
   }
 }
-

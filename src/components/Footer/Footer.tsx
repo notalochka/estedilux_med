@@ -1,90 +1,130 @@
 import React from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { Mail, Phone, Instagram, Facebook, ArrowUpRight } from 'lucide-react';
 import styles from './Footer.module.css';
 
 const Footer: React.FC = () => {
   const router = useRouter();
   const { locale } = router;
 
+  const quickLinks = [
+    { href: '/', label: locale === 'ru' ? 'Главная' : 'Home' },
+    { href: '/about', label: locale === 'ru' ? 'О нас' : 'About' },
+    { href: '/events', label: locale === 'ru' ? 'События' : 'Events' },
+    { href: '/blog', label: locale === 'ru' ? 'Блог' : 'Blog' },
+    { href: '/contact', label: locale === 'ru' ? 'Контакты' : 'Contact' },
+  ];
+
+  const contactOptions = [
+    {
+      label: 'estediluxmed@ukr.net',
+      href: 'mailto:estediluxmed@ukr.net',
+      icon: Mail,
+    },
+    {
+      label: '+380 50 999 43 49',
+      href: 'tel:+380509994349',
+      icon: Phone,
+    },
+    {
+      label: 'Instagram',
+      href: 'https://www.instagram.com/estedilux_med?igsh=MXY5ODA2bHMxMTk1MQ==',
+      icon: Instagram,
+    },
+    {
+      label: 'Facebook',
+      href: 'https://www.facebook.com/profile.php?id=61551895149114&mibextid=wwXIfr',
+      icon: Facebook,
+    },
+  ];
+
   return (
-    <footer className={styles.footer}>
+    <footer id="contact" className={styles.footer}>
+      <div className={styles.gradientOverlay1} />
+      <div className={styles.gradientOverlay2} />
+
       <div className={styles.container}>
-        <div className={styles.content}>
+        <div className={styles.grid}>
           <div className={styles.section}>
-            <div className={styles.logoContainer}>
+            <Link href="/" className={styles.logoLink} aria-label="Estedilux Med home">
               <Image
                 src="/logo.jpg"
                 alt="Estedilux Med"
-                width={250}
-                height={80}
+                width={180}
+                height={56}
                 className={styles.logo}
                 priority
               />
-            </div>
-            <h3 className={styles.title}>Estedilux Med</h3>
+            </Link>
             <p className={styles.description}>
               {locale === 'ru'
-                ? 'Образовательные программы для врачей'
-                : 'Educational programs for doctors'}
+                ? 'Estedilux Med — это международная образовательная платформа, которая объединяет обучение, стажировки, развитие врачей и организацию медицинских мероприятий под ключ.'
+                : 'Estedilux Med is an international educational platform that combines training, internships, doctor development and turnkey medical event organization.'}
             </p>
+            <Link href="/contact" className={styles.ctaButton}>
+              <span className={styles.ctaText}>
+                {locale === 'ru' ? 'Связаться с нами' : 'Contact Us'}
+              </span>
+              <ArrowUpRight size={16} className={styles.ctaIcon} />
+              <div className={styles.ctaGradient} />
+            </Link>
           </div>
 
-          <div className={styles.section}>
+          <div className={styles.navSection}>
+            <h4 className={styles.sectionTitle}>
+              {locale === 'ru' ? 'Навигация' : 'Navigation'}
+            </h4>
+            <div className={styles.navGrid}>
+              {quickLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={styles.navLink}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className={styles.contactSection}>
             <h4 className={styles.sectionTitle}>
               {locale === 'ru' ? 'Контактная информация' : 'Contact Information'}
             </h4>
-            <div className={styles.contactInfo}>
-              <a href="mailto:estediluxmed@ukr.net" className={styles.contactItem}>
-                <span className={styles.contactIcon}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <polyline points="22,6 12,13 2,6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </span>
-                <span className={styles.contactText}>estediluxmed@ukr.net</span>
-              </a>
-              
-              <a href="tel:+380509994349" className={styles.contactItem}>
-                <span className={styles.contactIcon}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </span>
-                <span className={styles.contactText}>+380 50 999 43 49</span>
-              </a>
-              
-              <div className={styles.socialLinks}>
-                <a 
-                  href="https://www.instagram.com/estedilux_med?igsh=MXY5ODA2bHMxMTk1MQ==" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className={`${styles.socialLink} ${styles.instagram}`}
-                  aria-label="Instagram"
+            <div className={styles.contactList}>
+              {contactOptions.map((contact) => (
+                <a
+                  key={contact.label}
+                  href={contact.href}
+                  className={styles.contactLink}
+                  target={contact.href.startsWith('http') ? '_blank' : undefined}
+                  rel={contact.href.startsWith('http') ? 'noreferrer' : undefined}
                 >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="currentColor" strokeWidth="2"/>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
-                  <span>Instagram</span>
+                  <contact.icon size={16} className={styles.contactIcon} />
+                  {contact.label}
                 </a>
-                
-                <a 
-                  href="https://www.facebook.com/profile.php?id=61551895149114&mibextid=wwXIfr" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className={`${styles.socialLink} ${styles.facebook}`}
-                  aria-label="Facebook"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <span>Facebook</span>
-                </a>
-          </div>
+              ))}
+            </div>
           </div>
         </div>
+
+        <div className={styles.bottom}>
+          <p className={styles.copyright}>
+            © {new Date().getFullYear()} Estedilux Med. All rights reserved.
+          </p>
+          <p className={styles.developed}>
+            {locale === 'ru' ? 'Разработано' : 'Developed by'}{' '}
+            <a
+              href="https://telebots.site/"
+              target="_blank"
+              rel="noreferrer"
+              className={styles.developedLink}
+            >
+              TeleBots
+            </a>
+          </p>
         </div>
       </div>
     </footer>

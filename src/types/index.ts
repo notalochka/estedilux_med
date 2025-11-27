@@ -23,8 +23,8 @@ export interface Doctor {
 
 export interface ContactFormData {
   name: string;
-  email: string;
-  phone: string;
+  phone?: string;
+  email?: string;
   message: string;
 }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styles from './Hero.module.css';
@@ -9,6 +10,17 @@ const Hero: React.FC = () => {
 
   return (
     <section className={styles.hero}>
+      <div className={styles.heroBackground}>
+        <Image
+          src="/photo1.jpg"
+          alt="Estedilux Med Background"
+          fill
+          className={styles.heroImage}
+          priority
+          quality={90}
+        />
+      </div>
+      <div className={styles.heroOverlay}></div>
       <div className={styles.container}>
         <div className={styles.content}>
           <h1 className={styles.title}>
@@ -23,10 +35,10 @@ const Hero: React.FC = () => {
           </p>
           <div className={styles.cta}>
             <Link href="/events" className={styles.button}>
-              {locale === 'ru' ? 'Посмотреть события' : 'View Events'}
+              <span>{locale === 'ru' ? 'Посмотреть события' : 'View Events'}</span>
             </Link>
             <Link href="/contact" className={styles.buttonSecondary}>
-              {locale === 'ru' ? 'Связаться с нами' : 'Contact Us'}
+              <span>{locale === 'ru' ? 'Связаться с нами' : 'Contact Us'}</span>
             </Link>
           </div>
         </div>
@@ -36,4 +48,3 @@ const Hero: React.FC = () => {
 };
 
 export default Hero;
-

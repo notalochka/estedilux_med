@@ -13,17 +13,30 @@ export interface EventCategory {
   subcategories: {
     ru: string;
     en: string;
+    description?: {
+      ru: string;
+      en: string;
+    };
   }[];
-  icon?: string; // Для майбутнього використання іконок
+  icon?: string;
 }
 
 export interface Event {
   id: string;
   categoryId: string;
-  title: string;
-  description: string;
+  title: {
+    ru: string;
+    en: string;
+  };
+  description?: {
+    ru: string;
+    en: string;
+  };
   date?: string;
-  location?: string;
+  location?: {
+    ru: string;
+    en: string;
+  };
   price?: number;
   duration?: string;
   image?: string;
