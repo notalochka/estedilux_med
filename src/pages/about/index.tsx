@@ -73,7 +73,7 @@ const About: NextPage = () => {
             <div className={styles.aboutTextContainer}>
               <div className={styles.aboutTextContent}>
                 <h2 className={styles.aboutTextTitle}>
-                  {locale === 'ru' ? 'Про компанію Estedilux Med' : 'About Estedilux Med Company'}
+                  {locale === 'ru' ? 'Про компанию Estedilux Med' : 'About Estedilux Med Company'}
                 </h2>
                 <p className={styles.aboutTextDescription}>
                   {locale === 'ru'

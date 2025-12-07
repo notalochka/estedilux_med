@@ -1,0 +1,172 @@
+.upcomingEvents {
+  padding: 5rem 0;
+  background: linear-gradient(to bottom, #b7d9ed 0%, #ffffff 100%);
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #003C64;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.eventsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.eventCard {
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.eventCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.eventLink {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.eventLink:hover {
+  text-decoration: none;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+}
+
+.eventImage {
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.eventCard:hover .eventImage {
+  transform: scale(1.05);
+}
+
+.dateBadge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: #459bcd;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  backdrop-filter: blur(8px);
+  z-index: 10;
+}
+
+.eventContent {
+  padding: 1.5rem;
+}
+
+.category {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #459bcd;
+  margin-bottom: 0.75rem;
+}
+
+.eventTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.location svg {
+  flex-shrink: 0;
+}
+
+.registrationButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #1e76aa;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  width: 100%;
+  justify-content: center;
+}
+
+.eventCard:hover .registrationButton {
+  background: #155479;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(69, 155, 205, 0.4);
+}
+
+@media (max-width: 1024px) {
+  .eventsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .upcomingEvents {
+    padding: 3rem 0;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .eventsGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .imageWrapper {
+    height: 200px;
+  }
+}
+

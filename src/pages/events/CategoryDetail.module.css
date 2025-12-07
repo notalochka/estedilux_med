@@ -293,7 +293,7 @@
   align-items: center;
   gap: var(--spacing-xs);
   padding: var(--spacing-xs) var(--spacing-md);
-  background: rgba(56, 189, 248, 0.9);
+  background: #459bcd;
   color: white;
   border-radius: 9999px;
   font-family: var(--font-sans);
@@ -358,7 +358,7 @@
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: white;
-  background: #2563eb;
+  background: #1e76aa;
   border: none;
   border-radius: 12px;
   cursor: pointer;
@@ -376,7 +376,7 @@
 }
 
 .eventButton:hover {
-  background: #1e40af;
+  background: #155479;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
 }

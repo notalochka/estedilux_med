@@ -1,15 +1,11 @@
-// Дані подій
-// Ця структура буде легко редагуватися адміністратором в майбутньому
-
 import { Event } from '@/types/events';
 
 export const events: Event[] = [
-  // Приклад подій для категорії anatomy-cadaver
   {
     id: 'rhinoplasty-cadaver-2025',
     categoryId: 'anatomy-cadaver',
     title: {
-      ru: 'Step-by-step 3rd Rhinoplasty Cadaver Course and Live Surgery',
+      ru: 'Пошаговый 3-й курс по Ринопластике Cadaver Course и живая хирургия',
       en: 'Step-by-step 3rd Rhinoplasty Cadaver Course and Live Surgery',
     },
     description: {
@@ -27,7 +23,7 @@ export const events: Event[] = [
     id: 'rhinoplasty-cadaver-2026',
     categoryId: 'anatomy-cadaver',
     title: {
-      ru: 'Step-by-step 3rd Rhinoplasty Cadaver Course and Live Surgery',
+      ru: 'Пошаговый 3-й курс по Ринопластике Cadaver Course и живая хирургия',
       en: 'Step-by-step 3rd Rhinoplasty Cadaver Course and Live Surgery',
     },
     description: {
@@ -45,7 +41,7 @@ export const events: Event[] = [
     id: 'rhinoplasty-cadaver-2027',
     categoryId: 'aesthetic-medicine',
     title: {
-      ru: 'Step-by-step 3rd Rhinoplasty Cadaver Course and Live Surgery',
+      ru: 'Пошаговый 3-й курс по Ринопластике Cadaver Course и живая хирургия',
       en: 'Step-by-step 3rd Rhinoplasty Cadaver Course and Live Surgery',
     },
     description: {

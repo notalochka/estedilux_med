@@ -284,7 +284,7 @@
 
 .submitButton {
   padding: 1rem 2rem;
-  background: #0f172a;
+  background: #1e76aa;
   color: white;
   border: none;
   border-radius: 12px;
@@ -297,7 +297,7 @@
 }
 
 .submitButton:hover {
-  background: #1e293b;
+  background: #155479;
   transform: translateY(-1px);
   box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.3);
 }
@@ -369,17 +369,6 @@
   font-weight: 500;
 }
 
-@media (max-width: 1024px) {
-  .contentGrid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-2xl);
-  }
-
-  .imageWrapper {
-    min-height: 400px;
-    order: -1;
-  }
-}
 
 @media (max-width: 768px) {
   .hero {
@@ -411,7 +400,11 @@
   }
 
   .imageWrapper {
-    min-height: 300px;
+    display: none;
+  }
+
+  .contentGrid {
+    grid-template-columns: 1fr;
   }
 
   .contactInfoGrid {

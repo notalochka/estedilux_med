@@ -3,14 +3,14 @@
   overflow: hidden;
   background: #0f172a;
   color: white;
-  padding: 5rem 0;
+  padding: 5rem 0 2rem 0;
 }
 
 .gradientOverlay1 {
   pointer-events: none;
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top, rgba(56, 189, 248, 0.18) 0%, rgba(2, 6, 23, 0) 55%);
+  background: radial-gradient(circle at top, #459bcd 0%,  #003C64 55%);
 }
 
 .gradientOverlay2 {
@@ -19,13 +19,15 @@
   inset: 0;
   background: linear-gradient(
     140deg,
-    rgba(56, 189, 248, 0.12) 0%,
-    rgba(56, 189, 248, 0) 55%
+    rgba(93, 182, 232, 0.25) 0%,
+    rgba(164, 217, 245, 0.2) 30%,
+    rgba(93, 182, 232, 0) 55%
   ),
   linear-gradient(
     320deg,
-    rgba(129, 140, 248, 0.2) 0%,
-    rgba(129, 140, 248, 0) 60%
+    rgba(0, 60, 100, 0.2) 0%,
+    rgba(93, 182, 232, 0.15) 30%,
+    rgba(164, 217, 245, 0) 60%
   );
 }
 

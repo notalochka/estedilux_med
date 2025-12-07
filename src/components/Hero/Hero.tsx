@@ -12,12 +12,11 @@ const Hero: React.FC = () => {
     <section className={styles.hero}>
       <div className={styles.heroBackground}>
         <Image
-          src="/photo1.jpg"
+          src="/main_hero.jpg"
           alt="Estedilux Med Background"
           fill
           className={styles.heroImage}
           priority
-          quality={90}
         />
       </div>
       <div className={styles.heroOverlay}></div>

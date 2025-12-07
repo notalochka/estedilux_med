@@ -10,6 +10,7 @@ const Header: React.FC = () => {
   const { locale, locales, asPath } = router;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [savedScrollPosition, setSavedScrollPosition] = useState<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,8 +21,25 @@ const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Відновлюємо позицію скролу після зміни мови
+  useEffect(() => {
+    if (savedScrollPosition !== null) {
+      // Використовуємо setTimeout для забезпечення того, що DOM оновився
+      setTimeout(() => {
+        window.scrollTo(0, savedScrollPosition);
+        setSavedScrollPosition(null);
+      }, 0);
+    }
+  }, [locale, savedScrollPosition]);
+
   const changeLanguage = (newLocale: string) => {
-    router.push(asPath, asPath, { locale: newLocale });
+    // Зберігаємо поточну позицію скролу
+    const scrollPosition = window.scrollY;
+    setSavedScrollPosition(scrollPosition);
+    
+    // Змінюємо мову без скролу на початок
+    router.push(asPath, asPath, { locale: newLocale, scroll: false });
+    
     setIsMenuOpen(false);
   };
 

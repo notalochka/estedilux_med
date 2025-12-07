@@ -5,6 +5,10 @@ import { useRouter } from 'next/router';
 import Header from '@/components/Header/Header';
 import Hero from '@/components/Hero/Hero';
 import Footer from '@/components/Footer/Footer';
+import UpcomingEvents from '@/components/UpcomingEvents/UpcomingEvents';
+import AboutSection from '@/components/AboutSection/AboutSection';
+import SolutionsSection from '@/components/SolutionsSection/SolutionsSection';
+import BlogPreviewSection from '@/components/BlogPreviewSection/BlogPreviewSection';
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -32,14 +36,10 @@ const Home: NextPage = () => {
         <Header />
         <main style={{ flex: 1 }}>
           <Hero />
-          
-          <section style={{ padding: '4rem 0', background: 'var(--color-bg-light)' }}>
-            <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-              <h2 style={{ fontSize: 'var(--font-size-3xl)', marginBottom: '2rem', textAlign: 'center' }}>
-                {locale === 'ru' ? 'Скоро здесь появится информация' : 'Soon here will be information'}
-              </h2>
-            </div>
-          </section>
+          <UpcomingEvents />
+          <AboutSection />
+          <SolutionsSection />
+          <BlogPreviewSection />
         </main>
         <Footer />
       </div>

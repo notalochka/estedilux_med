@@ -132,7 +132,7 @@ const Contact: NextPage = () => {
               <form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.formGroup}>
                   <label htmlFor="name" className={styles.label}>
-                    {locale === 'ru' ? 'Ваши ПІБ' : 'Your Full Name'}
+                    {locale === 'ru' ? 'Ваши ФИО' : 'Your Full Name'}
                   </label>
                   <input
                     type="text"
@@ -222,7 +222,7 @@ const Contact: NextPage = () => {
                       ? 'Отправка...'
                       : 'Sending...'
                     : locale === 'ru'
-                    ? 'Надіслати'
+                    ? 'Отправить'
                     : 'Send'}
                 </button>
               </form>
