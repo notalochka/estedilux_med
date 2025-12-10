@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -12,11 +12,44 @@ const About: NextPage = () => {
   const router = useRouter();
   const { locale } = router;
 
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const studentImages = Array.from({ length: 9 }, (_, i) => `/students/${i + 1}.jpg`);
+  const videoFiles = [
+    '/videos/1.MP4',
+    '/videos/2.mp4',
+    '/videos/3.mp4',
+    '/videos/4.mp4',
+    '/videos/5.mp4',
+    '/videos/6.mp4',
+    '/videos/7.mp4',
+  ];
+
   const scrollToAboutText = () => {
     const element = document.getElementById('about-text-section');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  };
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % studentImages.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + studentImages.length) % studentImages.length);
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+
+  const openVideo = (videoSrc: string) => {
+    setSelectedVideo(videoSrc);
+  };
+
+  const closeVideo = () => {
+    setSelectedVideo(null);
   };
 
   return (
@@ -84,19 +117,53 @@ const About: NextPage = () => {
             </div>
           </section>
 
-          {/* Logo and Offer Section */}
-          <section className={styles.logoOfferSection}>
+          {/* Graduates Carousel Section */}
+          <section className={styles.graduatesSection}>
             <div className={styles.container}>
-              <div className={styles.logoOfferContent}>
-                <div className={styles.logoWrapper}>
-                  <Image
-                    src="/about_logo.jpg"
-                    alt="Estedilux Med Logo"
-                    width={800}
-                    height={500}
-                    className={styles.aboutLogo}
-                  />
+              <h2 className={styles.graduatesTitle}>
+                {locale === 'ru' ? 'Выпускники Estedilux Med' : 'Estedilux Med Graduates'}
+              </h2>
+              <div className={styles.carouselWrapper}>
+                <button className={styles.carouselButton} onClick={prevSlide} aria-label="Previous slide">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                  </svg>
+                </button>
+                <div className={styles.carouselContainer}>
+                  <div 
+                    className={styles.carouselTrack}
+                    style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                  >
+                    {studentImages.map((src, index) => (
+                      <div key={index} className={styles.carouselSlide}>
+                        <div className={styles.carouselImageWrapper}>
+                          <Image
+                            src={src}
+                            alt={`Graduate ${index + 1}`}
+                            fill
+                            className={styles.carouselImage}
+                            quality={90}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
+                <button className={styles.carouselButton} onClick={nextSlide} aria-label="Next slide">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </button>
+              </div>
+              <div className={styles.carouselIndicators}>
+                {studentImages.map((_, index) => (
+                  <button
+                    key={index}
+                    className={`${styles.indicator} ${currentSlide === index ? styles.active : ''}`}
+                    onClick={() => goToSlide(index)}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
               </div>
             </div>
           </section>
@@ -120,7 +187,7 @@ const About: NextPage = () => {
               <section className={styles.section}>
                 <div className={styles.servicesList}>
                   {/* Service 1 */}
-                  <div className={styles.serviceSection}>
+                  <div className={`${styles.serviceSection} ${styles.firstService}`}>
                     <div className={styles.serviceContent}>
                       <div>
                         <span className={styles.serviceBadge}>
@@ -146,6 +213,15 @@ const About: NextPage = () => {
                           🇬🇪 {locale === 'ru' ? 'Грузия (Тбилиси, Батуми)' : 'Georgia (Tbilisi, Batumi)'}
                         </span>
                       </div>
+                    </div>
+                    <div className={styles.serviceImageWrapper}>
+                      <Image
+                        src="/photo1.jpg"
+                        alt={locale === 'ru' ? 'Международное обучение для врачей' : 'International Training for Doctors'}
+                        fill
+                        className={styles.serviceImage}
+                        quality={90}
+                      />
                     </div>
                   </div>
 
@@ -504,6 +580,67 @@ const About: NextPage = () => {
                   </div>
                 </div>
               </section>
+
+              {/* Video Gallery Section */}
+              <section className={styles.videoGallerySection}>
+                <div className={styles.container}>
+                  <h2 className={styles.videoGalleryTitle}>
+                    {locale === 'ru' ? 'Видеогалерея' : 'Video Gallery'}
+                  </h2>
+                  <div className={styles.videoGrid}>
+                    {videoFiles.map((videoSrc, index) => (
+                      <div
+                        key={index}
+                        className={styles.videoThumbnail}
+                        onClick={() => openVideo(videoSrc)}
+                      >
+                        <div className={styles.videoThumbnailWrapper}>
+                          <video
+                            src={videoSrc}
+                            className={styles.videoPreview}
+                            muted
+                            playsInline
+                            onMouseEnter={(e) => {
+                              const video = e.currentTarget;
+                              video.play();
+                            }}
+                            onMouseLeave={(e) => {
+                              const video = e.currentTarget;
+                              video.pause();
+                              video.currentTime = 0;
+                            }}
+                          />
+                          <div className={styles.playButton}>
+                            <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              {/* Video Modal */}
+              {selectedVideo && (
+                <div className={styles.videoModal} onClick={closeVideo}>
+                  <div className={styles.videoModalContent} onClick={(e) => e.stopPropagation()}>
+                    <button className={styles.videoModalClose} onClick={closeVideo} aria-label="Close video">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                    <video
+                      src={selectedVideo}
+                      className={styles.videoPlayer}
+                      controls
+                      autoPlay
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </main>

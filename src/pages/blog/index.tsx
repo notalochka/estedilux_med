@@ -1,21 +1,102 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { Calendar, Search } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import { blogPosts } from '@/data/blog';
+import type { BlogPost } from '@/types/blog';
 import styles from './Blog.module.css';
 
 const Blog: NextPage = () => {
   const router = useRouter();
   const { locale } = router;
+  const [displayedCount, setDisplayedCount] = useState(6);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const scrollToBlogContent = () => {
     const element = document.getElementById('blog-content-section');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  };
+
+  // Фільтруємо та сортуємо статті
+  const filteredAndSortedPosts = useMemo(() => {
+    let filtered = [...blogPosts];
+
+    // Фільтрація за пошуковим запитом
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      filtered = filtered.filter((post) => {
+        const title = locale === 'ru' ? post.title.ru.toLowerCase() : post.title.en.toLowerCase();
+        const content = locale === 'ru' ? post.content.ru : post.content.en;
+        
+        // Перевіряємо назву
+        if (title.includes(query)) return true;
+        
+        // Перевіряємо контент (всі параграфи та заголовки)
+        const contentText = content
+          .map(item => {
+            if (item.type === 'paragraph' && typeof item.content === 'string') {
+              return item.content.toLowerCase();
+            }
+            if (item.type === 'heading' && typeof item.content === 'string') {
+              return item.content.toLowerCase();
+            }
+            if (item.type === 'list' && Array.isArray(item.content)) {
+              return item.content.join(' ').toLowerCase();
+            }
+            return '';
+          })
+          .join(' ');
+        
+        return contentText.includes(query);
+      });
+    }
+
+    // Сортуємо за датою (від новіших до старіших)
+    return filtered.sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return dateB - dateA;
+    });
+  }, [blogPosts, searchQuery, locale]);
+
+  // Обмежуємо кількість відображених статей
+  const displayedPosts = filteredAndSortedPosts.slice(0, displayedCount);
+  const hasMore = filteredAndSortedPosts.length > displayedCount;
+
+  // Скидаємо лічильник при зміні пошукового запиту
+  React.useEffect(() => {
+    setDisplayedCount(6);
+  }, [searchQuery]);
+
+  const handleLoadMore = () => {
+    setDisplayedCount(prev => prev + 3);
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const months = locale === 'ru' 
+      ? ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+      : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    
+    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+  };
+
+  const getPreviewText = (post: BlogPost): string => {
+    const content = locale === 'ru' ? post.content.ru : post.content.en;
+    const firstParagraph = content.find(item => item.type === 'paragraph');
+    if (firstParagraph && typeof firstParagraph.content === 'string') {
+      return firstParagraph.content.length > 150 
+        ? firstParagraph.content.substring(0, 150) + '...'
+        : firstParagraph.content;
+    }
+    return '';
   };
 
   return (
@@ -67,13 +148,90 @@ const Blog: NextPage = () => {
           </section>
 
           {/* Blog Content Section */}
-          <section id="blog-content-section" style={{ padding: '4rem 0', background: 'white' }}>
-            <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-              <p style={{ textAlign: 'center', color: '#64748b', marginBottom: '3rem' }}>
-                {locale === 'ru'
-                  ? 'Скоро здесь появятся статьи и новости'
-                  : 'Articles and news will appear here soon'}
-              </p>
+          <section id="blog-content-section" className={styles.blogPostsSection}>
+            <div className={styles.postsContainer}>
+              {/* Search Field */}
+              <div className={styles.searchWrapper}>
+                <div className={styles.searchInputWrapper}>
+                  <Search size={20} className={styles.searchIcon} />
+                  <input
+                    type="text"
+                    className={styles.searchInput}
+                    placeholder={locale === 'ru' ? 'Поиск по блогу...' : 'Search articles...'}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              {filteredAndSortedPosts.length === 0 ? (
+                <p className={styles.emptyMessage}>
+                  {searchQuery.trim()
+                    ? (locale === 'ru'
+                        ? 'Статьи не найдены'
+                        : 'No articles found')
+                    : (locale === 'ru'
+                        ? 'Скоро здесь появятся статьи и новости'
+                        : 'Articles and news will appear here soon')}
+                </p>
+              ) : (
+                <>
+                  <div className={styles.postsGrid}>
+                    {displayedPosts.map((post) => {
+                      const title = locale === 'ru' ? post.title.ru : post.title.en;
+                      const previewText = getPreviewText(post);
+                      
+                      return (
+                        <article key={post.id} className={styles.postCard}>
+                          <Link href={`/blog/${post.id}`} className={styles.postLink}>
+                            <div className={styles.imageWrapper}>
+                              <Image
+                                src={post.image}
+                                alt={title}
+                                fill
+                                className={styles.postImage}
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                quality={90}
+                              />
+                              <div className={styles.dateBadge}>
+                                <Calendar size={14} />
+                                <span>{formatDate(post.date)}</span>
+                              </div>
+                            </div>
+                            
+                            <div className={styles.postContent}>
+                              <h3 className={styles.postTitle}>
+                                {title}
+                              </h3>
+                              
+                              {previewText && (
+                                <p className={styles.postPreview}>
+                                  {previewText}
+                                </p>
+                              )}
+                              
+                              <div className={styles.readMore}>
+                                {locale === 'ru' ? 'Читать далее' : 'Read more'}
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                              </div>
+                            </div>
+                          </Link>
+                        </article>
+                      );
+                    })}
+                  </div>
+                  
+                  {hasMore && (
+                    <div className={styles.loadMoreWrapper}>
+                      <button onClick={handleLoadMore} className={styles.loadMoreButton}>
+                        {locale === 'ru' ? 'Загрузить ещё' : 'Load more'}
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </section>
         </main>

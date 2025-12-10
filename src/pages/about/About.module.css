@@ -138,35 +138,158 @@
   margin: 0 auto;
 }
 
-/* Logo and Offer Section */
-.logoOfferSection {
+/* Graduates Carousel Section */
+.graduatesSection {
   background: white;
-  padding: var(--spacing-3xl) 0;
+  padding: var(--spacing-md) 0;
 }
 
-.logoOfferContent {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3xl);
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 40px;
+.graduatesTitle {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--color-text);
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+  letter-spacing: 0.05em;
 }
 
-.logoWrapper {
-  width: 100%;
+.carouselWrapper {
   position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
+  gap: var(--spacing-lg);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-.aboutLogo {
+.carouselButton {
+  background: #1e76aa;
+  border: none;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.carouselButton:hover {
+  background: #155479;
+  transform: scale(1.1);
+}
+
+.carouselButton:active {
+  transform: scale(0.95);
+}
+
+.carouselContainer {
+  flex: 1;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.carouselTrack {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  will-change: transform;
+}
+
+.carouselSlide {
+  min-width: 100%;
+  flex-shrink: 0;
+}
+
+.carouselImageWrapper {
+  position: relative;
   width: 100%;
-  max-width: 800px;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 8px;
+  padding-top: 56.25%;
+  overflow: hidden;
+}
+
+.carouselImage {
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.carouselIndicators {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-xl);
+  flex-wrap: wrap;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.indicator:hover {
+  background: rgba(0, 0, 0, 0.5);
+  transform: scale(1.2);
+}
+
+.indicator.active {
+  background: #1e76aa;
+  width: 32px;
+  border-radius: 6px;
+}
+
+@media (max-width: 768px) {
+  .graduatesSection {
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .graduatesTitle {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .carouselWrapper {
+    gap: var(--spacing-sm);
+    padding: 0 10px;
+  }
+
+  .carouselButton {
+    width: 40px;
+    height: 40px;
+  }
+
+  .carouselButton svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .carouselImageWrapper {
+    padding-top: 75%; /* 4:3 aspect ratio for mobile */
+  }
+
+  .carouselIndicators {
+    margin-top: var(--spacing-lg);
+    gap: 8px;
+  }
+
+  .indicator {
+    width: 10px;
+    height: 10px;
+  }
+
+  .indicator.active {
+    width: 24px;
+  }
 }
 
 .offerTextWrapper {
@@ -375,7 +498,7 @@
 
 .servicesList {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 2.5rem;
   max-width: 1280px;
   margin: 0 auto;
@@ -388,7 +511,7 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: rgba(255, 255, 255, 0.1);
   padding: 1px;
-  box-shadow: 0 30px 80px -40px rgba(15, 23, 42, 0.55);
+  box-shadow: 0 15px 40px -20px rgba(15, 23, 42, 0.35);
   transition: all 0.7s ease-out;
   backdrop-filter: blur(16px);
   opacity: 1;
@@ -396,7 +519,7 @@
 
 .serviceSection:hover {
   transform: translateY(-4px);
-  box-shadow: 0 40px 100px -40px rgba(15, 23, 42, 0.65);
+  box-shadow: 0 20px 50px -20px rgba(15, 23, 42, 0.45);
 }
 
 .serviceSection.reverse {
@@ -414,6 +537,24 @@
   justify-content: space-between;
   gap: 1.5rem;
   transition: all 0.5s;
+}
+
+.serviceSection.firstService {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.serviceSection.firstService .serviceContent {
+  flex: 1;
+  border-radius: calc(1.5rem - 1px) 0 0 calc(1.5rem - 1px);
+}
+
+.serviceSection.firstService .serviceImageWrapper {
+  flex: 1;
+  height: auto;
+  border-radius: 0 calc(1.5rem - 1px) calc(1.5rem - 1px) 0;
 }
 
 .serviceSection:hover .serviceContent {
@@ -436,10 +577,152 @@
 
 .serviceImageWrapper {
   display: none;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  overflow: hidden;
+}
+
+.serviceSection.firstService .serviceImageWrapper {
+  display: block;
 }
 
 .serviceImage {
-  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Video Gallery Section */
+.videoGallerySection {
+  background: white;
+  padding: var(--spacing-xl) 0;
+}
+
+.videoGalleryTitle {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--color-text);
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  letter-spacing: 0.05em;
+}
+
+.videoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.videoThumbnail {
+  cursor: pointer;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.videoThumbnail:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.videoThumbnailWrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+  background: #000;
+  overflow: hidden;
+}
+
+.videoPreview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.playButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.videoThumbnail:hover .playButton {
+  background: rgba(0, 0, 0, 0.8);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Video Modal */
+.videoModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.videoModalContent {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  max-height: 90vh;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.videoModalClose {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.videoModalClose:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: scale(1.1);
+}
+
+.videoPlayer {
+  width: 100%;
+  height: auto;
+  max-height: 90vh;
+  display: block;
 }
 
 .serviceBadge {
@@ -697,15 +980,6 @@
     line-height: 1.6;
   }
 
-  .logoOfferSection {
-    padding: var(--spacing-xl) 0;
-  }
-
-  .logoOfferContent {
-    gap: var(--spacing-xl);
-    padding: 0 20px;
-  }
-
   .logoWrapper {
     height: 300px;
   }
@@ -763,6 +1037,19 @@
     padding: 0 20px;
   }
 
+  .serviceSection.firstService {
+    grid-column: span 1;
+    flex-direction: column;
+  }
+
+  .serviceSection.firstService .serviceContent {
+    border-radius: calc(1.5rem - 1px) calc(1.5rem - 1px) 0 0;
+  }
+
+  .serviceSection.firstService .serviceImageWrapper {
+    display: none;
+  }
+
   .serviceContent {
     padding: 1.5rem;
   }
@@ -785,5 +1072,29 @@
 
   .goalText {
     font-size: 1rem;
+  }
+
+  .videoGallerySection {
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .videoGalleryTitle {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .videoGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+    padding: 0 10px;
+  }
+
+  .videoModalContent {
+    max-width: 100%;
+    margin: 0 10px;
+  }
+
+  .videoPlayer {
+    max-height: 70vh;
   }
 }
