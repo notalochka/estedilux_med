@@ -76,10 +76,10 @@ const Header: React.FC = () => {
       
       return () => {
         // Відновлюємо прокрутку та позицію
-        document.body.style.overflow = '';
-        document.body.style.position = '';
+      document.body.style.overflow = '';
+      document.body.style.position = '';
         document.body.style.top = '';
-        document.body.style.width = '';
+      document.body.style.width = '';
         window.scrollTo(0, scrollY);
       };
     } else {
@@ -181,33 +181,33 @@ const Header: React.FC = () => {
             <div className={styles.mobileMenuContent}>
               <Link href="/" className={`${styles.mobileNavLink} ${isActive('/') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'Главная' : 'Home'}
-              </Link>
+          </Link>
               <Link href="/about" className={`${styles.mobileNavLink} ${isActive('/about') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'О нас' : 'About'}
-              </Link>
+          </Link>
               <Link href="/events" className={`${styles.mobileNavLink} ${isActive('/events') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'События' : 'Events'}
-              </Link>
+          </Link>
               <Link href="/blog" className={`${styles.mobileNavLink} ${isActive('/blog') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'Блог' : 'Blog'}
-              </Link>
+          </Link>
               <Link href="/contact" className={`${styles.mobileNavLink} ${isActive('/contact') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'Контакты' : 'Contact'}
-              </Link>
+          </Link>
             </div>
-            <div className={styles.mobileLanguageSwitcher}>
-              {locales?.map((loc) => (
-                <button
-                  key={loc}
-                  onClick={() => changeLanguage(loc)}
-                  className={`${styles.mobileLangButton} ${locale === loc ? styles.active : ''}`}
-                  aria-label={`Switch to ${loc}`}
-                >
-                  {loc.toUpperCase()}
-                </button>
-              ))}
-            </div>
-          </div>
+        <div className={styles.mobileLanguageSwitcher}>
+          {locales?.map((loc) => (
+            <button
+              key={loc}
+              onClick={() => changeLanguage(loc)}
+              className={`${styles.mobileLangButton} ${locale === loc ? styles.active : ''}`}
+              aria-label={`Switch to ${loc}`}
+            >
+              {loc.toUpperCase()}
+            </button>
+          ))}
+        </div>
+      </div>
         </>
       )}
     </header>

@@ -1,7 +1,7 @@
 // Типи для подій та категорій
 
 export interface EventCategory {
-  id: string;
+  id: number;
   title: {
     ru: string;
     en: string;
@@ -22,8 +22,8 @@ export interface EventCategory {
 }
 
 export interface Event {
-  id: string;
-  categoryId: string;
+  id: number;
+  categoryId: number;
   title: {
     ru: string;
     en: string;
@@ -40,5 +40,6 @@ export interface Event {
   price?: number;
   duration?: string;
   image?: string;
+  published?: boolean;  // Чи опублікована подія (для відображення на публічному сайті)
 }
 

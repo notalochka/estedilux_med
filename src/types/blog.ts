@@ -1,8 +1,9 @@
 // Типи для блогу
 
+// Старий тип для конвертації (можна видалити після міграції)
 export interface BlogPostContentItem {
   type: 'heading' | 'paragraph' | 'list';
-  content: string | string[]; // Для heading і paragraph - string, для list - string[]
+  content: string | string[];
 }
 
 export interface BlogPost {
@@ -14,8 +15,9 @@ export interface BlogPost {
     en: string;
   };
   content: {
-    ru: BlogPostContentItem[];
-    en: BlogPostContentItem[];
+    ru: string;  // Markdown текст для російської версії
+    en: string;  // Markdown текст для англійської версії
   };
+  published?: boolean;  // Чи опублікована стаття (для відображення на публічному сайті)
 }
 

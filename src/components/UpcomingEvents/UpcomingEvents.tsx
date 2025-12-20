@@ -1,26 +1,91 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Calendar, MapPin, ShoppingCart } from 'lucide-react';
-import { events } from '@/data/events';
-import { eventCategories } from '@/data/eventCategories';
-import type { Event } from '@/types/events';
+import type { Event, EventCategory } from '@/types/events';
 import styles from './UpcomingEvents.module.css';
 
 const UpcomingEvents: React.FC = () => {
   const router = useRouter();
   const { locale } = router;
+  const [events, setEvents] = useState<Event[]>([]);
+  const [categories, setCategories] = useState<EventCategory[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Сортуємо події за датою та беремо найближчі 3
-  const upcomingEvents = events
-    .filter((event) => event.date)
-    .sort((a, b) => {
-      const dateA = new Date(a.date || '').getTime();
-      const dateB = new Date(b.date || '').getTime();
-      return dateA - dateB;
-    })
-    .slice(0, 3);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [eventsResponse, categoriesResponse] = await Promise.all([
+          fetch('/api/events'),
+          fetch('/api/events/categories'),
+        ]);
+
+        if (eventsResponse.ok && categoriesResponse.ok) {
+          const eventsData: Event[] = await eventsResponse.json();
+          const categoriesData: EventCategory[] = await categoriesResponse.json();
+          setEvents(eventsData);
+          setCategories(categoriesData);
+        }
+      } catch (error) {
+        console.error('Error fetching events data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const upcomingEvents = React.useMemo(() => {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Скидаємо час для порівняння тільки дат
+
+    return events
+      .filter((event) => {
+        // Фільтруємо тільки опубліковані події
+        if (event.published === false) return false;
+        
+        if (!event.date) return false;
+        try {
+          const eventDate = new Date(event.date);
+          if (isNaN(eventDate.getTime())) return false;
+          eventDate.setHours(0, 0, 0, 0);
+          // Фільтруємо тільки майбутні події (включно з сьогоднішніми)
+          return eventDate >= now;
+        } catch {
+          return false;
+        }
+      })
+      .sort((a, b) => {
+        if (!a.date || !b.date) {
+          // Якщо одна з дат відсутня, ставимо її в кінець
+          if (!a.date && !b.date) return 0;
+          if (!a.date) return 1;
+          if (!b.date) return -1;
+        }
+
+        try {
+          const dateA = new Date(a.date).getTime();
+          const dateB = new Date(b.date).getTime();
+          
+          // Перевірка на валідність дат
+          if (isNaN(dateA) || isNaN(dateB)) {
+            // Якщо дати невалідні, сортуємо за id
+            return a.id - b.id;
+          }
+          
+          // Сортуємо за датою (від найближчої до найдальшої)
+          const dateDiff = dateA - dateB;
+          // Якщо дати однакові, сортуємо за id
+          return dateDiff !== 0 ? dateDiff : a.id - b.id;
+        } catch {
+          // У разі помилки сортуємо за id
+          return a.id - b.id;
+        }
+      })
+      .slice(0, 3);
+  }, [events]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -31,14 +96,14 @@ const UpcomingEvents: React.FC = () => {
     return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
   };
 
-  const getCategoryTitle = (categoryId: string) => {
-    const category = eventCategories.find((cat) => cat.id === categoryId);
+  const getCategoryTitle = (categoryId: number) => {
+    const category = categories.find((cat) => cat.id === categoryId);
     return category 
       ? (locale === 'ru' ? category.title.ru : category.title.en)
       : '';
   };
 
-  if (upcomingEvents.length === 0) {
+  if (isLoading || upcomingEvents.length === 0) {
     return null;
   }
 
@@ -55,7 +120,7 @@ const UpcomingEvents: React.FC = () => {
             
             return (
               <article key={event.id} className={styles.eventCard}>
-                <Link href={`/events/${event.categoryId}#${event.id}`} className={styles.eventLink}>
+                <Link href={`/event/${event.id}`} className={styles.eventLink}>
                   <div className={styles.imageWrapper}>
                     {event.image && (
                       <Image

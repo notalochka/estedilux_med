@@ -2,8 +2,8 @@ import { Event } from '@/types/events';
 
 export const events: Event[] = [
   {
-    id: 'rhinoplasty-cadaver-2025',
-    categoryId: 'anatomy-cadaver',
+    id: 1,
+    categoryId: 2,
     title: {
       ru: 'Пошаговый 3-й курс по Ринопластике Cadaver Course и живая хирургия',
       en: 'Step-by-step 3rd Rhinoplasty Cadaver Course and Live Surgery',
@@ -18,10 +18,11 @@ export const events: Event[] = [
       en: 'Istanbul, Turkey',
     },
     image: '/categories/photo1.jpg',
+    price: 2500,
   },
   {
-    id: 'rhinoplasty-cadaver-2026',
-    categoryId: 'anatomy-cadaver',
+    id: 2,
+    categoryId: 2,
     title: {
       ru: 'Пошаговый 3-й курс по Ринопластике Cadaver Course и живая хирургия',
       en: 'Step-by-step 3rd Rhinoplasty Cadaver Course and Live Surgery',
@@ -36,10 +37,11 @@ export const events: Event[] = [
       en: 'Istanbul, Turkey',
     },
     image: '/categories/photo2.jpg',
+    price: 2800,
   },
   {
-    id: 'rhinoplasty-cadaver-2027',
-    categoryId: 'aesthetic-medicine',
+    id: 3,
+    categoryId: 1,
     title: {
       ru: 'Пошаговый 3-й курс по Ринопластике Cadaver Course и живая хирургия',
       en: 'Step-by-step 3rd Rhinoplasty Cadaver Course and Live Surgery',
@@ -54,6 +56,7 @@ export const events: Event[] = [
       en: 'Istanbul, Turkey',
     },
     image: '/categories/photo3.jpg',
+    price: 3000,
   },
 ];
 

@@ -211,11 +211,21 @@
   width: 100%;
   padding-top: 56.25%;
   overflow: hidden;
+  background: #f0f0f0;
 }
 
 .carouselImage {
   object-fit: cover;
   border-radius: 12px;
+  transition: opacity 0.3s ease;
+}
+
+.carouselImage.loading {
+  opacity: 0;
+}
+
+.carouselImage.loaded {
+  opacity: 1;
 }
 
 .carouselIndicators {
@@ -647,6 +657,15 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.videoPreview.loading {
+  opacity: 0;
+}
+
+.videoPreview.loaded {
+  opacity: 1;
 }
 
 .playButton {
@@ -723,6 +742,35 @@
   height: auto;
   max-height: 90vh;
   display: block;
+}
+
+/* Loading Placeholder */
+.loadingPlaceholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f0;
+  z-index: 1;
+}
+
+.loadingSpinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(30, 118, 170, 0.2);
+  border-top-color: #1e76aa;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .serviceBadge {

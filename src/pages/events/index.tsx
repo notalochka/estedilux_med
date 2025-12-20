@@ -1,5 +1,5 @@
 import React from 'react';
-import type { NextPage } from 'next';
+import type { NextPage, GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -7,11 +7,14 @@ import { useRouter } from 'next/router';
 import { ArrowRight } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
-import { eventCategories } from '@/data/eventCategories';
 import type { EventCategory } from '@/types/events';
 import styles from './Events.module.css';
 
-const Events: NextPage = () => {
+interface EventsPageProps {
+  categories: EventCategory[];
+}
+
+const Events: NextPage<EventsPageProps> = ({ categories }) => {
   const router = useRouter();
   const { locale } = router;
 
@@ -91,14 +94,14 @@ const Events: NextPage = () => {
 
               {/* Cards Grid */}
               <div className={styles.categoriesGrid}>
-                {eventCategories.map((category, index) => {
+                {categories.map((category, index) => {
                   const categoryImage = `/categories/photo${(index % 7) + 1}.jpg`;
                   const displaySubcategories = category.subcategories.slice(0, 4);
                   
                   return (
                     <Link
                       key={category.id}
-                      href={`/events/${category.id}`}
+                      href={`/events/${String(category.id)}`}
                       className={styles.categoryCard}
                     >
                       {/* Background Image */}
@@ -157,6 +160,40 @@ const Events: NextPage = () => {
       </div>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps<EventsPageProps> = async () => {
+  try {
+    const { getAllEventCategories } = await import('@/lib/db');
+    const categoriesData = getAllEventCategories.all() as any[];
+    
+    const categories: EventCategory[] = categoriesData.map((category) => ({
+      id: category.id,
+      title: {
+        ru: category.title_ru,
+        en: category.title_en,
+      },
+      description: {
+        ru: category.description_ru,
+        en: category.description_en,
+      },
+      subcategories: JSON.parse(category.subcategories),
+      ...(category.icon ? { icon: category.icon } : {}),
+    }));
+    
+    return {
+      props: {
+        categories,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    return {
+      props: {
+        categories: [],
+      },
+    };
+  }
 };
 
 export default Events;

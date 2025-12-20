@@ -14,6 +14,8 @@ const About: NextPage = () => {
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
+  const [loadedVideos, setLoadedVideos] = useState<Set<number>>(new Set());
   const studentImages = Array.from({ length: 9 }, (_, i) => `/students/${i + 1}.jpg`);
   const videoFiles = [
     '/videos/1.MP4',
@@ -24,6 +26,14 @@ const About: NextPage = () => {
     '/videos/6.mp4',
     '/videos/7.mp4',
   ];
+
+  const handleImageLoad = (index: number) => {
+    setLoadedImages((prev) => new Set(prev).add(index));
+  };
+
+  const handleVideoLoad = (index: number) => {
+    setLoadedVideos((prev) => new Set(prev).add(index));
+  };
 
   const scrollToAboutText = () => {
     const element = document.getElementById('about-text-section');
@@ -137,12 +147,18 @@ const About: NextPage = () => {
                     {studentImages.map((src, index) => (
                       <div key={index} className={styles.carouselSlide}>
                         <div className={styles.carouselImageWrapper}>
+                          {!loadedImages.has(index) && (
+                            <div className={styles.loadingPlaceholder}>
+                              <div className={styles.loadingSpinner}></div>
+                            </div>
+                          )}
                           <Image
                             src={src}
                             alt={`Graduate ${index + 1}`}
                             fill
-                            className={styles.carouselImage}
+                            className={`${styles.carouselImage} ${loadedImages.has(index) ? styles.loaded : styles.loading}`}
                             quality={90}
+                            onLoad={() => handleImageLoad(index)}
                           />
                         </div>
                       </div>
@@ -595,14 +611,22 @@ const About: NextPage = () => {
                         onClick={() => openVideo(videoSrc)}
                       >
                         <div className={styles.videoThumbnailWrapper}>
+                          {!loadedVideos.has(index) && (
+                            <div className={styles.loadingPlaceholder}>
+                              <div className={styles.loadingSpinner}></div>
+                            </div>
+                          )}
                           <video
                             src={videoSrc}
-                            className={styles.videoPreview}
+                            className={`${styles.videoPreview} ${loadedVideos.has(index) ? styles.loaded : styles.loading}`}
                             muted
                             playsInline
+                            onLoadedData={() => handleVideoLoad(index)}
                             onMouseEnter={(e) => {
                               const video = e.currentTarget;
-                              video.play();
+                              if (loadedVideos.has(index)) {
+                                video.play();
+                              }
                             }}
                             onMouseLeave={(e) => {
                               const video = e.currentTarget;
@@ -610,11 +634,13 @@ const About: NextPage = () => {
                               video.currentTime = 0;
                             }}
                           />
-                          <div className={styles.playButton}>
-                            <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
-                              <path d="M8 5v14l11-7z" />
-                            </svg>
-                          </div>
+                          {loadedVideos.has(index) && (
+                            <div className={styles.playButton}>
+                              <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+                                <path d="M8 5v14l11-7z" />
+                              </svg>
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}

@@ -20,8 +20,8 @@ const AboutSection: React.FC = () => {
               </h2>
               <h3 className={styles.title}>
                 {locale === 'ru'
-                  ? 'Гарантия качества в медицинском образовании и развитии'
-                  : 'Quality Assurance in Medical Education and Development'}
+                  ? 'Ваш партнер в медицинском образовании и развитии'
+                  : 'Your Partner in Medical Education and Development'}
               </h3>
             </div>
             

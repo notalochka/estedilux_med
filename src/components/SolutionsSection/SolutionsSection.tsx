@@ -26,8 +26,8 @@ const SolutionsSection: React.FC = () => {
       icon: DollarSign,
       title: locale === 'ru' ? 'Доступные цены' : 'Reasonable Prices',
       description: locale === 'ru'
-        ? 'Наслаждайтесь прозрачным ценообразованием без скрытых платежей. Мы предлагаем услуги высочайшего качества по конкурентоспособным ценам, обеспечивая доступность без ущерба для качества.'
-        : 'Enjoy transparent pricing with no hidden fees. We provide top-quality services at competitive rates, ensuring affordability without compromising on quality.',
+        ? 'Стоимость программ формируется на основе реальных затрат на организацию обучения, стажировок и мероприятий. Мы предоставляем детальную информацию о составе услуг.'
+        : 'Program costs are based on actual expenses for organizing training, internships and events. We provide detailed information about service components.',
     },
   ];
 

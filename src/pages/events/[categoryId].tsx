@@ -1,5 +1,5 @@
 import React from 'react';
-import type { NextPage, GetStaticPaths, GetStaticProps } from 'next';
+import type { NextPage, GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -7,8 +7,6 @@ import { useRouter } from 'next/router';
 import { ArrowLeft, Calendar, MapPin } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
-import { eventCategories } from '@/data/eventCategories';
-import { events } from '@/data/events';
 import type { EventCategory, Event } from '@/types/events';
 import styles from './CategoryDetail.module.css';
 
@@ -131,70 +129,70 @@ const CategoryDetail: NextPage<CategoryDetailProps> = ({ category, categoryEvent
 
                 {/* Right Column - Events */}
                 <div className={styles.eventsColumn}>
-                  <h2 className={styles.sectionTitle}>
-                    {locale === 'ru' ? 'Предстоящие программы' : 'Upcoming Programs'}
-                  </h2>
-                  
-                  {categoryEvents.length > 0 ? (
-                    <div className={styles.eventsList}>
-                      {categoryEvents.map((event) => (
-                        <div key={event.id} className={styles.eventCard}>
-                          {event.image && (
-                            <div className={styles.eventImageWrapper}>
-                              <Image
-                                src={event.image}
-                                alt={locale === 'ru' ? event.title.ru : event.title.en}
-                                fill
-                                className={styles.eventImage}
-                              />
-                              {event.date && (
-                                <div className={styles.eventDateBadge}>
-                                  <Calendar size={14} />
-                                  <span>
-                                    {new Date(event.date).toLocaleDateString(
-                                      locale === 'ru' ? 'ru-RU' : 'en-US',
-                                      {
-                                        month: 'long',
-                                        day: 'numeric',
-                                        year: 'numeric',
-                                      }
-                                    )}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                          )}
-                          <div className={styles.eventContent}>
-                            <h3 className={styles.eventTitle}>
-                              {locale === 'ru' ? event.title.ru : event.title.en}
-                            </h3>
-                            {event.location && (
-                              <div className={styles.eventLocation}>
-                                <MapPin size={14} />
-                                <span>{locale === 'ru' ? event.location.ru : event.location.en}</span>
+                    <h2 className={styles.sectionTitle}>
+                      {locale === 'ru' ? 'Предстоящие программы' : 'Upcoming Programs'}
+                    </h2>
+                    
+                    {categoryEvents.length > 0 ? (
+                      <div className={styles.eventsList}>
+                        {categoryEvents.map((event) => (
+                          <div key={event.id} className={styles.eventCard}>
+                            {event.image && (
+                              <div className={styles.eventImageWrapper}>
+                                <Image
+                                  src={event.image}
+                                  alt={locale === 'ru' ? event.title.ru : event.title.en}
+                                  fill
+                                  className={styles.eventImage}
+                                />
+                                {event.date && (
+                                  <div className={styles.eventDateBadge}>
+                                    <Calendar size={14} />
+                                    <span>
+                                      {new Date(event.date).toLocaleDateString(
+                                        locale === 'ru' ? 'ru-RU' : 'en-US',
+                                        {
+                                          month: 'long',
+                                          day: 'numeric',
+                                          year: 'numeric',
+                                        }
+                                      )}
+                                    </span>
+                                  </div>
+                                )}
                               </div>
                             )}
-                            {event.description && (
-                              <p className={styles.eventDescription}>
-                                {locale === 'ru' ? event.description.ru : event.description.en}
-                              </p>
-                            )}
-                            <button className={styles.eventButton}>
-                              <span>{locale === 'ru' ? 'Регистрация' : 'Registration'}</span>
-                            </button>
+                            <div className={styles.eventContent}>
+                              <h3 className={styles.eventTitle}>
+                                {locale === 'ru' ? event.title.ru : event.title.en}
+                              </h3>
+                              {event.location && (
+                                <div className={styles.eventLocation}>
+                                  <MapPin size={14} />
+                                  <span>{locale === 'ru' ? event.location.ru : event.location.en}</span>
+                                </div>
+                              )}
+                              {event.description && (
+                                <p className={styles.eventDescription}>
+                                  {locale === 'ru' ? event.description.ru : event.description.en}
+                                </p>
+                              )}
+                              <Link href={`/event/${event.id}`} className={styles.eventButton}>
+                                <span>{locale === 'ru' ? 'Регистрация' : 'Registration'}</span>
+                              </Link>
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className={styles.eventsPlaceholder}>
-                      <p className={styles.placeholderText}>
-                        {locale === 'ru'
-                          ? 'Скоро здесь появятся запланированные события и мероприятия'
-                          : 'Upcoming events and activities will appear here soon'}
-                      </p>
-                    </div>
-                  )}
+                        ))}
+                      </div>
+                    ) : (
+                      <div className={styles.eventsPlaceholder}>
+                        <p className={styles.placeholderText}>
+                          {locale === 'ru'
+                            ? 'Скоро здесь появятся запланированные события и мероприятия'
+                            : 'Upcoming events and activities will appear here soon'}
+                        </p>
+                      </div>
+                    )}
                 </div>
               </div>
             </div>
@@ -206,44 +204,80 @@ const CategoryDetail: NextPage<CategoryDetailProps> = ({ category, categoryEvent
   );
 };
 
-export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
-  const paths: Array<{ params: { categoryId: string }; locale: string }> = [];
+export const getServerSideProps: GetServerSideProps<CategoryDetailProps> = async ({ params }) => {
+  try {
+    const categoryIdParam = params?.categoryId as string;
+    const categoryId = parseInt(categoryIdParam, 10);
+    
+    if (isNaN(categoryId)) {
+      return {
+        notFound: true,
+      };
+    }
+    
+    const { getEventCategoryById, getPublishedEventsByCategoryId } = await import('@/lib/db');
+    
+    // Fetch category
+    const categoryData = getEventCategoryById.get(categoryId) as any;
+    if (!categoryData) {
+      return {
+        notFound: true,
+      };
+    }
+    
+    const category: EventCategory = {
+      id: categoryData.id,
+      title: {
+        ru: categoryData.title_ru,
+        en: categoryData.title_en,
+      },
+      description: {
+        ru: categoryData.description_ru,
+        en: categoryData.description_en,
+      },
+      subcategories: JSON.parse(categoryData.subcategories),
+      ...(categoryData.icon ? { icon: categoryData.icon } : {}),
+    };
 
-  // Generate paths for each locale
-  locales?.forEach((locale) => {
-    eventCategories.forEach((category) => {
-      paths.push({
-        params: { categoryId: category.id },
-        locale,
-      });
-    });
-  });
+    // Fetch only published events for this category
+    const eventsData = getPublishedEventsByCategoryId.all(categoryId) as any[];
+    const categoryEvents: Event[] = eventsData.map((event) => ({
+      id: event.id,
+      categoryId: event.category_id,
+      title: {
+        ru: event.title_ru,
+        en: event.title_en,
+      },
+      ...(event.description_ru || event.description_en ? {
+        description: {
+          ru: event.description_ru || '',
+          en: event.description_en || '',
+        }
+      } : {}),
+      ...(event.date ? { date: event.date } : {}),
+      ...(event.location_ru || event.location_en ? {
+        location: {
+          ru: event.location_ru || '',
+          en: event.location_en || '',
+        }
+      } : {}),
+      ...(event.price !== null && event.price !== undefined ? { price: event.price } : {}),
+      ...(event.duration ? { duration: event.duration } : {}),
+      ...(event.image ? { image: event.image } : {}),
+    }));
 
-  return {
-    paths,
-    fallback: false,
-  };
-};
-
-export const getStaticProps: GetStaticProps<CategoryDetailProps> = async ({ params }) => {
-  const categoryId = params?.categoryId as string;
-  const category = eventCategories.find((cat) => cat.id === categoryId);
-
-  if (!category) {
+    return {
+      props: {
+        category,
+        categoryEvents,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching category data:', error);
     return {
       notFound: true,
     };
   }
-
-  // Filter events for this category
-  const categoryEvents = events.filter((event) => event.categoryId === categoryId);
-
-  return {
-    props: {
-      category,
-      categoryEvents,
-    },
-  };
 };
 
 export default CategoryDetail;

@@ -1,12 +1,13 @@
 import React from 'react';
-import type { NextPage, GetStaticPaths, GetStaticProps } from 'next';
+import type { NextPage, GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ArrowLeft } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
-import { blogPosts } from '@/data/blog';
 import type { BlogPost } from '@/types/blog';
 import styles from './BlogPost.module.css';
 
@@ -116,37 +117,31 @@ const BlogPostPage: NextPage<BlogPostPageProps> = ({ post }) => {
 
             {/* Content */}
             <article className={styles.postContent}>
-              {content.map((item, index) => {
-                if (item.type === 'heading') {
-                  return (
-                    <h2 key={index} className={styles.heading}>
-                      {typeof item.content === 'string' ? item.content : ''}
-                    </h2>
-                  );
-                }
-                
-                if (item.type === 'paragraph') {
-                  return (
-                    <p key={index} className={styles.paragraph}>
-                      {typeof item.content === 'string' ? item.content : ''}
-                    </p>
-                  );
-                }
-                
-                if (item.type === 'list' && Array.isArray(item.content)) {
-                  return (
-                    <ul key={index} className={styles.list}>
-                      {item.content.map((listItem, listIndex) => (
-                        <li key={listIndex} className={styles.listItem}>
-                          {listItem}
-                        </li>
-                      ))}
-                    </ul>
-                  );
-                }
-                
-                return null;
-              })}
+              <ReactMarkdown 
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  h1: ({node, ...props}) => <h1 className={styles.heading1} {...props} />,
+                  h2: ({node, ...props}) => <h2 className={styles.heading2} {...props} />,
+                  h3: ({node, ...props}) => <h3 className={styles.heading3} {...props} />,
+                  p: ({node, ...props}) => <p className={styles.paragraph} {...props} />,
+                  ul: ({node, ...props}) => <ul className={styles.list} {...props} />,
+                  ol: ({node, ...props}) => <ol className={styles.orderedList} {...props} />,
+                  li: ({node, ...props}) => <li className={styles.listItem} {...props} />,
+                  strong: ({node, ...props}) => <strong className={styles.strong} {...props} />,
+                  em: ({node, ...props}) => <em className={styles.em} {...props} />,
+                  code: ({node, inline, ...props}: any) => 
+                    inline ? (
+                      <code className={styles.inlineCode} {...props} />
+                    ) : (
+                      <code className={styles.codeBlock} {...props} />
+                    ),
+                  pre: ({node, ...props}) => <pre className={styles.pre} {...props} />,
+                  blockquote: ({node, ...props}) => <blockquote className={styles.blockquote} {...props} />,
+                  br: ({node, ...props}) => <br className={styles.lineBreak} {...props} />,
+                }}
+              >
+                {content}
+              </ReactMarkdown>
             </article>
             </div>
           </div>
@@ -157,40 +152,68 @@ const BlogPostPage: NextPage<BlogPostPageProps> = ({ post }) => {
   );
 };
 
-export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
-  const paths: Array<{ params: { id: string }; locale?: string }> = [];
-
-  // Генеруємо шляхи для кожної статті та кожної локалі
-  blogPosts.forEach((post) => {
-    locales?.forEach((locale) => {
-      paths.push({
-        params: { id: post.id.toString() },
-        locale,
-      });
-    });
-  });
-
-  return {
-    paths,
-    fallback: false,
-  };
-};
-
-export const getStaticProps: GetStaticProps<BlogPostPageProps> = async ({ params, locale }) => {
+export const getServerSideProps: GetServerSideProps<BlogPostPageProps> = async ({ params }) => {
   const id = params?.id;
-  const post = blogPosts.find((p) => p.id.toString() === id);
 
-  if (!post) {
+  if (!id || typeof id !== 'string') {
     return {
       notFound: true,
     };
   }
 
-  return {
-    props: {
-      post,
-    },
-  };
+  try {
+    // Прямий доступ до бази даних на сервері
+    const { getBlogById } = await import('@/lib/db');
+    const blogId = parseInt(id, 10);
+
+    if (isNaN(blogId)) {
+      return {
+        notFound: true,
+      };
+    }
+
+    const blog = getBlogById.get(blogId) as any;
+
+    if (!blog) {
+      return {
+        notFound: true,
+      };
+    }
+
+    // Перевіряємо, чи стаття опублікована
+    if (blog.published !== 1) {
+      return {
+        notFound: true,
+      };
+    }
+
+    // Конвертуємо дані з БД в формат BlogPost
+    const post: BlogPost = {
+      id: blog.id,
+      image: blog.image,
+      date: blog.date,
+      title: {
+        ru: blog.title_ru,
+        en: blog.title_en,
+      },
+      content: {
+        ru: blog.content_ru,
+        en: blog.content_en,
+      },
+      published: blog.published === 1,
+    };
+
+    return {
+      props: {
+        post,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching blog post:', error);
+    return {
+      notFound: true,
+    };
+  }
 };
 
 export default BlogPostPage;

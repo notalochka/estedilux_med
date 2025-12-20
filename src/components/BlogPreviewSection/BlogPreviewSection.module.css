@@ -23,6 +23,12 @@
   gap: 2rem;
 }
 
+.blogCardLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 .blogCard {
   display: flex;
   flex-direction: column;
@@ -32,11 +38,47 @@
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
+  height: 100%;
 }
 
-.blogCard:hover {
+.blogCardLink:hover .blogCard {
   transform: translateY(-4px);
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.blogCardSkeleton {
+  display: flex;
+  flex-direction: column;
+  background: #c4dceb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  height: 100%;
+}
+
+.imageSkeleton {
+  width: 100%;
+  padding-bottom: 66.67%;
+  background: linear-gradient(90deg, #d1d5db 25%, #e5e7eb 50%, #d1d5db 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s ease-in-out infinite;
+}
+
+.titleSkeleton {
+  height: 1.5rem;
+  margin: 1.5rem;
+  background: linear-gradient(90deg, #d1d5db 25%, #e5e7eb 50%, #d1d5db 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 .imageWrapper {
@@ -53,7 +95,7 @@
   transition: transform 0.3s ease;
 }
 
-.blogCard:hover .blogImage {
+.blogCardLink:hover .blogImage {
   transform: scale(1.05);
 }
 

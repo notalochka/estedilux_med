@@ -1,6 +1,9 @@
 import { BlogPost } from '@/types/blog';
+import { convertToMarkdown } from '@/lib/blogConverter';
+import type { BlogPostContentItem } from '@/types/blog';
 
-export const blogPosts: BlogPost[] = [
+// Старі дані для конвертації
+const oldBlogData = [
   {
     id: 1,
     image: '/blog/1.jpg',
@@ -39,7 +42,7 @@ export const blogPosts: BlogPost[] = [
           type: 'paragraph',
           content: '🔹Обучение - это не расход, а инвестиция. Каждый вложенный час и каждая новая техника возвращаются в виде большего потока пациентов, высокого чека и уверенности в себе и безопасности для пациентов ❤️',
         },
-      ],
+      ] as BlogPostContentItem[],
       en: [
         {
           type: 'paragraph',
@@ -69,7 +72,7 @@ export const blogPosts: BlogPost[] = [
           type: 'paragraph',
           content: '🔹Learning is not an expense, but an investment. Every hour invested and every new technique returns in the form of a larger flow of patients, a higher check, and confidence in yourself and safety for patients ❤️',
         },
-      ],
+      ] as BlogPostContentItem[],
     },
   },
   {
@@ -126,7 +129,7 @@ export const blogPosts: BlogPost[] = [
           type: 'paragraph',
           content: 'Ждем на стажировке в Дубай от Estedilux Med 🎓',
         },
-      ],
+      ] as BlogPostContentItem[],
       en: [
         {
           type: 'heading',
@@ -172,10 +175,9 @@ export const blogPosts: BlogPost[] = [
           type: 'paragraph',
           content: 'We are waiting for you at the internship in Dubai from Estedilux Med 🎓',
         },
-      ],
+      ] as BlogPostContentItem[],
     },
   },
-  
   {
     id: 3,
     image: '/blog/3.jpg',
@@ -190,13 +192,13 @@ export const blogPosts: BlogPost[] = [
           type: 'paragraph',
           content: 'Текст статьи о заработке на стажировке в Дубай с Estedilux Med',
         },
-      ],
+      ] as BlogPostContentItem[],
       en: [
         {
           type: 'paragraph',
           content: 'Text of the article about earning on an internship in Dubai with Estedilux Med',
         },
-      ],
+      ] as BlogPostContentItem[],
     },
   },
   {
@@ -213,106 +215,25 @@ export const blogPosts: BlogPost[] = [
           type: 'paragraph',
           content: 'Текст статьи о заработке на стажировке в Дубай с Estedilux Med',
         },
-      ],
+      ] as BlogPostContentItem[],
       en: [
         {
           type: 'paragraph',
           content: 'Text of the article about earning on an internship in Dubai with Estedilux Med',
         },
-      ],
-    },
-  },
-  {
-    id: 5,
-    image: '/blog/2.jpg',
-    date: '2025-10-10',
-    title: {
-      ru: '5️⃣ Как заработать на стажировке в Дубай с Estedilux Med? 💰🚀',
-      en: '5️⃣ How to earn on an internship in Dubai with Estedilux Med? 💰🚀',
-    },
-    content: {
-      ru: [
-        {
-          type: 'paragraph',
-          content: 'Текст статьи о заработке на стажировке в Дубай с Estedilux Med',
-        },
-      ],
-      en: [
-        {
-          type: 'paragraph',
-          content: 'Text of the article about earning on an internship in Dubai with Estedilux Med',
-        },
-      ],
-    },
-  },
-  {
-    id: 6,
-    image: '/blog/2.jpg',
-    date: '2025-10-10',
-    title: {
-      ru: '6️⃣ Как заработать на стажировке в Дубай с Estedilux Med? 💰🚀',
-      en: '6️⃣ How to earn on an internship in Dubai with Estedilux Med? 💰🚀',
-    },
-    content: {
-      ru: [
-        {
-          type: 'paragraph',
-          content: 'Текст статьи о заработке на стажировке в Дубай с Estedilux Med',
-        },
-      ],
-      en: [
-        {
-          type: 'paragraph',
-          content: 'Text of the article about earning on an internship in Dubai with Estedilux Med',
-        },
-      ],
-    },
-  },
-  {
-    id: 7,
-    image: '/blog/2.jpg',
-    date: '2025-10-10',
-    title: {
-      ru: '7️⃣ Как заработать на стажировке в Дубай с Estedilux Med? 💰🚀',
-      en: '7️⃣ How to earn on an internship in Dubai with Estedilux Med? 💰🚀',
-    },
-    content: {
-      ru: [
-        {
-          type: 'paragraph',
-          content: 'Текст статьи о заработке на стажировке в Дубай с Estedilux Med',
-        },
-      ],
-      en: [
-        {
-          type: 'paragraph',
-          content: 'Text of the article about earning on an internship in Dubai with Estedilux Med',
-        },
-      ],
-    },
-  },
-  {
-    id: 8,
-    image: '/blog/2.jpg',
-    date: '2025-10-10',
-    title: {
-      ru: '8️⃣ Как заработать на стажировке в Дубай с Estedilux Med? 💰🚀',
-      en: '8️⃣ How to earn on an internship in Dubai with Estedilux Med? 💰🚀',
-    },
-    content: {
-      ru: [
-        {
-          type: 'paragraph',
-          content: 'Текст статьи о заработке на стажировке в Дубай с Estedilux Med',
-        },
-      ],
-      en: [
-        {
-          type: 'paragraph',
-          content: 'Text of the article about earning on an internship in Dubai with Estedilux Med',
-        },
-      ],
+      ] as BlogPostContentItem[],
     },
   },
 ];
 
+// Конвертуємо старі дані в Markdown формат
+export const blogPosts: BlogPost[] = oldBlogData.map((post) => ({
+  id: post.id,
+  image: post.image,
+  date: post.date,
+  title: post.title,
+  content: {
+    ru: convertToMarkdown(post.content.ru),
+    en: convertToMarkdown(post.content.en),
+  },
+}));

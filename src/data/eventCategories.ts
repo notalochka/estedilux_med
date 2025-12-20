@@ -2,7 +2,7 @@ import { EventCategory } from '@/types/events';
 
 export const eventCategories: EventCategory[] = [
   {
-    id: 'aesthetic-medicine',
+    id: 1,
     title: {
       ru: 'Эстетическая медицина и дерматология',
       en: 'Aesthetic Medicine and Dermatology',
@@ -79,7 +79,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'anatomy-cadaver',
+    id: 2,
     title: {
       ru: 'Анатомия и Cadaver программы',
       en: 'Anatomy and Cadaver Programs',
@@ -98,7 +98,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'gynecology',
+    id: 3,
     title: {
       ru: 'Гинекология и репродуктология',
       en: 'Gynecology and Reproductive Medicine',
@@ -119,7 +119,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'dentistry',
+    id: 4,
     title: {
       ru: 'Стоматология и челюстно-лицевая хирургия',
       en: 'Dentistry and Maxillofacial Surgery',
@@ -139,7 +139,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'plastic-surgery',
+    id: 5,
     title: {
       ru: 'Пластическая и реконструктивная хирургия',
       en: 'Plastic and Reconstructive Surgery',
@@ -160,7 +160,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'general-surgery',
+    id: 6,
     title: {
       ru: 'Общая и малоинвазивная хирургия',
       en: 'General and Minimally Invasive Surgery',
@@ -178,7 +178,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'orthopedics',
+    id: 7,
     title: {
       ru: 'Ортопедия, травматология и спортивная медицина',
       en: 'Orthopedics, Traumatology and Sports Medicine',
@@ -196,7 +196,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'neurology',
+    id: 8,
     title: {
       ru: 'Неврология и нейрохирургия',
       en: 'Neurology and Neurosurgery',
@@ -213,7 +213,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'cardiology',
+    id: 9,
     title: {
       ru: 'Кардиология и кардиохирургия',
       en: 'Cardiology and Cardiac Surgery',
@@ -231,7 +231,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'therapeutics',
+    id: 10,
     title: {
       ru: 'Терапевтические направления',
       en: 'Therapeutic Specialties',
@@ -249,7 +249,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'radiology',
+    id: 11,
     title: {
       ru: 'Радиология и УЗ-диагностика',
       en: 'Radiology and Ultrasound Diagnostics',
@@ -267,7 +267,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'pediatrics',
+    id: 12,
     title: {
       ru: 'Педиатрия',
       en: 'Pediatrics',
@@ -284,7 +284,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'urology',
+    id: 13,
     title: {
       ru: 'Урология',
       en: 'Urology',
@@ -300,7 +300,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'oncology',
+    id: 14,
     title: {
       ru: 'Онкология',
       en: 'Oncology',
@@ -317,7 +317,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'ophthalmology',
+    id: 15,
     title: {
       ru: 'Офтальмология',
       en: 'Ophthalmology',
@@ -335,7 +335,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'infectious-diseases',
+    id: 16,
     title: {
       ru: 'Инфекционные заболевания',
       en: 'Infectious Diseases',
@@ -350,7 +350,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'laboratory-genetics',
+    id: 17,
     title: {
       ru: 'Лабораторная медицина и генетика',
       en: 'Laboratory Medicine and Genetics',
@@ -367,7 +367,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'psychiatry',
+    id: 18,
     title: {
       ru: 'Психиатрия и психотерапия',
       en: 'Psychiatry and Psychotherapy',
@@ -383,7 +383,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'palliative',
+    id: 19,
     title: {
       ru: 'Паллиативная медицина',
       en: 'Palliative Medicine',
@@ -398,7 +398,7 @@ export const eventCategories: EventCategory[] = [
     ],
   },
   {
-    id: 'special-programs',
+    id: 20,
     title: {
       ru: 'Специальные программы Estedilux Med',
       en: 'Special Estedilux Med Programs',

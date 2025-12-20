@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -7,7 +7,6 @@ import { useRouter } from 'next/router';
 import { Calendar, Search } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
-import { blogPosts } from '@/data/blog';
 import type { BlogPost } from '@/types/blog';
 import styles from './Blog.module.css';
 
@@ -16,6 +15,30 @@ const Blog: NextPage = () => {
   const { locale } = router;
   const [displayedCount, setDisplayedCount] = useState(6);
   const [searchQuery, setSearchQuery] = useState('');
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchBlogPosts();
+  }, []);
+
+  const fetchBlogPosts = async () => {
+    try {
+      // Використовуємо fetch без credentials, щоб гарантувати публічний доступ
+      const response = await fetch('/api/blog', {
+        credentials: 'omit', // Не передаємо cookies
+      });
+      if (!response.ok) throw new Error('Failed to fetch blog posts');
+      const data = await response.json();
+      // Додаткова фільтрація на клієнті (на випадок, якщо API повернув неопубліковані)
+      const publishedPosts = data.filter((post: BlogPost) => post.published !== false);
+      setBlogPosts(publishedPosts);
+    } catch (error) {
+      console.error('Error fetching blog posts:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const scrollToBlogContent = () => {
     const element = document.getElementById('blog-content-section');
@@ -38,21 +61,8 @@ const Blog: NextPage = () => {
         // Перевіряємо назву
         if (title.includes(query)) return true;
         
-        // Перевіряємо контент (всі параграфи та заголовки)
-        const contentText = content
-          .map(item => {
-            if (item.type === 'paragraph' && typeof item.content === 'string') {
-              return item.content.toLowerCase();
-            }
-            if (item.type === 'heading' && typeof item.content === 'string') {
-              return item.content.toLowerCase();
-            }
-            if (item.type === 'list' && Array.isArray(item.content)) {
-              return item.content.join(' ').toLowerCase();
-            }
-            return '';
-          })
-          .join(' ');
+        // Перевіряємо контент (Markdown текст)
+        const contentText = content.toLowerCase();
         
         return contentText.includes(query);
       });
@@ -90,13 +100,16 @@ const Blog: NextPage = () => {
 
   const getPreviewText = (post: BlogPost): string => {
     const content = locale === 'ru' ? post.content.ru : post.content.en;
-    const firstParagraph = content.find(item => item.type === 'paragraph');
-    if (firstParagraph && typeof firstParagraph.content === 'string') {
-      return firstParagraph.content.length > 150 
-        ? firstParagraph.content.substring(0, 150) + '...'
-        : firstParagraph.content;
-    }
-    return '';
+    // Видаляємо Markdown синтаксис для прев'ю
+    const plainText = content
+      .replace(/^#+\s+/gm, '') // Видаляємо заголовки
+      .replace(/^\*\s+/gm, '') // Видаляємо маркери списків
+      .replace(/\n+/g, ' ') // Замінюємо переноси на пробіли
+      .trim();
+    
+    return plainText.length > 150 
+      ? plainText.substring(0, 150) + '...'
+      : plainText;
   };
 
   return (
@@ -164,7 +177,11 @@ const Blog: NextPage = () => {
                 </div>
               </div>
 
-              {filteredAndSortedPosts.length === 0 ? (
+              {isLoading ? (
+                <p className={styles.emptyMessage}>
+                  {locale === 'ru' ? 'Загрузка...' : 'Loading...'}
+                </p>
+              ) : filteredAndSortedPosts.length === 0 ? (
                 <p className={styles.emptyMessage}>
                   {searchQuery.trim()
                     ? (locale === 'ru'
