@@ -24,10 +24,10 @@ const SolutionsSection: React.FC = () => {
     },
     {
       icon: DollarSign,
-      title: locale === 'ru' ? 'Доступные цены' : 'Reasonable Prices',
+      title: locale === 'ru' ? 'Формирование стоимости программ' : 'Forming the cost of programs',
       description: locale === 'ru'
-        ? 'Стоимость программ формируется на основе реальных затрат на организацию обучения, стажировок и мероприятий. Мы предоставляем детальную информацию о составе услуг.'
-        : 'Program costs are based on actual expenses for organizing training, internships and events. We provide detailed information about service components.',
+        ? 'Стоимость образовательных программ Estedilux Med определяется совокупностью организационных и образовательных факторов, включая формат обучения, уровень подготовки, объём практической части, а также специфику проведения стажировок и профессиональных медицинских мероприятий.'
+        : 'The cost of educational programs in Estedilux Med is determined by the combined organizational and educational factors, including the training format, level of preparation, volume of practical part, as well as the specifics of conducting internships and professional medical events.',
     },
   ];
 

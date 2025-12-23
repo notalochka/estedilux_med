@@ -17,6 +17,8 @@ interface RegistrationFormData {
   name: string;
   phone: string;
   email: string;
+  specialty?: string;
+  paymentType: 'prepayment' | 'full';
   message?: string;
 }
 
@@ -28,9 +30,12 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
     name: '',
     phone: '',
     email: '',
+    specialty: '',
+    paymentType: 'prepayment',
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string>('');
 
   // Блокування прокрутки при відкритті модального вікна
   useEffect(() => {
@@ -57,25 +62,87 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handlePaymentTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({ ...prev, paymentType: e.target.value as 'prepayment' | 'full' }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError('');
     
-    // Тут буде логіка відправки форми
-    // Наприклад, API запит або перенаправлення на платіжний шлюз
-    
-    setTimeout(() => {
+    if (!event.price) {
+      setError(locale === 'ru' ? 'Событие не имеет цены' : 'Event has no price');
       setIsSubmitting(false);
-      alert(locale === 'ru' ? 'Форма отправлена! Переход на страницу оплаты...' : 'Form submitted! Redirecting to payment...');
-      setIsModalOpen(false);
-      // Тут можна додати логіку переходу на оплату
-    }, 1000);
+      return;
+    }
+
+    try {
+      // Розраховуємо суму залежно від типу оплати
+      const amount = formData.paymentType === 'prepayment' 
+        ? event.price * 0.3  // 30% передоплата
+        : event.price;        // 100% повна оплата
+
+      // Створюємо платіж
+      const response = await fetch('/api/payment/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          eventId: event.id,
+          eventTitle: title,
+          price: amount,
+          userName: formData.name,
+          userPhone: formData.phone,
+          userEmail: formData.email,
+          specialty: formData.specialty,
+          paymentType: formData.paymentType,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || (locale === 'ru' ? 'Ошибка создания платежа' : 'Payment creation error'));
+      }
+
+      // Створюємо форму для WayForPay
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'https://secure.wayforpay.com/pay';
+      form.target = '_self';
+
+      // Додаємо всі поля з даних WayForPay
+      Object.keys(result.data).forEach((key) => {
+        const value = result.data[key];
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        
+        // WayForPay очікує масиви як рядки через крапку з комою
+        if (Array.isArray(value)) {
+          input.value = value.join(';');
+        } else {
+          input.value = String(value);
+        }
+        
+        form.appendChild(input);
+      });
+
+      document.body.appendChild(form);
+      form.submit();
+    } catch (err: any) {
+      console.error('Payment error:', err);
+      setError(err.message || (locale === 'ru' ? 'Ошибка при создании платежа. Попробуйте позже.' : 'Error creating payment. Please try again later.'));
+      setIsSubmitting(false);
+    }
   };
 
   const title = locale === 'ru' ? event.title.ru : event.title.en;
@@ -321,6 +388,71 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                 </div>
 
                 <div className={styles.formGroup}>
+                  <label htmlFor="reg-specialty" className={styles.formLabel}>
+                    {locale === 'ru' ? 'Ваша специальность' : 'Your specialty'}
+                  </label>
+                  <input
+                    type="text"
+                    id="reg-specialty"
+                    name="specialty"
+                    value={formData.specialty || ''}
+                    onChange={handleChange}
+                    placeholder={locale === 'ru' ? 'Введите вашу специальность (необязательно)' : 'Enter your specialty (optional)'}
+                    className={styles.formInput}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>
+                    {locale === 'ru' ? 'Тип оплаты' : 'Payment Type'} *
+                  </label>
+                  <div className={styles.radioGroup}>
+                    <label className={styles.radioLabel}>
+                      <input
+                        type="radio"
+                        name="paymentType"
+                        value="prepayment"
+                        checked={formData.paymentType === 'prepayment'}
+                        onChange={handlePaymentTypeChange}
+                        className={styles.radioInput}
+                      />
+                      <span>
+                        {locale === 'ru' ? 'Предоплата (30%)' : 'Prepayment (30%)'}
+                        {event.price && (
+                          <span className={styles.priceHint}>
+                            {' - '}
+                            {new Intl.NumberFormat(locale === 'ru' ? 'ru-RU' : 'en-US', {
+                              style: 'currency',
+                              currency: 'USD',
+                              minimumFractionDigits: 2,
+                            }).format(event.price * 0.3)}
+                          </span>
+                        )}
+                      </span>
+                    </label>
+                    <label className={styles.radioLabel}>
+                      <input
+                        type="radio"
+                        name="paymentType"
+                        value="full"
+                        checked={formData.paymentType === 'full'}
+                        onChange={handlePaymentTypeChange}
+                        className={styles.radioInput}
+                      />
+                      <span>
+                        {locale === 'ru' ? 'Полная оплата' : 'Full Payment'}
+                        {event.price && (
+                          <span className={styles.priceHint}>
+                            {' - '}
+                            {formatPrice(event.price)}
+                          </span>
+                        )}
+                      </span>
+                    </label>
+                  </div>
+                </div>
+
+                <div className={styles.formGroup}>
                   <label htmlFor="reg-message" className={styles.formLabel}>
                     {locale === 'ru' ? 'Дополнительная информация' : 'Additional Information'}
                   </label>
@@ -334,6 +466,12 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                     className={styles.formTextarea}
                   />
                 </div>
+
+                {error && (
+                  <div className={styles.errorMessage}>
+                    {error}
+                  </div>
+                )}
 
                 <div className={styles.formActions}>
                   <button

@@ -103,6 +103,34 @@ export function initDatabase() {
     CREATE INDEX IF NOT EXISTS idx_event_date ON events(date)
   `);
 
+  // Таблиця для реєстрацій на події з оплатою
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS event_registrations (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      event_id INTEGER NOT NULL,
+      user_name TEXT NOT NULL,
+      user_email TEXT NOT NULL,
+      user_phone TEXT NOT NULL,
+      specialty TEXT,
+      payment_type TEXT NOT NULL,
+      amount REAL NOT NULL,
+      order_reference TEXT UNIQUE NOT NULL,
+      transaction_id TEXT,
+      status TEXT DEFAULT 'pending',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      paid_at DATETIME,
+      FOREIGN KEY (event_id) REFERENCES events(id)
+    )
+  `);
+
+  db.exec(`
+    CREATE INDEX IF NOT EXISTS idx_registration_event ON event_registrations(event_id)
+  `);
+
+  db.exec(`
+    CREATE INDEX IF NOT EXISTS idx_registration_order_ref ON event_registrations(order_reference)
+  `);
+
   const adminCount = db.prepare('SELECT COUNT(*) as count FROM users').get() as { count: number };
   
   if (adminCount.count === 0) {
@@ -220,6 +248,38 @@ export const updateEvent = db.prepare(`
 
 export const deleteEvent = db.prepare(`
   DELETE FROM events WHERE id = ?
+`);
+
+// Prepared statements для реєстрацій на події
+export const createEventRegistration = db.prepare(`
+  INSERT INTO event_registrations (
+    event_id, user_name, user_email, user_phone, specialty, 
+    payment_type, amount, order_reference, status
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+`);
+
+export const getEventRegistrationByOrderReference = db.prepare(`
+  SELECT * FROM event_registrations WHERE order_reference = ?
+`);
+
+export const updateEventRegistrationStatus = db.prepare(`
+  UPDATE event_registrations 
+  SET status = ?, transaction_id = ?, paid_at = CURRENT_TIMESTAMP
+  WHERE order_reference = ?
+`);
+
+export const updateEventRegistrationStatusFailed = db.prepare(`
+  UPDATE event_registrations 
+  SET status = ?, transaction_id = ?
+  WHERE order_reference = ?
+`);
+
+export const getAllEventRegistrations = db.prepare(`
+  SELECT * FROM event_registrations ORDER BY created_at DESC
+`);
+
+export const getEventRegistrationsByEventId = db.prepare(`
+  SELECT * FROM event_registrations WHERE event_id = ? ORDER BY created_at DESC
 `);
 
 export default db;

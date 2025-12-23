@@ -95,7 +95,8 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
               {/* Cards Grid */}
               <div className={styles.categoriesGrid}>
                 {categories.map((category, index) => {
-                  const categoryImage = `/categories/photo${(index % 7) + 1}.jpg`;
+                  // Використовуємо icon з бази даних, якщо він є, інакше fallback на старий шлях
+                  const categoryImage = category.icon || `/categories/photo${(index % 7) + 1}.jpg`;
                   const displaySubcategories = category.subcategories.slice(0, 4);
                   
                   return (
