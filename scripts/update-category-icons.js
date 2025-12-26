@@ -94,3 +94,4 @@ updateCategoryIcons()
     process.exit(1);
   });
 
+

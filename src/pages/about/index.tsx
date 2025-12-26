@@ -183,6 +183,33 @@ const About: NextPage = () => {
               </div>
             </div>
           </section>
+
+
+          {/* Partners Section */}
+          <section className={styles.aboutTextSection}>
+            <div className={styles.container}>
+              <h2 className={styles.partnersTitle}>
+                {locale === 'ru' ? 'Наши партнеры' : 'Our Partners'}
+              </h2>
+              <div className={styles.partnersGrid}>
+                {[1, 2, 3, 4].map((num) => (
+                  <div key={num} className={styles.partnerCard}>
+                    <div className={styles.partnerImageWrapper}>
+                      <Image
+                        src={`/about/partner${num}.jpg`}
+                        alt={`Partner ${num}`}
+                        fill
+                        className={styles.partnerImage}
+                        quality={90}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+
           <section className={styles.aboutTextSection}>
             <div className={styles.aboutTextContainer}>
               <div className={styles.aboutTextContent}>

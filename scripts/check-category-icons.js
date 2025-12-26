@@ -14,3 +14,4 @@ categories.forEach(cat => {
 
 db.close();
 
+
