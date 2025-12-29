@@ -53,19 +53,44 @@
 .logoLink {
   display: flex;
   align-items: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
-.logo {
-  height: 5rem;
-  width: auto;
-  object-fit: contain;
+.logoLink:hover {
+  text-decoration: none;
+}
+
+.logoText {
+  font-family: var(--font-handwritten);
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.9) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  font-style: normal;
+}
+
+.logoLink:hover .logoText {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .description {
   max-width: 28rem;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
+  font-family: var(--font-body);
   line-height: 1.75;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 400;
 }
 
 .ctaButton {
@@ -131,11 +156,13 @@
 }
 
 .sectionTitle {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
+  font-family: var(--font-heading);
   text-transform: uppercase;
-  letter-spacing: 0.35em;
-  color: rgba(255, 255, 255, 0.5);
-  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
 .navGrid {
@@ -145,14 +172,17 @@
 }
 
 .navLink {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.9375rem;
+  font-family: var(--font-body);
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color 0.3s, transform 0.2s;
+  font-weight: 400;
 }
 
 .navLink:hover {
   color: white;
+  transform: translateX(4px);
 }
 
 .contactSection {
@@ -176,14 +206,17 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9375rem;
+  font-family: var(--font-body);
+  color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color 0.3s, transform 0.2s;
+  font-weight: 400;
 }
 
 .contactLink:hover {
   color: white;
+  transform: translateX(4px);
 }
 
 .contactIcon {
@@ -210,19 +243,31 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--font-body);
 }
 
 .developedLink {
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 1);
   text-decoration: none;
-  transition: color 0.3s;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .developedLink:hover {
   color: white;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 1024px) {
@@ -247,6 +292,10 @@
 
   .container {
     padding: 0 1rem;
+  }
+
+  .logoText {
+    font-size: 1.5rem;
   }
 
   .grid {

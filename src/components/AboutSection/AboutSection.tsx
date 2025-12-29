@@ -3,17 +3,23 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ArrowRight } from 'lucide-react';
+import { useAnimation } from '@/lib/useAnimation';
 import styles from './AboutSection.module.css';
 
 const AboutSection: React.FC = () => {
   const router = useRouter();
   const { locale } = router;
+  const { ref: textRef, isVisible: textVisible } = useAnimation({ threshold: 0.1 });
+  const { ref: imageRef, isVisible: imageVisible } = useAnimation({ threshold: 0.1 });
 
   return (
     <section className={styles.aboutSection}>
       <div className={styles.container}>
         <div className={styles.content}>
-          <div className={styles.textWrapper}>
+          <div 
+            ref={textRef as React.RefObject<HTMLDivElement>}
+            className={`${styles.textWrapper} ${textVisible ? styles.animateSlideInLeft : ''}`}
+          >
             <div className={styles.headerContent}>
               <h2 className={styles.sectionLabel}>
                 {locale === 'ru' ? 'ПРО ESTEDILUX MED' : 'ABOUT ESTEDILUX MED'}
@@ -45,7 +51,10 @@ const AboutSection: React.FC = () => {
             </div>
           </div>
           
-          <div className={styles.imageContent}>
+          <div 
+            ref={imageRef as React.RefObject<HTMLDivElement>}
+            className={`${styles.imageContent} ${imageVisible ? styles.animateSlideInRight : ''}`}
+          >
             <div className={styles.imageWrapper}>
               <Image
                 src="/about_main.jpg"

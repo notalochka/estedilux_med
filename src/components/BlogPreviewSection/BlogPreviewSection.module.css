@@ -1,6 +1,20 @@
 .blogSection {
-  padding: 1rem 0 5rem 0;
-  background: linear-gradient(to bottom, #b7d9ed 0%, #ffffff 100%); ;
+  padding: 8rem 0;
+  background: 
+    linear-gradient(to bottom, #e8f4f8 0%, #ffffff 100%),
+    radial-gradient(ellipse at top right, rgba(30, 118, 170, 0.04) 0%, transparent 50%);
+  position: relative;
+  overflow: hidden;
+}
+
+.blogSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(30, 118, 170, 0.3), transparent);
 }
 
 .container {
@@ -10,11 +24,46 @@
 }
 
 .sectionTitle {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #003C64;
-  margin: 0 0 3rem 0;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  font-family: var(--font-heading);
+  background: linear-gradient(135deg, #003C64 0%, #1e76aa 50%, #459bcd 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 4rem 0;
   text-align: center;
+  opacity: 0;
+  letter-spacing: -0.02em;
+  animation: gradientShift 5s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animateFadeInUp {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .blogGrid {
@@ -32,18 +81,45 @@
 .blogCard {
   display: flex;
   flex-direction: column;
-  background: #c4dceb;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  border-radius: 0.5rem;
+  background: linear-gradient(135deg, #c4dceb 0%, #b7d9ed 100%);
+  box-shadow: 
+    0 10px 25px -5px rgba(0, 0, 0, 0.2),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border-radius: 1rem;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   height: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+}
+
+.blogCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #459bcd, #1e76aa, #459bcd);
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  animation: shimmer 3s infinite;
+}
+
+.blogCardLink:hover .blogCard::before {
+  opacity: 1;
 }
 
 .blogCardLink:hover .blogCard {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 
+    0 20px 40px -10px rgba(0, 0, 0, 0.3),
+    0 10px 20px -5px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .blogCardSkeleton {
@@ -102,6 +178,7 @@
 .blogTitle {
   font-size: 1.125rem;
   font-weight: 600;
+  font-family: var(--font-heading);
   color: #1f2937;
   margin: 1.5rem 1.5rem 1.5rem 1.5rem;
   line-height: 1.5;

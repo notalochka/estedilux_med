@@ -36,8 +36,10 @@
   --spacing-3xl: 4rem;
   
   /* Шрифти */
-  --font-sans: Urbanist, sans-serif;
-  --font-condensed: 'IBM Plex Sans Condensed', sans-serif;
+  --font-heading: 'Unbounded', sans-serif;
+  --font-body: 'Poppins', sans-serif;
+  --font-sans: 'Poppins', sans-serif;
+  --font-handwritten: 'Caveat', cursive;
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;

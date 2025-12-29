@@ -1,20 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Menu, X } from 'lucide-react';
+import { X, Globe, ChevronDown } from 'lucide-react';
 import styles from './Header.module.css';
 
 const Header: React.FC = () => {
   const router = useRouter();
   const { locale, locales, asPath } = router;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [savedScrollPosition, setSavedScrollPosition] = useState<number | null>(null);
+  const langDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
+      
+      // Calculate scroll progress
+      const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = (window.scrollY / windowHeight) * 100;
+      setScrollProgress(Math.min(100, Math.max(0, scrolled)));
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -41,7 +48,25 @@ const Header: React.FC = () => {
     router.push(asPath, asPath, { locale: newLocale, scroll: false });
     
     setIsMenuOpen(false);
+    setIsLangDropdownOpen(false);
   };
+
+  // Закриваємо dropdown при кліку поза ним
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (langDropdownRef.current && !langDropdownRef.current.contains(event.target as Node)) {
+        setIsLangDropdownOpen(false);
+      }
+    };
+
+    if (isLangDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isLangDropdownOpen]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -101,18 +126,16 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className={`${styles.header} ${isScrolled ? styles.scrolled : styles.transparent}`}>
+    <>
+      <div 
+        className={styles.scrollProgress}
+        style={{ width: `${scrollProgress}%` }}
+      />
+      <header className={`${styles.header} ${isScrolled ? styles.scrolled : styles.transparent}`}>
       <div className={styles.container}>
         <div className={styles.logo}>
-          <Link href="/" onClick={closeMenu}>
-            <Image
-              src="/logo.jpg"
-              alt="Estedilux Med"
-              width={160}
-              height={48}
-              priority
-              className={styles.logoImage}
-            />
+          <Link href="/" onClick={closeMenu} className={styles.logoLink}>
+            <span className={styles.logoText}>Estedilux Med</span>
           </Link>
         </div>
 
@@ -136,17 +159,43 @@ const Header: React.FC = () => {
         </nav>
 
         {/* Десктоп перемикач мови */}
-        <div className={styles.languageSwitcher}>
-          {locales?.map((loc) => (
-            <button
-              key={loc}
-              onClick={() => changeLanguage(loc)}
-              className={`${styles.langButton} ${locale === loc ? styles.active : ''}`}
-              aria-label={`Switch to ${loc}`}
-            >
-              {loc.toUpperCase()}
-            </button>
-          ))}
+        <div 
+          ref={langDropdownRef}
+          className={styles.languageSwitcher}
+        >
+          <button
+            onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+            className={styles.langTrigger}
+            aria-label="Change language"
+            aria-expanded={isLangDropdownOpen}
+          >
+            <Globe size={20} className={styles.langIcon} />
+            <span className={styles.langCurrent}>{locale?.toUpperCase()}</span>
+            <ChevronDown 
+              size={16} 
+              className={`${styles.langChevron} ${isLangDropdownOpen ? styles.open : ''}`} 
+            />
+          </button>
+          
+          {isLangDropdownOpen && (
+            <div className={styles.langDropdown}>
+              {locales?.map((loc) => (
+                <button
+                  key={loc}
+                  onClick={() => changeLanguage(loc)}
+                  className={`${styles.langOption} ${locale === loc ? styles.active : ''}`}
+                  aria-label={`Switch to ${loc}`}
+                >
+                  <span>{loc.toUpperCase()}</span>
+                  {locale === loc && (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Бургер-меню кнопка */}
@@ -156,7 +205,11 @@ const Header: React.FC = () => {
           className={styles.burgerButton}
           aria-label="Toggle menu"
         >
-          <Menu size={24} className={isScrolled ? styles.burgerIconScrolled : styles.burgerIcon} />
+          <div className={styles.burgerLines}>
+            <span className={`${styles.burgerLine} ${styles.burgerLineTop}`}></span>
+            <span className={`${styles.burgerLine} ${styles.burgerLineMiddle}`}></span>
+            <span className={`${styles.burgerLine} ${styles.burgerLineBottom}`}></span>
+          </div>
         </button>
       </div>
 
@@ -196,21 +249,50 @@ const Header: React.FC = () => {
           </Link>
             </div>
         <div className={styles.mobileLanguageSwitcher}>
-          {locales?.map((loc) => (
+          <div 
+            ref={langDropdownRef}
+            className={styles.languageSwitcher}
+          >
             <button
-              key={loc}
-              onClick={() => changeLanguage(loc)}
-              className={`${styles.mobileLangButton} ${locale === loc ? styles.active : ''}`}
-              aria-label={`Switch to ${loc}`}
+              onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+              className={styles.langTrigger}
+              aria-label="Change language"
+              aria-expanded={isLangDropdownOpen}
             >
-              {loc.toUpperCase()}
+              <Globe size={20} className={styles.langIcon} />
+              <span className={styles.langCurrent}>{locale?.toUpperCase()}</span>
+              <ChevronDown 
+                size={16} 
+                className={`${styles.langChevron} ${isLangDropdownOpen ? styles.open : ''}`} 
+              />
             </button>
-          ))}
+            
+            {isLangDropdownOpen && (
+              <div className={styles.langDropdown}>
+                {locales?.map((loc) => (
+                  <button
+                    key={loc}
+                    onClick={() => changeLanguage(loc)}
+                    className={`${styles.langOption} ${locale === loc ? styles.active : ''}`}
+                    aria-label={`Switch to ${loc}`}
+                  >
+                    <span>{loc.toUpperCase()}</span>
+                    {locale === loc && (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
         </>
       )}
     </header>
+    </>
   );
 };
 

@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useAnimation } from '@/lib/useAnimation';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import styles from './About.module.css';
@@ -11,9 +12,13 @@ import styles from './About.module.css';
 const About: NextPage = () => {
   const router = useRouter();
   const { locale } = router;
+  const { ref: heroRef, isVisible: heroVisible } = useAnimation({ threshold: 0.2 });
+  const { ref: aboutTextRef, isVisible: aboutTextVisible } = useAnimation({ threshold: 0.1 });
+  const { ref: graduatesRef, isVisible: graduatesVisible } = useAnimation({ threshold: 0.1 });
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
   const [loadedVideos, setLoadedVideos] = useState<Set<number>>(new Set());
   const studentImages = Array.from({ length: 9 }, (_, i) => `/students/${i + 1}.jpg`);
@@ -55,11 +60,25 @@ const About: NextPage = () => {
   };
 
   const openVideo = (videoSrc: string) => {
+    const index = videoFiles.indexOf(videoSrc);
+    setCurrentVideoIndex(index >= 0 ? index : 0);
     setSelectedVideo(videoSrc);
   };
 
   const closeVideo = () => {
     setSelectedVideo(null);
+  };
+
+  const nextVideo = () => {
+    const nextIndex = (currentVideoIndex + 1) % videoFiles.length;
+    setCurrentVideoIndex(nextIndex);
+    setSelectedVideo(videoFiles[nextIndex]);
+  };
+
+  const prevVideo = () => {
+    const prevIndex = (currentVideoIndex - 1 + videoFiles.length) % videoFiles.length;
+    setCurrentVideoIndex(prevIndex);
+    setSelectedVideo(videoFiles[prevIndex]);
   };
 
   return (
@@ -97,7 +116,10 @@ const About: NextPage = () => {
             <div className={styles.container}>
               <div className={styles.heroContent}>
                 {/* Заголовок по центру */}
-                <div className={styles.heroTitleWrapper}>
+                <div 
+                  ref={heroRef as React.RefObject<HTMLDivElement>}
+                  className={`${styles.heroTitleWrapper} ${heroVisible ? styles.animateFadeInUp : ''}`}
+                >
                   <h1 className={styles.heroTitle}>
                     {locale === 'ru' ? 'Про компанию' : 'About the Company'}
             </h1>
@@ -114,7 +136,10 @@ const About: NextPage = () => {
           {/* Детальний текст про компанію на білому фоні */}
           <section id="about-text-section" className={styles.aboutTextSection}>
             <div className={styles.aboutTextContainer}>
-              <div className={styles.aboutTextContent}>
+              <div 
+                ref={aboutTextRef as React.RefObject<HTMLDivElement>}
+                className={`${styles.aboutTextContent} ${aboutTextVisible ? styles.animateFadeInUp : ''}`}
+              >
                 <h2 className={styles.aboutTextTitle}>
                   {locale === 'ru' ? 'Про компанию Estedilux Med' : 'About Estedilux Med Company'}
                 </h2>
@@ -128,7 +153,10 @@ const About: NextPage = () => {
           </section>
 
           {/* Graduates Carousel Section */}
-          <section className={styles.graduatesSection}>
+          <section 
+            ref={graduatesRef as React.RefObject<HTMLElement>}
+            className={`${styles.graduatesSection} ${graduatesVisible ? styles.animateFadeInUp : ''}`}
+          >
             <div className={styles.container}>
               <h2 className={styles.graduatesTitle}>
                 {locale === 'ru' ? 'Выпускники Estedilux Med' : 'Estedilux Med Graduates'}
@@ -685,12 +713,78 @@ const About: NextPage = () => {
                         <line x1="6" y1="6" x2="18" y2="18"></line>
                       </svg>
                     </button>
-                    <video
-                      src={selectedVideo}
-                      className={styles.videoPlayer}
-                      controls
-                      autoPlay
-                    />
+                    
+                    {videoFiles.length > 1 && (
+                      <button 
+                        className={styles.videoModalNav} 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          prevVideo();
+                        }}
+                        aria-label="Previous video"
+                        style={{ left: '1rem' }}
+                      >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                      </button>
+                    )}
+
+                    <div className={styles.videoModalMain}>
+                      <div className={styles.videoModalPlayer}>
+                        <video
+                          key={selectedVideo}
+                          src={selectedVideo}
+                          className={styles.videoPlayer}
+                          controls
+                          autoPlay
+                          playsInline
+                        />
+                      </div>
+                    </div>
+
+                    {videoFiles.length > 1 && (
+                      <button 
+                        className={styles.videoModalNav} 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          nextVideo();
+                        }}
+                        aria-label="Next video"
+                        style={{ right: '1rem' }}
+                      >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                      </button>
+                    )}
+
+                    {videoFiles.length > 1 && (
+                      <div className={styles.videoModalThumbnails}>
+                        {videoFiles.map((videoSrc, index) => (
+                          <button
+                            key={index}
+                            className={`${styles.videoModalThumbnail} ${currentVideoIndex === index ? styles.active : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCurrentVideoIndex(index);
+                              setSelectedVideo(videoSrc);
+                            }}
+                            aria-label={`Go to video ${index + 1}`}
+                          >
+                            <video
+                              src={videoSrc}
+                              muted
+                              playsInline
+                              className={styles.videoModalThumbnailVideo}
+                            />
+                            {currentVideoIndex === index && (
+                              <div className={styles.videoModalThumbnailActive}></div>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

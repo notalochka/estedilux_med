@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import { Mail, Phone, Instagram, Facebook, ArrowUpRight } from 'lucide-react';
 import styles from './Footer.module.css';
 
@@ -49,14 +48,7 @@ const Footer: React.FC = () => {
         <div className={styles.grid}>
           <div className={styles.section}>
             <Link href="/" className={styles.logoLink} aria-label="Estedilux Med home">
-              <Image
-                src="/logo.jpg"
-                alt="Estedilux Med"
-                width={180}
-                height={56}
-                className={styles.logo}
-                priority
-              />
+              <span className={styles.logoText}>Estedilux Med</span>
             </Link>
             <p className={styles.description}>
               {locale === 'ru'
@@ -117,7 +109,7 @@ const Footer: React.FC = () => {
           <p className={styles.developed}>
             {locale === 'ru' ? 'Разработано' : 'Developed by'}{' '}
             <a
-              href="https://telebots.site/"
+              href="https://new.telebots.site/"
               target="_blank"
               rel="noreferrer"
               className={styles.developedLink}

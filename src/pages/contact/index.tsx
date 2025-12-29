@@ -3,22 +3,27 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { Mail, Phone, MapPin } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import { useAnimation } from '@/lib/useAnimation';
 import type { ContactFormData } from '@/types/index';
 import styles from './Contact.module.css';
 
 const Contact: NextPage = () => {
   const router = useRouter();
   const { locale } = router;
-  const [contactType, setContactType] = useState<'phone' | 'email'>('phone');
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     phone: '',
+    email: '',
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const { ref: formRef, isVisible: formVisible } = useAnimation({ threshold: 0.1 });
+  const { ref: contactRef, isVisible: contactVisible } = useAnimation({ threshold: 0.1 });
 
   const scrollToContactForm = () => {
     const element = document.getElementById('contact-form-section');
@@ -34,25 +39,12 @@ const Contact: NextPage = () => {
     setFormData((prev: ContactFormData) => ({ ...prev, [name]: value }));
   };
 
-  const handleContactTypeChange = (type: 'phone' | 'email') => {
-    setContactType(type);
-    // Очищаємо поле, яке не використовується
-    if (type === 'phone') {
-      setFormData((prev) => ({ ...prev, email: '', phone: '' }));
-    } else {
-      setFormData((prev) => ({ ...prev, phone: '', email: '' }));
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     // Валідація: перевіряємо наявність телефону або email
-    if (contactType === 'phone' && !formData.phone) {
-      setSubmitStatus('error');
-      return;
-    }
-    if (contactType === 'email' && !formData.email) {
+    if (!formData.phone && !formData.email) {
       setSubmitStatus('error');
       return;
     }
@@ -118,10 +110,13 @@ const Contact: NextPage = () => {
 
           <div id="contact-form-section" className={styles.container}>
             <div className={styles.contentGrid}>
-              <div className={styles.formWrapper}>
+              <div 
+                ref={formRef as React.RefObject<HTMLDivElement>}
+                className={`${styles.formWrapper} ${formVisible ? styles.animateFadeInUp : ''}`}
+              >
               <div className={styles.formHeader}>
                 <h2 className={styles.formTitle}>
-                  {locale === 'ru' ? ' Свяжитесь с командой Estedilux Med' : 'Contact the Estedilux Med team'}
+                  {locale === 'ru' ? 'Свяжитесь с командой Estedilux Med' : 'Contact the Estedilux Med team'}
                 </h2>
                 <p className={styles.formDescription}>
                   {locale === 'ru'
@@ -147,54 +142,33 @@ const Contact: NextPage = () => {
                 </div>
 
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>
-                    {locale === 'ru' ? 'Контакт' : 'Contact'}
+                  <label htmlFor="phone" className={styles.label}>
+                    {locale === 'ru' ? 'Телефон' : 'Phone'}
                   </label>
-                  <div className={styles.contactTypeSelector}>
-                    <button
-                      type="button"
-                      onClick={() => handleContactTypeChange('phone')}
-                      className={`${styles.contactTypeButton} ${
-                        contactType === 'phone' ? styles.active : ''
-                      }`}
-                    >
-                      {locale === 'ru' ? 'Телефон' : 'Phone'}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleContactTypeChange('email')}
-                      className={`${styles.contactTypeButton} ${
-                        contactType === 'email' ? styles.active : ''
-                      }`}
-                    >
-                      Email
-                    </button>
-                  </div>
-                  {contactType === 'phone' ? (
-                    <div className={styles.phoneInputWrapper}>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone || ''}
-                        onChange={handleChange}
-                        required
-                        placeholder='+380 (00) 000-00-00'
-                        className={styles.phoneInput}
-                      />
-                    </div>
-                  ) : (
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email || ''}
-                      onChange={handleChange}
-                      required
-                      placeholder={locale === 'ru' ? 'your.email@example.com' : 'your.email@example.com'}
-                      className={styles.input}
-                    />
-                  )}
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone || ''}
+                    onChange={handleChange}
+                    placeholder='+380 (00) 000-00-00'
+                    className={styles.input}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="email" className={styles.label}>
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email || ''}
+                    onChange={handleChange}
+                    placeholder={locale === 'ru' ? 'your.email@example.com' : 'your.email@example.com'}
+                    className={styles.input}
+                  />
                 </div>
 
                 <div className={styles.formGroup}>
@@ -235,15 +209,52 @@ const Contact: NextPage = () => {
               )}
               </div>
               
-
-              <div className={styles.imageWrapper}>
-                <Image
-                  src="/photo1.jpg"
-                  alt={locale === 'ru' ? 'Estedilux Med' : 'Estedilux Med'}
-                  fill
-                  className={styles.contactImage}
-                  quality={90}
-                />
+              <div 
+                ref={contactRef as React.RefObject<HTMLDivElement>}
+                className={`${styles.contactInfoWrapper} ${contactVisible ? styles.animateFadeInUp : ''} ${styles.animationDelay200}`}
+              >
+                <div className={styles.contactInfoCard}>
+                  <h3 className={styles.contactInfoTitle}>
+                    {locale === 'ru' ? 'Контактная информация' : 'Contact Information'}
+                  </h3>
+                  <div className={styles.contactInfoList}>
+                    <a href="mailto:estediluxmed@ukr.net" className={styles.contactInfoItem}>
+                      <div className={styles.contactInfoIcon}>
+                        <Mail size={20} />
+                      </div>
+                      <div className={styles.contactInfoContent}>
+                        <span className={styles.contactInfoLabel}>
+                          {locale === 'ru' ? 'Email' : 'Email'}
+                        </span>
+                        <span className={styles.contactInfoText}>estediluxmed@ukr.net</span>
+                      </div>
+                    </a>
+                    <a href="tel:+380509994349" className={styles.contactInfoItem}>
+                      <div className={styles.contactInfoIcon}>
+                        <Phone size={20} />
+                      </div>
+                      <div className={styles.contactInfoContent}>
+                        <span className={styles.contactInfoLabel}>
+                          {locale === 'ru' ? 'Телефон' : 'Phone'}
+                        </span>
+                        <span className={styles.contactInfoText}>+380 50 999 43 49</span>
+                      </div>
+                    </a>
+                    <div className={styles.contactInfoItem}>
+                      <div className={styles.contactInfoIcon}>
+                        <MapPin size={20} />
+                      </div>
+                      <div className={styles.contactInfoContent}>
+                        <span className={styles.contactInfoLabel}>
+                          {locale === 'ru' ? 'Местоположение' : 'Location'}
+                        </span>
+                        <span className={styles.contactInfoText}>
+                          {locale === 'ru' ? 'Украина' : 'Ukraine'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

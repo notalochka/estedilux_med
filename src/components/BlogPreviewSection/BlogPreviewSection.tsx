@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useAnimation } from '@/lib/useAnimation';
 import type { BlogPost } from '@/types/blog';
 import styles from './BlogPreviewSection.module.css';
 
@@ -10,6 +11,13 @@ const BlogPreviewSection: React.FC = () => {
   const { locale } = router;
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Hooks must be called at the top level
+  const { ref: titleRef, isVisible: titleVisible } = useAnimation({ threshold: 0.1 });
+  const post1Ref = useAnimation({ threshold: 0.1 });
+  const post2Ref = useAnimation({ threshold: 0.1 });
+  const post3Ref = useAnimation({ threshold: 0.1 });
+  const postRefs = [post1Ref, post2Ref, post3Ref];
 
   useEffect(() => {
     fetchBlogPosts();
@@ -60,15 +68,27 @@ const BlogPreviewSection: React.FC = () => {
   return (
     <section className={styles.blogSection}>
       <div className={styles.container}>
-        <h2 className={styles.sectionTitle}>
+        <h2 
+          ref={titleRef as React.RefObject<HTMLHeadingElement>}
+          className={`${styles.sectionTitle} ${titleVisible ? styles.animateFadeInUp : ''}`}
+        >
           {locale === 'ru' ? 'Блог' : 'Blog'}
         </h2>
         <div className={styles.blogGrid}>
-          {blogPosts.map((post) => {
+          {blogPosts.map((post, index) => {
             const title = locale === 'ru' ? post.title.ru : post.title.en;
+            const { ref, isVisible } = postRefs[index] || { ref: null, isVisible: false };
             return (
-              <Link key={post.id} href={`/blog/${post.id}`} className={styles.blogCardLink}>
-                <article className={styles.blogCard}>
+              <Link 
+                key={post.id} 
+                href={`/blog/${post.id}`} 
+                className={styles.blogCardLink}
+              >
+                <article 
+                  ref={ref as React.RefObject<HTMLElement>}
+                  className={`${styles.blogCard} ${isVisible ? styles.animateFadeInUp : ''}`}
+                  style={{ animationDelay: `${index * 0.15}s`, opacity: isVisible ? 1 : 0 }}
+                >
                   <div className={styles.imageWrapper}>
                     <Image
                       src={post.image}

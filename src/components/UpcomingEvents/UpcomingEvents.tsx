@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Calendar, MapPin, ShoppingCart } from 'lucide-react';
+import { useAnimation } from '@/lib/useAnimation';
 import type { Event, EventCategory } from '@/types/events';
 import styles from './UpcomingEvents.module.css';
 
@@ -12,6 +13,13 @@ const UpcomingEvents: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [categories, setCategories] = useState<EventCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Hooks must be called at the top level
+  const { ref: titleRef, isVisible: titleVisible } = useAnimation({ threshold: 0.1 });
+  const event1Ref = useAnimation({ threshold: 0.1 });
+  const event2Ref = useAnimation({ threshold: 0.1 });
+  const event3Ref = useAnimation({ threshold: 0.1 });
+  const eventRefs = [event1Ref, event2Ref, event3Ref];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -110,16 +118,25 @@ const UpcomingEvents: React.FC = () => {
   return (
     <section className={styles.upcomingEvents}>
       <div className={styles.container}>
-        <h2 className={styles.title}>
+        <h2 
+          ref={titleRef as React.RefObject<HTMLHeadingElement>}
+          className={`${styles.title} ${titleVisible ? styles.animateFadeInUp : ''}`}
+        >
           {locale === 'ru' ? 'Предстоящие программы' : 'Upcoming Programs'}
         </h2>
         
         <div className={styles.eventsGrid}>
-          {upcomingEvents.map((event) => {
+          {upcomingEvents.map((event, index) => {
             const categoryTitle = getCategoryTitle(event.categoryId);
+            const { ref, isVisible } = eventRefs[index] || { ref: null, isVisible: false };
             
             return (
-              <article key={event.id} className={styles.eventCard}>
+              <article 
+                key={event.id} 
+                ref={ref as React.RefObject<HTMLElement>}
+                className={`${styles.eventCard} ${isVisible ? styles.animateFadeInUp : ''}`}
+                style={{ animationDelay: `${index * 0.15}s`, opacity: isVisible ? 1 : 0 }}
+              >
                 <Link href={`/event/${event.id}`} className={styles.eventLink}>
                   <div className={styles.imageWrapper}>
                     {event.image && (

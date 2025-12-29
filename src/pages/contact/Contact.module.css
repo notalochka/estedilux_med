@@ -10,13 +10,17 @@
 
 .container {
   padding: 0;
-  background: #f8fafc;
+  background: linear-gradient(to bottom, #f8fafc 0%, #ffffff 100%);
+  position: relative;
 }
 
 .contentGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.2fr 1fr;
   align-items: start;
+  gap: 0;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 /* Hero Section */
@@ -54,6 +58,8 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   z-index: 5;
 }
 
@@ -83,12 +89,14 @@
 }
 
 .heroTitle {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 700;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 800;
+  font-family: var(--font-heading);
   color: white;
   margin-bottom: var(--spacing-lg);
-  line-height: 1.2;
-  letter-spacing: 0.05em;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .heroChevron {
@@ -139,23 +147,119 @@
 
 .formWrapper {
   background: white;
-  padding: var(--spacing-3xl);
+  padding: 5rem 4rem;
   position: relative;
   overflow: hidden;
+  opacity: 0;
 }
 
-.imageWrapper {
+.animateFadeInUp {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animationDelay200 {
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.contactInfoWrapper {
+  background: linear-gradient(135deg, rgba(30, 118, 170, 0.03) 0%, rgba(69, 155, 205, 0.05) 100%);
+  padding: 5rem 4rem;
   position: relative;
-  width: 100%;
-  height: 100%;
+  overflow: hidden;
+  opacity: 0;
   min-height: 600px;
-  border-radius: 0px;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.contactImage {
-  object-fit: cover;
-  border-radius: 0px;
+.contactInfoCard {
+  width: 100%;
+  max-width: 500px;
+}
+
+.contactInfoTitle {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  font-family: var(--font-heading);
+  color: #0f172a;
+  margin-bottom: 2.5rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.contactInfoList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contactInfoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid rgba(30, 118, 170, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.contactInfoItem:hover {
+  transform: translateY(-4px);
+  border-color: rgba(30, 118, 170, 0.3);
+  box-shadow: 0 8px 24px rgba(30, 118, 170, 0.15);
+  text-decoration: none;
+}
+
+.contactInfoIcon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #1e76aa 0%, #459bcd 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(30, 118, 170, 0.25);
+}
+
+.contactInfoContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.contactInfoLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-body);
+}
+
+.contactInfoText {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #0f172a;
+  font-family: var(--font-body);
 }
 
 .formHeader {
@@ -163,19 +267,22 @@
 }
 
 .formTitle {
-  font-size: clamp(1.75rem, 4vw, 2.25rem);
-  font-weight: 700;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  font-family: var(--font-heading);
   color: #0f172a;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: 1rem;
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
 .formDescription {
-  font-size: var(--font-size-base);
-  line-height: 1.6;
-  color: #475569;
+  font-size: 1.125rem;
+  font-family: var(--font-body);
+  line-height: 1.7;
+  color: #64748b;
   max-width: 600px;
+  font-weight: 400;
 }
 
 .form {
@@ -190,63 +297,73 @@
 
 .label {
   display: block;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: 0.75rem;
   font-weight: 600;
-  color: #1e293b;
-  font-size: var(--font-size-base);
+  color: #0f172a;
+  font-size: 0.9375rem;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .contactTypeSelector {
   display: flex;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-md);
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
   padding: 4px;
-  background: #f1f5f9;
-  border-radius: 8px;
+  background: rgba(30, 118, 170, 0.05);
+  border-radius: 12px;
   width: fit-content;
+  border: 1px solid rgba(30, 118, 170, 0.1);
 }
 
 .contactTypeButton {
-  padding: var(--spacing-sm) var(--spacing-lg);
+  padding: 0.625rem 1.5rem;
   border: none;
-  border-radius: 6px;
-  font-size: var(--font-size-sm);
+  border-radius: 8px;
+  font-size: 0.875rem;
   font-weight: 600;
+  font-family: var(--font-body);
   color: #64748b;
   background: transparent;
   cursor: pointer;
-  transition: all var(--transition-base);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .contactTypeButton:hover {
-  color: #0f172a;
+  color: #1e76aa;
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .contactTypeButton.active {
   background: white;
-  color: #0f172a;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: #1e76aa;
+  box-shadow: 0 2px 8px rgba(30, 118, 170, 0.2);
 }
 
 .input,
 .phoneInput,
 .textarea {
   width: 100%;
-  padding: var(--spacing-md) 0;
+  padding: 1rem 0;
   border: none;
-  border-bottom: 1px solid #cbd5e1;
+  border-bottom: 2px solid #e2e8f0;
   border-radius: 0;
-  font-size: var(--font-size-base);
-  font-family: inherit;
-  transition: all var(--transition-base);
+  font-size: 1rem;
+  font-family: var(--font-body);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: transparent;
   color: #0f172a;
+  font-weight: 500;
 }
 
 .input::placeholder,
 .phoneInput::placeholder,
 .textarea::placeholder {
   color: #94a3b8;
+  font-weight: 400;
 }
 
 .phoneInputWrapper {
@@ -273,33 +390,54 @@
 .phoneInput:focus,
 .textarea:focus {
   outline: none;
-  border-bottom-color: #0f172a;
+  border-bottom-color: #1e76aa;
+  border-bottom-width: 2px;
 }
 
 .phoneInputWrapper:focus-within {
-  border-bottom-color: #0f172a;
+  border-bottom-color: #1e76aa;
+  border-bottom-width: 2px;
 }
 
 
 
 .submitButton {
-  padding: 1rem 2rem;
-  background: #1e76aa;
+  padding: 1.125rem 2rem;
+  background: linear-gradient(135deg, #1e76aa 0%, #459bcd 100%);
   color: white;
   border: none;
   border-radius: 12px;
-  font-size: var(--font-size-base);
+  font-size: 1rem;
   font-weight: 600;
+  font-family: var(--font-body);
   cursor: pointer;
-  transition: all var(--transition-base);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
-  margin-top: var(--spacing-md);
+  margin-top: 1rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(30, 118, 170, 0.3);
+}
+
+.submitButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.submitButton:hover::before {
+  left: 100%;
 }
 
 .submitButton:hover {
-  background: #155479;
-  transform: translateY(-1px);
-  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.3);
+  background: linear-gradient(135deg, #155479 0%, #1e76aa 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(30, 118, 170, 0.4);
 }
 
 .submitButton:active {
@@ -311,6 +449,7 @@
   cursor: not-allowed;
   transform: none;
   background: #64748b;
+  box-shadow: none;
 }
 
 .contactInfo {
@@ -407,8 +546,17 @@
     grid-template-columns: 1fr;
   }
 
-  .contactInfoGrid {
-    grid-template-columns: 1fr;
+  .formWrapper {
+    padding: 3rem 2rem;
+  }
+
+  .contactInfoWrapper {
+    padding: 3rem 2rem;
+    min-height: auto;
+  }
+
+  .contactInfoCard {
+    max-width: 100%;
   }
 }
 

@@ -42,6 +42,8 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   z-index: 5;
 }
 
@@ -67,12 +69,14 @@
 }
 
 .heroTitle {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 700;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 800;
+  font-family: var(--font-heading);
   color: white;
   margin-bottom: var(--spacing-lg);
-  line-height: 1.2;
-  letter-spacing: 0.05em;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .heroChevron {
@@ -99,58 +103,84 @@
   }
 }
 
+.animateFadeInUp {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.heroTitleWrapper,
+.aboutTextContent,
+.graduatesSection {
+  opacity: 0;
+}
+
 
 /* Секція з детальним текстом про компанію */
 .aboutTextSection {
   background: white;
-  padding: var(--spacing-2xl) 0;
+  padding: 6rem 0;
 }
 
 .aboutTextContainer {
   max-width: 1200px;
   display: flex;
-  justify-content: right;
-  align-items: right;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  margin: 0 auto 0 0;
+  margin: 0 auto;
 }
 
 .aboutTextContent {
-  max-width: 1200px;
-  text-align: left;
+  max-width: 900px;
+  text-align: center;
   padding: 0 20px;
-  width: 50%;
+  width: 100%;
 }
 
 .aboutTextTitle {
-  font-size: 2rem;
+  font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
+  font-family: var(--font-heading);
   color: var(--color-text);
   margin-bottom: var(--spacing-xl);
-  line-height: 1.3;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 .aboutTextDescription {
-  font-size: var(--font-size-lg);
+  font-size: 1.125rem;
+  font-family: var(--font-body);
   line-height: 1.8;
-  color: var(--color-text);
+  color: var(--color-text-light);
   max-width: 800px;
   margin: 0 auto;
+  font-weight: 400;
 }
 
 /* Graduates Carousel Section */
 .graduatesSection {
-  background: white;
-  padding: var(--spacing-md) 0;
+  background: #f8fafc;
+  padding: 6rem 0;
 }
 
 .graduatesTitle {
-  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
+  font-family: var(--font-heading);
   color: var(--color-text);
   text-align: center;
-  margin-bottom: var(--spacing-md);
-  letter-spacing: 0.05em;
+  margin-bottom: 3rem;
+  letter-spacing: -0.02em;
 }
 
 .carouselWrapper {
@@ -309,12 +339,13 @@
 }
 
 .partnersTitle {
-  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
+  font-family: var(--font-heading);
   color: var(--color-text);
   text-align: center;
-  margin-bottom: var(--spacing-2xl);
-  letter-spacing: 0.05em;
+  margin-bottom: 4rem;
+  letter-spacing: -0.02em;
 }
 
 .partnersGrid {
@@ -347,13 +378,13 @@
   position: relative;
   width: 100%;
   height: 120px;
-  filter: grayscale(100%);
-  opacity: 0.7;
+  filter: grayscale(0%);
+  opacity: 1;
   transition: all 0.3s ease;
 }
 
 .partnerCard:hover .partnerImageWrapper {
-  filter: grayscale(0%);
+  transform: scale(1.05);
   opacity: 1;
 }
 
@@ -667,25 +698,33 @@
 /* Video Gallery Section */
 .videoGallerySection {
   background: white;
-  padding: var(--spacing-xl) 0;
+  padding: 6rem 0;
 }
 
 .videoGalleryTitle {
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
+  font-family: var(--font-heading);
   color: var(--color-text);
   text-align: center;
-  margin-bottom: var(--spacing-xl);
-  letter-spacing: 0.05em;
+  margin-bottom: 4rem;
+  letter-spacing: -0.02em;
 }
 
 .videoGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: var(--spacing-xl);
-  max-width: 1400px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+}
+
+@media (min-width: 768px) {
+  .videoGrid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
 }
 
 .videoThumbnail {
@@ -698,16 +737,21 @@
 }
 
 .videoThumbnail:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.videoThumbnail:hover .videoPreview {
+  transform: scale(1.05);
 }
 
 .videoThumbnailWrapper {
   position: relative;
   width: 100%;
-  padding-top: 56.25%; /* 16:9 aspect ratio */
+  padding-top: 177.78%; /* 9:16 aspect ratio (Instagram style) */
   background: #000;
   overflow: hidden;
+  border-radius: 12px;
 }
 
 .videoPreview {
@@ -717,7 +761,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .videoPreview.loading {
@@ -756,34 +800,90 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
   padding: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .videoModalContent {
   position: relative;
   width: 100%;
-  max-width: 1200px;
-  max-height: 90vh;
+  max-width: 1600px;
+  max-height: 95vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  overflow: visible;
+  padding: 0 80px;
+}
+
+@media (max-width: 1024px) {
+  .videoModalContent {
+    padding: 0 60px;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .videoModalContent {
+    padding: 0 50px;
+    gap: 0.5rem;
+  }
+
+  .videoModalNav {
+    width: 40px;
+    height: 40px;
+  }
+
+  .videoModalThumbnails {
+    bottom: 10px;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .videoModalThumbnail {
+    width: 60px;
+    height: 105px;
+  }
+}
+
+.videoModalMain {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+}
+
+.videoModalPlayer {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 9/16;
   background: #000;
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 .videoModalClose {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 20px;
+  right: 20px;
   z-index: 10000;
   background: rgba(0, 0, 0, 0.7);
-  border: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: white;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -795,13 +895,114 @@
 .videoModalClose:hover {
   background: rgba(0, 0, 0, 0.9);
   transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.videoModalNav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.videoModalNav:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: translateY(-50%) scale(1.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.videoModalThumbnails {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.75rem;
+  z-index: 10000;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: calc(100% - 40px);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.videoModalThumbnails::-webkit-scrollbar {
+  height: 4px;
+}
+
+.videoModalThumbnails::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.videoModalThumbnails::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.videoModalThumbnail {
+  position: relative;
+  width: 80px;
+  height: 140px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  background: #000;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.videoModalThumbnail:hover {
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.videoModalThumbnail.active {
+  border-color: rgba(69, 155, 205, 0.8);
+  box-shadow: 0 0 0 2px rgba(69, 155, 205, 0.3);
+}
+
+.videoModalThumbnailVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.videoModalThumbnailActive {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(69, 155, 205, 0.2);
+  border: 2px solid rgba(69, 155, 205, 0.8);
+  pointer-events: none;
 }
 
 .videoPlayer {
   width: 100%;
-  height: auto;
-  max-height: 90vh;
+  height: 100%;
+  object-fit: contain;
   display: block;
+  border-radius: 16px;
 }
 
 /* Loading Placeholder */
@@ -849,19 +1050,22 @@
 }
 
 .serviceTitle {
-  font-size: clamp(1.5rem, 3vw, 1.875rem);
-  font-weight: 600;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  font-family: var(--font-heading);
   color: #0f172a;
   margin-bottom: 0;
-  line-height: 1.3;
-  letter-spacing: -0.01em;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 .serviceDescription {
   color: #475569;
-  line-height: 1.75;
+  font-family: var(--font-body);
+  line-height: 1.8;
   margin-bottom: 0;
   font-size: 1rem;
+  font-weight: 400;
 }
 
 .serviceList {
@@ -1200,6 +1404,10 @@
   .videoModalContent {
     max-width: 100%;
     margin: 0 10px;
+  }
+
+  .videoModalPlayer {
+    max-width: 100%;
   }
 
   .videoPlayer {

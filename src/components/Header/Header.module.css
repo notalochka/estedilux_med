@@ -20,61 +20,78 @@
 .container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 80px;
+  height: 100px;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  height: 48px;
+  height: 60px;
 }
 
-.logo a {
+.logoLink {
   text-decoration: none;
   display: flex;
   align-items: center;
   height: 100%;
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.logo a:hover {
+.logoLink:hover {
   text-decoration: none;
-  opacity: 0.8;
 }
 
-.logoImage {
-  height: auto;
-  width: auto;
-  max-height: 48px;
-  object-fit: contain;
-  transition: opacity 0.3s ease;
+.logoText {
+  font-family: var(--font-handwritten);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.9) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  font-style: normal;
 }
 
-.header.scrolled .logoImage {
-  opacity: 0.8;
+.header.scrolled .logoText {
+  background: linear-gradient(135deg, #1e76aa 0%, #459bcd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.header.scrolled .logoImage:hover {
-  opacity: 1;
+.logoLink:hover .logoText {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.header.scrolled .logoLink:hover .logoText {
+  background: linear-gradient(135deg, #155479 0%, #1e76aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .nav {
   display: flex;
-  gap: 32px;
+  gap: 40px;
   align-items: center;
 }
 
 .navLink {
-  font-size: 14px;
-  font-weight: 500;
-  transition: color 0.3s ease;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  transition: color 0.3s ease, transform 0.2s ease;
   text-decoration: none;
   position: relative;
-  padding-bottom: 4px;
+  padding: 8px 4px;
 }
 
 .header.transparent .navLink {
@@ -88,10 +105,12 @@
 .navLink:hover {
   color: white;
   text-decoration: none;
+  transform: translateY(-2px);
 }
 
 .header.scrolled .navLink:hover {
   color: #111827;
+  transform: translateY(-2px);
 }
 
 .navLink.active {
@@ -107,60 +126,150 @@
 }
 
 .languageSwitcher {
+  position: relative;
   display: flex;
-  gap: 8px;
   align-items: center;
 }
 
-.langButton {
-  padding: 8px 12px;
+.langTrigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.header.scrolled .langTrigger {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #1f2937;
+}
+
+.header.transparent .langTrigger {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.langTrigger:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.header.scrolled .langTrigger:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.langIcon {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.langTrigger:hover .langIcon {
+  transform: rotate(15deg);
+}
+
+.langCurrent {
+  font-weight: 600;
+  min-width: 32px;
+  text-align: center;
+}
+
+.langChevron {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.langChevron.open {
+  transform: rotate(180deg);
+}
+
+.langDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 140px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 
+    0 10px 25px -5px rgba(0, 0, 0, 0.2),
+    0 4px 10px -2px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  z-index: 1000;
+  animation: slideDown 0.3s ease-out;
+  overflow: hidden;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.langOption {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
   border: none;
   background: transparent;
-  cursor: pointer;
   border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-body);
   font-size: 14px;
   font-weight: 500;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: #1f2937;
+  text-align: left;
 }
 
-.header.transparent .langButton {
-  color: rgba(255, 255, 255, 0.9);
+.langOption:hover {
+  background: rgba(30, 118, 170, 0.1);
+  color: #1e76aa;
 }
 
-.header.scrolled .langButton {
-  color: #4b5563;
+.langOption.active {
+  background: rgba(30, 118, 170, 0.15);
+  color: #1e76aa;
+  font-weight: 600;
 }
 
-.langButton:hover {
-  background: rgba(255, 255, 255, 0.1);
+.langOption.active svg {
+  color: #1e76aa;
+  flex-shrink: 0;
 }
 
-.header.scrolled .langButton:hover {
-  background: #f3f4f6;
-  color: #111827;
-}
-
-.langButton.active {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-}
-
-.header.scrolled .langButton.active {
-  background: #1e76aa;
-  color: white;
-}
 
 /* Бургер-меню кнопка */
 .burgerButton {
   display: none;
   border-radius: 8px;
-  padding: 8px;
+  padding: 12px;
   background: transparent;
   border: none;
   cursor: pointer;
   transition: background 0.3s ease;
+  align-items: center;
+  justify-content: center;
 }
 
 .header.transparent .burgerButton:hover {
@@ -171,12 +280,44 @@
   background: #f3f4f6;
 }
 
-.burgerIcon {
-  color: white;
+.burgerLines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 32px;
+  align-items: flex-start;
 }
 
-.burgerIconScrolled {
-  color: #111827;
+.burgerLine {
+  display: block;
+  height: 4px;
+  background: white;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.header.scrolled .burgerLine {
+  background: #111827;
+}
+
+.burgerLineTop {
+  width: 100%;
+}
+
+.burgerLineMiddle {
+  width: 100%;
+}
+
+.burgerLineBottom {
+  width: 70%;
+}
+
+.burgerButton:hover .burgerLine {
+  background: rgba(30, 118, 170, 1);
+}
+
+.header.scrolled .burgerButton:hover .burgerLine {
+  background: #1e76aa;
 }
 
 /* Мобільне меню Overlay */
@@ -239,17 +380,19 @@
 
 .mobileNavLink {
   display: block;
-  padding: 8px 0;
+  padding: 12px 0;
   color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 18px;
+  font-family: var(--font-body);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, transform 0.2s ease;
 }
 
 .mobileNavLink:hover {
   color: white;
   text-decoration: none;
+  transform: translateX(4px);
 }
 
 .mobileNavLink.active {
@@ -258,36 +401,38 @@
 
 .mobileLanguageSwitcher {
   display: flex;
+  flex-direction: column;
   gap: 12px;
   padding: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  justify-content: center;
 }
 
-.mobileLangButton {
-  padding: 12px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: transparent;
-  color: rgba(255, 255, 255, 0.9);
-  cursor: pointer;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.mobileLanguageSwitcher .languageSwitcher {
+  width: 100%;
 }
 
-.mobileLangButton:hover {
+.mobileLanguageSwitcher .langTrigger {
+  width: 100%;
+  justify-content: space-between;
   background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.95);
 }
 
-.mobileLangButton.active {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
+.mobileLanguageSwitcher .langTrigger:hover {
+  background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.3);
+}
+
+.mobileLanguageSwitcher .langDropdown {
+  position: relative;
+  top: 0;
+  right: 0;
+  width: 100%;
+  margin-top: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 
 /* Адаптивні стилі для мобільних */
@@ -297,27 +442,29 @@
   }
 
   .nav {
-    gap: 24px;
+    gap: 32px;
+  }
+
+  .navLink {
+    font-size: 17px;
   }
 }
 
 @media (max-width: 768px) {
   .container {
-    height: 80px;
+    height: 90px;
     padding: 0 20px;
     position: relative;
   }
 
   .logo {
-    height: 40px;
+    height: 50px;
     flex: 1;
     min-width: 0;
   }
 
-  .logoImage {
-    max-height: 40px;
-    width: auto;
-    height: auto;
+  .logoText {
+    font-size: 1.25rem;
   }
 
   /* Приховуємо десктоп навігацію */

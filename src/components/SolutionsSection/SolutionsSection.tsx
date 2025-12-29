@@ -1,11 +1,17 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Globe, Users, DollarSign } from 'lucide-react';
+import { useAnimation } from '@/lib/useAnimation';
 import styles from './SolutionsSection.module.css';
 
 const SolutionsSection: React.FC = () => {
   const router = useRouter();
   const { locale } = router;
+  const { ref: headerRef, isVisible: headerVisible } = useAnimation({ threshold: 0.1 });
+  const feature1Ref = useAnimation({ threshold: 0.1 });
+  const feature2Ref = useAnimation({ threshold: 0.1 });
+  const feature3Ref = useAnimation({ threshold: 0.1 });
+  const featureRefs = [feature1Ref, feature2Ref, feature3Ref];
 
   const features = [
     {
@@ -34,7 +40,10 @@ const SolutionsSection: React.FC = () => {
   return (
     <section className={styles.solutionsSection}>
       <div className={styles.container}>
-        <div className={styles.header}>
+        <div 
+          ref={headerRef as React.RefObject<HTMLDivElement>}
+          className={`${styles.header} ${headerVisible ? styles.animateFadeInUp : ''}`}
+        >
           <h2 className={styles.title}>
             {locale === 'ru' ? (
               <>
@@ -58,8 +67,14 @@ const SolutionsSection: React.FC = () => {
         <div className={styles.featuresGrid}>
           {features.map((feature, index) => {
             const IconComponent = feature.icon;
+            const { ref, isVisible } = featureRefs[index];
             return (
-              <div key={index} className={styles.featureCard}>
+              <div 
+                key={index} 
+                ref={ref as React.RefObject<HTMLDivElement>}
+                className={`${styles.featureCard} ${isVisible ? styles.animateFadeInUp : ''}`}
+                style={{ animationDelay: `${index * 0.1}s`, opacity: isVisible ? 1 : 0 }}
+              >
                 <div className={styles.iconWrapper}>
                   <IconComponent size={48} className={styles.icon} />
                 </div>
