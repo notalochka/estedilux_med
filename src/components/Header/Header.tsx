@@ -249,19 +249,45 @@ const Header: React.FC = () => {
               </Link>
             </div>
             <div className={styles.mobileLanguageSwitcher}>
-          <div className={styles.languageToggle}>
-            {locales?.map((loc) => (
-              <button
-                key={loc}
-                onClick={() => changeLanguage(loc)}
-                className={`${styles.langToggleButton} ${locale === loc ? styles.active : ''}`}
-                aria-label={`Switch to ${loc}`}
+              <div 
+                ref={langDropdownRef}
+                className={styles.languageSwitcher}
               >
-                {loc.toUpperCase()}
-              </button>
-            ))}
-          </div>
-        </div>
+                <button
+                  onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+                  className={styles.langTrigger}
+                  aria-label="Change language"
+                  aria-expanded={isLangDropdownOpen}
+                >
+                  <Globe size={20} className={styles.langIcon} />
+                  <span className={styles.langCurrent}>{locale?.toUpperCase()}</span>
+                  <ChevronDown 
+                    size={16} 
+                    className={`${styles.langChevron} ${isLangDropdownOpen ? styles.open : ''}`} 
+                  />
+                </button>
+                
+                {isLangDropdownOpen && (
+                  <div className={styles.langDropdown}>
+                    {locales?.map((loc) => (
+                      <button
+                        key={loc}
+                        onClick={() => changeLanguage(loc)}
+                        className={`${styles.langOption} ${locale === loc ? styles.active : ''}`}
+                        aria-label={`Switch to ${loc}`}
+                      >
+                        <span>{loc.toUpperCase()}</span>
+                        {locale === loc && (
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
       </div>
         </>
       )}

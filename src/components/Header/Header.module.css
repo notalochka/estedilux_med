@@ -408,44 +408,32 @@
   margin-top: 8px;
 }
 
-.languageToggle {
+.mobileLanguageSwitcher .languageSwitcher {
+  position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
+}
+
+.mobileLanguageSwitcher .langTrigger {
+  width: 100%;
   justify-content: center;
-  gap: 8px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  padding: 4px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  color: rgba(255, 255, 255, 0.95);
 }
 
-.langToggleButton {
-  flex: 1;
-  padding: 12px 20px;
-  border: none;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 15px;
-  font-weight: 600;
-  font-family: var(--font-body);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  text-align: center;
-  letter-spacing: 0.5px;
+.mobileLanguageSwitcher .langTrigger:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
-.langToggleButton:hover {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.langToggleButton.active {
-  background: rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 1);
-  font-weight: 700;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.mobileLanguageSwitcher .langDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  width: 100%;
 }
 
 /* Адаптивні стилі для мобільних */
@@ -506,5 +494,18 @@
 
   .mobileCloseButton {
     display: block;
+  }
+
+  /* Мобільний перемикач мови */
+  .mobileLanguageSwitcher .languageSwitcher {
+    display: flex;
+  }
+
+  .mobileLanguageSwitcher .langDropdown {
+    position: fixed;
+    left: 24px;
+    right: 24px;
+    width: auto;
+    max-width: calc(100vw - 48px);
   }
 }

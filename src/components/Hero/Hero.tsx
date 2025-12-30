@@ -23,7 +23,7 @@ const Hero: React.FC = () => {
           priority
         />
         <Image
-          src="/ChatGPT Image Dec 30, 2025, 12_19_57 AM.png"
+          src="/hero_desktop.png"
           alt="Estedilux Med Background"
           fill
           className={`${styles.heroImage} ${styles.heroImageDesktop}`}

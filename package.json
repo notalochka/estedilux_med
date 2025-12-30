@@ -9,7 +9,9 @@
     "start": "next start -p 3000",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "import-blog": "node scripts/import-blog-data.js"
+    "import-blog": "node scripts/import-blog-data.js",
+    "import-events": "node scripts/import-events-data.js",
+    "clear-db": "node scripts/clear-db.js"
   },
   "dependencies": {
     "@types/bcryptjs": "^3.0.0",

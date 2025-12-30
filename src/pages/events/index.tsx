@@ -79,7 +79,7 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
                 <div className={styles.arrowWrapper}>
                   <div className={styles.arrowContainer}>
                     <Image
-                      src="/Arrow.png"
+                      src="/arrow_icon.png"
                       alt=""
                       width={120}
                       height={120}
