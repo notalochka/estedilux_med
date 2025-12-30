@@ -18,6 +18,13 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
   const router = useRouter();
   const { locale } = router;
 
+  const scrollToCategories = () => {
+    const element = document.getElementById('categories-section');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <>
       <Head>
@@ -52,20 +59,25 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
             </div>
             <div className={styles.container}>
               <div className={styles.heroContent}>
-                <h1 className={styles.heroTitle}>
-                  {locale === 'ru' ? 'Направления стажировок и обучения' : 'Training and Internship Directions'}
-                </h1>
-                
+                <div className={styles.heroTitleWrapper}>
+                  <h1 className={styles.heroTitle}>
+                    {locale === 'ru' ? 'Направления стажировок и обучения' : 'Training and Internship Directions'}
+                  </h1>
+                  <div className={styles.heroChevron} onClick={scrollToCategories}>
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
 
           {/* Categories Section */}
-          <section className={styles.categoriesSection}>
+          <section id="categories-section" className={styles.categoriesSection}>
             <div className={styles.container}>
               {/* Header Section */}
               <div className={styles.categoriesHeader}>
-                
                 <h2 className={styles.categoriesTitle}>
                   {locale === 'ru' ? 'Выберите направление' : 'Choose a direction'}
                 </h2>
@@ -74,19 +86,6 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
                     ? 'Мы не просто обучаем - мы открываем врачам двери в международное профессиональное пространство, где важны компетентность, глубина подготовки и безупречный уровень безопасности.'
                     : 'We don\'t just teach - we open doors for doctors to the international professional space, where competence, depth of training and impeccable level of safety are important.'}
                 </p>
-               
-                {/* Arrow from title to cards */}
-                <div className={styles.arrowWrapper}>
-                  <div className={styles.arrowContainer}>
-                    <Image
-                      src="/arrow_icon.png"
-                      alt=""
-                      width={120}
-                      height={120}
-                      className={styles.arrow}
-                    />
-                  </div>
-                </div>
               </div>
 
               {/* Cards Grid */}
@@ -96,11 +95,27 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
                   const categoryImage = category.icon || `/categories/photo${(index % 7) + 1}.jpg`;
                   const displaySubcategories = category.subcategories.slice(0, 4);
                   
+                  // Визначаємо розмір картки залежно від позиції
+                  let cardSizeClass = '';
+                  if (index === 0) {
+                    cardSizeClass = styles.cardLarge; // Перша велика зліва
+                  } else if (index === 1 || index === 2) {
+                    cardSizeClass = styles.cardMedium; // Дві середні справа в першому рядку
+                  } else if (index === 3 || index === 4) {
+                    cardSizeClass = styles.cardMedium; // Дві середні в другому рядку
+                  } else if (index === 5 || index === 6) {
+                    cardSizeClass = styles.cardSmall; // Дві маленькі зліва в третьому рядку
+                  } else if (index === 7) {
+                    cardSizeClass = styles.cardLarge; // Одна велика справа в третьому рядку
+                  } else {
+                    cardSizeClass = styles.cardMedium; // Решта середні
+                  }
+                  
                   return (
                     <Link
                       key={category.id}
                       href={`/events/${String(category.id)}`}
-                      className={styles.categoryCard}
+                      className={`${styles.categoryCard} ${cardSizeClass}`}
                     >
                       {/* Background Image */}
                       <div className={styles.categoryImageWrapper}>

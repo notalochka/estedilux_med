@@ -134,6 +134,17 @@
   animation: slideDown 0.3s ease-out;
 }
 
+.errorMessage {
+  padding: var(--spacing-lg);
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  border-radius: 12px;
+  margin: var(--spacing-xl) 0;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
+  animation: slideDown 0.3s ease-out;
+}
+
 @keyframes slideDown {
   from {
     opacity: 0;

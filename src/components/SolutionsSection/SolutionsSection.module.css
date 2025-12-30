@@ -157,22 +157,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 80px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, rgba(69, 155, 205, 0.1), rgba(30, 118, 170, 0.05));
+  width: auto;
+  height: auto;
+  background: transparent;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .featureCard:hover .iconWrapper {
   transform: scale(1.1) rotate(5deg);
-  background: linear-gradient(135deg, rgba(69, 155, 205, 0.2), rgba(30, 118, 170, 0.1));
-  box-shadow: 0 8px 16px -4px rgba(69, 155, 205, 0.3);
 }
 
 .icon {
-  width: 48px;
-  height: 48px;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
   transition: all 0.4s ease;
   /* SVG має білий колір, тому використовуємо filter для зміни на синій */
@@ -252,8 +249,8 @@
   }
 
   .icon {
-    width: 40px;
-    height: 40px;
+    width: 64px;
+    height: 64px;
   }
 
   .featureTitle {

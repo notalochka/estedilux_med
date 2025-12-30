@@ -120,6 +120,45 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ error: 'Failed to save registration' });
   }
 
+  // Відправляємо повідомлення в Telegram
+  try {
+    const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+    const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+
+    if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+      const telegramMessage = `
+🎯 <b>Нова реєстрація на подію</b>
+
+📋 <b>Подія:</b> ${eventTitle}
+👤 <b>Ім'я:</b> ${userName}
+📧 <b>Email:</b> ${userEmail}
+📱 <b>Телефон:</b> ${userPhone}
+${specialty ? `🏥 <b>Спеціальність:</b> ${specialty}` : ''}
+💰 <b>Тип оплати:</b> ${paymentType === 'prepayment' ? 'Передоплата (30%)' : 'Повна оплата'}
+💵 <b>Сума:</b> ${amount.toFixed(2)} USD
+🆔 <b>Номер замовлення:</b> ${orderReference}
+      `.trim();
+
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: telegramMessage,
+          parse_mode: 'HTML',
+        }),
+      }).catch((err) => {
+        console.error('Failed to send Telegram notification:', err);
+        // Не блокуємо процес, якщо Telegram не працює
+      });
+    }
+  } catch (error) {
+    console.error('Error sending Telegram notification:', error);
+    // Не блокуємо процес, якщо Telegram не працює
+  }
+
   console.log('WayForPay data prepared:', JSON.stringify(wayforpayData, null, 2));
   
   res.status(200).json({ success: true, data: wayforpayData });

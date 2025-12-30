@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ArrowLeft, Calendar, MapPin } from 'lucide-react';
+import { Calendar, MapPin } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import type { EventCategory, Event } from '@/types/events';
@@ -86,42 +86,59 @@ const CategoryDetail: NextPage<CategoryDetailProps> = ({ category, categoryEvent
           {/* Content Section */}
           <section className={styles.contentSection}>
             <div className={styles.container}>
-              {/* Back Button */}
-              <Link href="/events" className={styles.backButton}>
-                <ArrowLeft size={18} />
-                <span>{locale === 'ru' ? 'Вернуться к категориям' : 'Back to Categories'}</span>
-              </Link>
-
-              {/* Category Title and Description */}
+              {/* Category Title */}
               <div className={styles.categoryInfo}>
                 <h2 className={styles.categoryTitle}>
                   {locale === 'ru' ? category.title.ru : category.title.en}
                 </h2>
-              </div>
-
-              <div className={styles.contentGrid}>
-                {/* Left Column - Subcategories */}
-                <div className={styles.subcategoriesColumn}>
                 <p className={styles.categoryDescription}>
                   {locale === 'ru' ? category.description.ru : category.description.en}
                 </p>
-                  <div className={styles.subcategoriesList}>
+              </div>
+
+              {/* Content Grid with Capabilities on the left and Events on the right */}
+              <div className={styles.contentGrid}>
+                {/* Left Column - Capabilities */}
+                <div className={styles.capabilitiesColumn}>
+                  <h3 className={styles.capabilitiesTitle}>
+                    {locale === 'ru' ? 'Наши возможности' : 'Our Capabilities'}
+                  </h3>
+                  <div className={styles.capabilitiesList}>
                     {category.subcategories.map((subcategory, index) => (
-                      <div key={index} className={styles.subcategoryItem}>
-                        <h3 className={styles.subcategoryTitle}>
-                          {index + 1}. {locale === 'ru' ? subcategory.ru : subcategory.en}
-                        </h3>
-                        {subcategory.description ? (
-                          <p className={styles.subcategoryDescription}>
-                            {locale === 'ru' ? subcategory.description.ru : subcategory.description.en}
-                          </p>
-                        ) : (
-                          <p className={styles.subcategoryDescription}>
-                            {locale === 'ru'
-                              ? 'Программа включает теоретическую подготовку и практические занятия под руководством опытных специалистов.'
-                              : 'The program includes theoretical training and practical sessions under the guidance of experienced specialists.'}
-                          </p>
-                        )}
+                      <div key={index} className={styles.capabilityCard}>
+                        <div className={styles.capabilityIcon}>
+                          <div className={styles.iconCircle}>
+                            <span>{index + 1}</span>
+                          </div>
+                        </div>
+                        <h4 className={styles.capabilityCardTitle}>
+                          {locale === 'ru' ? subcategory.ru : subcategory.en}
+                        </h4>
+                        <ul className={styles.capabilityList}>
+                          {subcategory.description ? (
+                            <li className={styles.capabilityItem}>
+                              {locale === 'ru' ? subcategory.description.ru : subcategory.description.en}
+                            </li>
+                          ) : (
+                            <>
+                              <li className={styles.capabilityItem}>
+                                {locale === 'ru'
+                                  ? 'Теоретическая подготовка и практические занятия'
+                                  : 'Theoretical training and practical sessions'}
+                              </li>
+                              <li className={styles.capabilityItem}>
+                                {locale === 'ru'
+                                  ? 'Руководство опытных специалистов'
+                                  : 'Guidance from experienced specialists'}
+                              </li>
+                              <li className={styles.capabilityItem}>
+                                {locale === 'ru'
+                                  ? 'Международные стандарты обучения'
+                                  : 'International training standards'}
+                              </li>
+                            </>
+                          )}
+                        </ul>
                       </div>
                     ))}
                   </div>
@@ -129,72 +146,87 @@ const CategoryDetail: NextPage<CategoryDetailProps> = ({ category, categoryEvent
 
                 {/* Right Column - Events */}
                 <div className={styles.eventsColumn}>
-                    <h2 className={styles.sectionTitle}>
-                      {locale === 'ru' ? 'Предстоящие программы' : 'Upcoming Programs'}
-                    </h2>
-                    
-                    {categoryEvents.length > 0 ? (
-                      <div className={styles.eventsList}>
-                        {categoryEvents.map((event) => (
-                          <div key={event.id} className={styles.eventCard}>
-                            {event.image && (
-                              <div className={styles.eventImageWrapper}>
-                                <Image
-                                  src={event.image}
-                                  alt={locale === 'ru' ? event.title.ru : event.title.en}
-                                  fill
-                                  className={styles.eventImage}
-                                />
-                                {event.date && (
-                                  <div className={styles.eventDateBadge}>
-                                    <Calendar size={14} />
-                                    <span>
-                                      {new Date(event.date).toLocaleDateString(
-                                        locale === 'ru' ? 'ru-RU' : 'en-US',
-                                        {
-                                          month: 'long',
-                                          day: 'numeric',
-                                          year: 'numeric',
-                                        }
-                                      )}
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                            <div className={styles.eventContent}>
-                              <h3 className={styles.eventTitle}>
-                                {locale === 'ru' ? event.title.ru : event.title.en}
-                              </h3>
-                              {event.location && (
-                                <div className={styles.eventLocation}>
-                                  <MapPin size={14} />
-                                  <span>{locale === 'ru' ? event.location.ru : event.location.en}</span>
+                  <h2 className={styles.sectionTitle}>
+                    {locale === 'ru' ? 'Предстоящие программы' : 'Upcoming Programs'}
+                  </h2>
+                  
+                  {categoryEvents.length > 0 ? (
+                    <div className={styles.eventsList}>
+                      {categoryEvents.map((event) => (
+                        <div key={event.id} className={styles.eventCard}>
+                          {event.image && (
+                            <div className={styles.eventImageWrapper}>
+                              <Image
+                                src={event.image}
+                                alt={locale === 'ru' ? event.title.ru : event.title.en}
+                                fill
+                                className={styles.eventImage}
+                              />
+                              {event.date && (
+                                <div className={styles.eventDateBadge}>
+                                  <Calendar size={14} />
+                                  <span>
+                                    {new Date(event.date).toLocaleDateString(
+                                      locale === 'ru' ? 'ru-RU' : 'en-US',
+                                      {
+                                        month: 'long',
+                                        day: 'numeric',
+                                        year: 'numeric',
+                                      }
+                                    )}
+                                  </span>
                                 </div>
                               )}
-                              {event.description && (
-                                <p className={styles.eventDescription}>
-                                  {locale === 'ru' ? event.description.ru : event.description.en}
-                                </p>
-                              )}
-                              <Link href={`/event/${event.id}`} className={styles.eventButton}>
-                                <span>{locale === 'ru' ? 'Регистрация' : 'Registration'}</span>
-                              </Link>
                             </div>
+                          )}
+                          <div className={styles.eventContent}>
+                            <h3 className={styles.eventTitle}>
+                              {locale === 'ru' ? event.title.ru : event.title.en}
+                            </h3>
+                            {event.location && (
+                              <div className={styles.eventLocation}>
+                                <MapPin size={14} />
+                                <span>{locale === 'ru' ? event.location.ru : event.location.en}</span>
+                              </div>
+                            )}
+                            {event.description && (
+                              <p className={styles.eventDescription}>
+                                {locale === 'ru' ? event.description.ru : event.description.en}
+                              </p>
+                            )}
+                            <Link href={`/event/${event.id}`} className={styles.eventButton}>
+                              <span>{locale === 'ru' ? 'Регистрация' : 'Registration'}</span>
+                            </Link>
                           </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className={styles.eventsPlaceholder}>
-                        <p className={styles.placeholderText}>
-                          {locale === 'ru'
-                            ? 'Скоро здесь появятся запланированные события и мероприятия'
-                            : 'Upcoming events and activities will appear here soon'}
-                        </p>
-                      </div>
-                    )}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className={styles.eventsPlaceholder}>
+                      <p className={styles.placeholderText}>
+                        {locale === 'ru'
+                          ? 'Скоро здесь появятся запланированные события и мероприятия'
+                          : 'Upcoming events and activities will appear here soon'}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
+
+              {/* Contact Section */}
+              <section className={styles.contactSection}>
+                <h3 className={styles.contactTitle}>
+                  {locale === 'ru' ? 'Остались вопросы?' : 'Have any questions?'}
+                </h3>
+                <p className={styles.contactText}>
+                  {locale === 'ru' 
+                    ? 'Пишите нашему менеджеру, и мы с радостью ответим на все ваши вопросы'
+                    : 'Write to our manager, and we will be happy to answer all your questions'}
+                </p>
+                <Link href="/contact" className={styles.contactButton}>
+                  <span>{locale === 'ru' ? 'Связаться с нами' : 'Contact Us'}</span>
+                </Link>
+              </section>
             </div>
           </section>
         </main>

@@ -54,7 +54,12 @@ const Header: React.FC = () => {
   // Закриваємо dropdown при кліку поза ним
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (langDropdownRef.current && !langDropdownRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      // Не закриваємо dropdown, якщо клік був на overlay (він має закривати тільки меню)
+      if (target && (target as Element).closest && (target as Element).closest('[class*="mobileOverlay"]')) {
+        return;
+      }
+      if (langDropdownRef.current && !langDropdownRef.current.contains(target)) {
         setIsLangDropdownOpen(false);
       }
     };
@@ -227,7 +232,7 @@ const Header: React.FC = () => {
               className={styles.closeButton}
               aria-label="Close menu"
             >
-              <X size={24} className={styles.closeIcon} />
+              <X size={32} strokeWidth={3} className={styles.closeIcon} />
             </button>
           </div>
           <div className={styles.mobileMenu}>

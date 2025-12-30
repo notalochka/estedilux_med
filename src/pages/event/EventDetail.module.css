@@ -42,7 +42,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   z-index: 5;
 }
 
@@ -64,27 +66,31 @@
 }
 
 .heroTitle {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
   color: white;
-  margin-bottom: var(--spacing-lg);
-  line-height: 1.2;
-  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .heroDescription {
-  font-size: clamp(1rem, 2vw, 1.125rem);
+  font-family: var(--font-body);
+  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
   line-height: 1.8;
   color: white;
-  opacity: 0.9;
-  max-width: 800px;
+  opacity: 0.95;
+  max-width: 900px;
   margin: 0 auto;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Content Section */
 .contentSection {
-  background: white;
-  padding: var(--spacing-2xl) 0;
+  background: linear-gradient(to bottom, #ffffff 0%, #f8fafc 100%);
+  padding: 4rem 0;
 }
 
 .container {
@@ -94,37 +100,11 @@
 }
 
 
-/* Back Button */
-.backButton {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-md) var(--spacing-xl);
-  margin-bottom: var(--spacing-2xl);
-  font-family: var(--font-sans);
-  font-size: var(--font-size-base);
-  font-weight: 600;
-  color: var(--color-text);
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 9999px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-}
-
-.backButton:hover {
-  background: white;
-  transform: translateX(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  text-decoration: none;
-}
 
 /* Event Info Grid */
 .eventInfoGrid {
   display: grid;
-  grid-template-columns: 1fr 400px;
+  grid-template-columns: 1fr 420px;
   gap: 3rem;
   align-items: start;
 }
@@ -136,41 +116,49 @@
   gap: 2rem;
 }
 
-.sectionTitle {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #0f172a;
-  line-height: 1.3;
-}
-
-.descriptionSection {
-  margin: 0;
-}
-
-.description {
-  font-size: 1.125rem;
-  line-height: 1.8;
-  color: #475569;
-  margin: 0;
-}
-
 /* Image Wrapper */
 .imageWrapper {
   position: relative;
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  border-radius: 12px;
+  border-radius: 1.5rem;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15);
+  margin-bottom: 2rem;
 }
 
 .eventImage {
   width: 100%;
   height: auto;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
 }
+
+.descriptionSection {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.descriptionTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1.25rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.description {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.8;
+  color: #475569;
+  margin: 0;
+}
+
 
 /* Sidebar */
 .sidebar {
@@ -183,32 +171,46 @@
 
 /* Details Card */
 .detailsCard {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 1.5rem;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 1.5rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .detailsCardTitle {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #0f172a;
-  margin: 0 0 0.5rem 0;
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 2.5vw, 1.75rem);
+  font-weight: 800;
+  color: #1f2937;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: -0.01em;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e2e8f0;
 }
 
 .detailItem {
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 1.25rem;
+  padding: 1rem;
+  border-radius: 12px;
+  transition: background 0.3s ease;
+}
+
+.detailItem:hover {
+  background: #f8fafc;
 }
 
 .detailIcon {
   color: #1e76aa;
   flex-shrink: 0;
   margin-top: 0.125rem;
+  width: 24px;
+  height: 24px;
 }
 
 .detailContent {
@@ -219,46 +221,51 @@
 }
 
 .detailLabel {
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
   color: #64748b;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
 }
 
 .detailValue {
-  font-size: 1rem;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
   font-weight: 600;
-  color: #0f172a;
+  color: #1f2937;
   line-height: 1.5;
 }
 
 /* Payment Button */
 .paymentButton {
   width: 100%;
-  background: #1e76aa;
+  background: linear-gradient(135deg, #1e76aa 0%, #459bcd 100%);
   color: white;
   border: none;
-  border-radius: 8px;
-  padding: 1rem 1.5rem;
-  font-size: 1.125rem;
+  border-radius: 12px;
+  padding: 1.125rem 1.75rem;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(30, 118, 170, 0.25);
 }
 
 .paymentButton:hover {
-  background: #155479;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(30, 118, 170, 0.3);
+  background: linear-gradient(135deg, #155479 0%, #1e76aa 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(30, 118, 170, 0.35);
 }
 
 .paymentButton:active {
-  transform: translateY(0);
+  transform: translateY(-1px);
 }
 
 /* Responsive Design */
@@ -299,11 +306,6 @@
     padding: 0 15px;
   }
 
-  .backButton {
-    padding: 0.625rem 1rem;
-    font-size: 0.875rem;
-    margin-bottom: 1.5rem;
-  }
 
   .eventInfoGrid {
     gap: 1.5rem;

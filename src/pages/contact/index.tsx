@@ -52,12 +52,30 @@ const Contact: NextPage = () => {
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
-    // Тут буде логіка відправки форми (поки що просто симуляція)
-    setTimeout(() => {
+    try {
+      // Відправляємо дані на сервер
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || (locale === 'ru' ? 'Ошибка отправки сообщения' : 'Failed to send message'));
+      }
+
       setIsSubmitting(false);
       setSubmitStatus('success');
       setFormData({ name: '', phone: '', email: '', message: '' });
-    }, 1000);
+    } catch (error: any) {
+      console.error('Error submitting form:', error);
+      setIsSubmitting(false);
+      setSubmitStatus('error');
+    }
   };
 
   return (
@@ -205,6 +223,13 @@ const Contact: NextPage = () => {
                   {locale === 'ru'
                     ? 'Спасибо! Ваше сообщение отправлено.'
                     : 'Thank you! Your message has been sent.'}
+                </div>
+              )}
+              {submitStatus === 'error' && (
+                <div className={styles.errorMessage}>
+                  {locale === 'ru'
+                    ? 'Ошибка отправки сообщения. Пожалуйста, попробуйте еще раз.'
+                    : 'Error sending message. Please try again.'}
                 </div>
               )}
               </div>

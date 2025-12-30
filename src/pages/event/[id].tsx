@@ -3,7 +3,7 @@ import type { NextPage, GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { ArrowLeft, Calendar, MapPin, DollarSign, X } from 'lucide-react';
+import { Calendar, MapPin, DollarSign, X } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import type { Event } from '@/types/events';
@@ -48,10 +48,6 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
       document.body.style.overflow = 'unset';
     };
   }, [isModalOpen]);
-
-  const handleBack = () => {
-    router.push('/events', '/events', { locale });
-  };
 
   const handlePayment = () => {
     setIsModalOpen(true);
@@ -191,26 +187,37 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
           {/* Hero Section */}
           <section className={styles.hero}>
             <div className={styles.heroBackground}>
-              <Image
-                src="/photo2.jpg"
-                alt="Estedilux Med Background"
-                fill
-                className={styles.heroBannerImage}
-                priority
-                quality={90}
-              />
+              {event.image ? (
+                <Image
+                  src={event.image}
+                  alt={title}
+                  fill
+                  className={styles.heroBannerImage}
+                  priority
+                  quality={90}
+                />
+              ) : (
+                <Image
+                  src="/photo2.jpg"
+                  alt="Estedilux Med Background"
+                  fill
+                  className={styles.heroBannerImage}
+                  priority
+                  quality={90}
+                />
+              )}
               <div className={styles.heroOverlay}></div>
             </div>
             <div className={styles.container}>
               <div className={styles.heroContent}>
                 <h1 className={styles.heroTitle}>
-                  {locale === 'ru' ? 'Направления обучения и стажировок' : 'Training and Internship Directions'}
+                  {title}
                 </h1>
-                <p className={styles.heroDescription}>
-                  {locale === 'ru'
-                    ? 'Мы не просто обучаем - мы открываем врачам двери в международное профессиональное пространство, где важны компетентность, глубина подготовки и безупречный уровень безопасности.'
-                    : 'We don\'t just teach - we open doors for doctors to the international professional space, where competence, depth of training and impeccable level of safety are important.'}
-                </p>
+                {description && (
+                  <p className={styles.heroDescription}>
+                    {description}
+                  </p>
+                )}
               </div>
             </div>
           </section>
@@ -218,34 +225,21 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
           {/* Event Content */}
           <div className={styles.contentSection}>
             <div className={styles.container}>
-              {/* Back Button */}
-              <button onClick={handleBack} className={styles.backButton}>
-                <ArrowLeft size={20} />
-                <span>{locale === 'ru' ? 'Вернуться к событиям' : 'Back to events'}</span>
-              </button>
-
               {/* Event Info Grid */}
               <div className={styles.eventInfoGrid}>
                 {/* Main Content */}
                 <div className={styles.mainContent}>
-                  {/* Title */}
-                  <div className={styles.descriptionSection}>
-                    <h2 className={styles.sectionTitle}>
-                      {title}
-                    </h2>
-                  </div>
-
                   {/* Event Image */}
                   {event.image && (
                     <div className={styles.imageWrapper}>
                       <Image
                         src={event.image}
                         alt={title}
-                        width={400}
-                        height={250}
+                        width={800}
+                        height={500}
                         className={styles.eventImage}
                         quality={90}
-                        sizes="(max-width: 768px) 100vw, 400px"
+                        sizes="(max-width: 768px) 100vw, 800px"
                       />
                     </div>
                   )}
@@ -253,6 +247,9 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                   {/* Description */}
                   {description && (
                     <div className={styles.descriptionSection}>
+                      <h3 className={styles.descriptionTitle}>
+                        {locale === 'ru' ? 'Описание программы' : 'Program Description'}
+                      </h3>
                       <p className={styles.description}>{description}</p>
                     </div>
                   )}
