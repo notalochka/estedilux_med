@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Calendar, MapPin } from 'lucide-react';
+import { Calendar, MapPin, ArrowLeft } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import type { EventCategory, Event } from '@/types/events';
