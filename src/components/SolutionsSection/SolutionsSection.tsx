@@ -1,6 +1,5 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Globe, Users, DollarSign } from 'lucide-react';
 import { useAnimation } from '@/lib/useAnimation';
 import styles from './SolutionsSection.module.css';
 
@@ -15,21 +14,21 @@ const SolutionsSection: React.FC = () => {
 
   const features = [
     {
-      icon: Globe,
+      icon: '/global.svg',
       title: locale === 'ru' ? 'Международные стандарты' : 'Global Standards',
       description: locale === 'ru'
         ? 'Все наши услуги предоставляются в соответствии с международными стандартами медицинского образования, гарантируя высокое качество, надежность и профессионализм для наших клиентов.'
         : 'All our services are delivered in adherence to international medical education standards, guaranteeing excellence, reliability, and professionalism for our clients.',
     },
     {
-      icon: Users,
+      icon: '/team.svg',
       title: locale === 'ru' ? 'Профессиональная команда' : 'Professional Team',
       description: locale === 'ru'
         ? 'Получайте поддержку от высококвалифицированной и признанной на международном уровне профессиональной команды, предоставляющей индивидуальные решения для ваших уникальных потребностей с профессионализмом и заботой.'
         : 'Receive support from a highly experienced and internationally recognized professional team, providing tailored solutions to meet your unique needs with excellence and care.',
     },
     {
-      icon: DollarSign,
+      icon: '/cost.svg',
       title: locale === 'ru' ? 'Формирование стоимости программ' : 'Forming the cost of programs',
       description: locale === 'ru'
         ? 'Стоимость образовательных программ Estedilux Med определяется совокупностью организационных и образовательных факторов, включая формат обучения, уровень подготовки, объём практической части, а также специфику проведения стажировок и профессиональных медицинских мероприятий.'
@@ -66,7 +65,6 @@ const SolutionsSection: React.FC = () => {
 
         <div className={styles.featuresGrid}>
           {features.map((feature, index) => {
-            const IconComponent = feature.icon;
             const { ref, isVisible } = featureRefs[index];
             return (
               <div 
@@ -76,7 +74,11 @@ const SolutionsSection: React.FC = () => {
                 style={{ animationDelay: `${index * 0.1}s`, opacity: isVisible ? 1 : 0 }}
               >
                 <div className={styles.iconWrapper}>
-                  <IconComponent size={48} className={styles.icon} />
+                  <img
+                    src={feature.icon}
+                    alt={feature.title}
+                    className={styles.icon}
+                  />
                 </div>
                 <h3 className={styles.featureTitle}>{feature.title}</h3>
                 <p className={styles.featureDescription}>{feature.description}</p>

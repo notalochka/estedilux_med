@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -17,10 +17,12 @@ const About: NextPage = () => {
   const { ref: graduatesRef, isVisible: graduatesVisible } = useAnimation({ threshold: 0.1 });
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentVideoSlide, setCurrentVideoSlide] = useState(0);
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
   const [loadedVideos, setLoadedVideos] = useState<Set<number>>(new Set());
+  const [videosPerView, setVideosPerView] = useState(3);
   const studentImages = Array.from({ length: 9 }, (_, i) => `/students/${i + 1}.jpg`);
   const videoFiles = [
     '/videos/1.MP4',
@@ -31,6 +33,24 @@ const About: NextPage = () => {
     '/videos/6.mp4',
     '/videos/7.mp4',
   ];
+
+  useEffect(() => {
+    const updateVideosPerView = () => {
+      setVideosPerView(window.innerWidth <= 768 ? 1 : 3);
+    };
+
+    updateVideosPerView();
+    window.addEventListener('resize', updateVideosPerView);
+    return () => window.removeEventListener('resize', updateVideosPerView);
+  }, []);
+
+  useEffect(() => {
+    // Перевіряємо, чи поточний слайд не виходить за межі при зміні кількості відео на екрані
+    const maxSlide = Math.max(0, videoFiles.length - videosPerView);
+    if (currentVideoSlide > maxSlide) {
+      setCurrentVideoSlide(maxSlide);
+    }
+  }, [videosPerView, videoFiles.length]);
 
   const handleImageLoad = (index: number) => {
     setLoadedImages((prev) => new Set(prev).add(index));
@@ -57,6 +77,22 @@ const About: NextPage = () => {
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
+  };
+
+  const nextVideoSlide = () => {
+    setCurrentVideoSlide((prev) => {
+      const maxSlide = Math.max(0, videoFiles.length - videosPerView);
+      return prev < maxSlide ? prev + 1 : maxSlide;
+    });
+  };
+
+  const prevVideoSlide = () => {
+    setCurrentVideoSlide((prev) => (prev > 0 ? prev - 1 : 0));
+  };
+
+  const goToVideoSlide = (index: number) => {
+    const maxSlide = Math.max(0, videoFiles.length - videosPerView);
+    setCurrentVideoSlide(Math.min(index, maxSlide));
   };
 
   const openVideo = (videoSrc: string) => {
@@ -299,6 +335,13 @@ const About: NextPage = () => {
                   {/* Service 2 */}
                   <div className={styles.serviceSection}>
                     <div className={styles.serviceContent}>
+                      <div className={styles.serviceIconWrapper}>
+                        <img
+                          src="/about/Qualification.svg"
+                          alt={locale === 'ru' ? 'Повышение квалификации врачей' : 'Doctor Qualification Enhancement'}
+                          className={styles.serviceIcon}
+                        />
+                      </div>
                       <div>
                         <span className={styles.serviceBadge}>
                           {locale === 'ru' ? 'Услуга' : 'Service'}
@@ -338,6 +381,13 @@ const About: NextPage = () => {
                   {/* Service 3 */}
                   <div className={styles.serviceSection}>
                     <div className={styles.serviceContent}>
+                      <div className={styles.serviceIconWrapper}>
+                        <img
+                          src="/about/Cadaver.svg"
+                          alt={locale === 'ru' ? 'Cadaver курсы' : 'Cadaver Courses'}
+                          className={styles.serviceIcon}
+                        />
+                      </div>
                       <div>
                         <span className={styles.serviceBadge}>
                           {locale === 'ru' ? 'Услуга' : 'Service'}
@@ -368,6 +418,13 @@ const About: NextPage = () => {
                   {/* Service 4 */}
                   <div className={styles.serviceSection}>
                     <div className={styles.serviceContent}>
+                      <div className={styles.serviceIconWrapper}>
+                        <img
+                          src="/about/Cadaver_Organization.svg"
+                          alt={locale === 'ru' ? 'Организация кадавер курсов под ключ' : 'Turnkey Cadaver Course Organization'}
+                          className={styles.serviceIcon}
+                        />
+                      </div>
                       <div>
                         <span className={styles.serviceBadge}>
                           {locale === 'ru' ? 'Услуга' : 'Service'}
@@ -407,6 +464,13 @@ const About: NextPage = () => {
                   {/* Service 5 */}
                   <div className={styles.serviceSection}>
                     <div className={styles.serviceContent}>
+                      <div className={styles.serviceIconWrapper}>
+                        <img
+                          src="/about/Medical_Organization.svg"
+                          alt={locale === 'ru' ? 'Организация медицинских мероприятий под ключ' : 'Turnkey Medical Event Organization'}
+                          className={styles.serviceIcon}
+                        />
+                      </div>
                       <div>
                         <span className={styles.serviceBadge}>
                           {locale === 'ru' ? 'Услуга' : 'Service'}
@@ -443,6 +507,13 @@ const About: NextPage = () => {
                   {/* Service 6 */}
                   <div className={styles.serviceSection}>
                     <div className={styles.serviceContent}>
+                      <div className={styles.serviceIconWrapper}>
+                        <img
+                          src="/about/Clinical_Internships.svg"
+                          alt={locale === 'ru' ? 'Стажировки в клиниках' : 'Clinical Internships'}
+                          className={styles.serviceIcon}
+                        />
+                      </div>
                       <div>
                         <span className={styles.serviceBadge}>
                           {locale === 'ru' ? 'Услуга' : 'Service'}
@@ -473,6 +544,13 @@ const About: NextPage = () => {
                   {/* Service 7 */}
                   <div className={styles.serviceSection}>
                     <div className={styles.serviceContent}>
+                      <div className={styles.serviceIconWrapper}>
+                        <img
+                          src="/about/University_Internships.svg"
+                          alt={locale === 'ru' ? 'Стажировки в университетах' : 'University Internships'}
+                          className={styles.serviceIcon}
+                        />
+                      </div>
                       <div>
                         <span className={styles.serviceBadge}>
                           {locale === 'ru' ? 'Услуга' : 'Service'}
@@ -506,6 +584,13 @@ const About: NextPage = () => {
                   {/* Service 8 */}
                   <div className={styles.serviceSection}>
                     <div className={styles.serviceContent}>
+                      <div className={styles.serviceIconWrapper}>
+                        <img
+                          src="/about/Doctor_Relocation.svg"
+                          alt={locale === 'ru' ? 'Реолокация врачей в Дубай' : 'Doctor Relocation to Dubai'}
+                          className={styles.serviceIcon}
+                        />
+                      </div>
                       <div>
                         <span className={styles.serviceBadge}>
                           {locale === 'ru' ? 'Услуга' : 'Service'}
@@ -542,6 +627,13 @@ const About: NextPage = () => {
                   {/* Service 9 */}
                   <div className={styles.serviceSection}>
                     <div className={styles.serviceContent}>
+                      <div className={styles.serviceIconWrapper}>
+                        <img
+                          src="/about/Relocation_Document.svg"
+                          alt={locale === 'ru' ? 'Помощь с документами для релокации' : 'Relocation Document Assistance'}
+                          className={styles.serviceIcon}
+                        />
+                      </div>
                       <div>
                         <span className={styles.serviceBadge}>
                           {locale === 'ru' ? 'Услуга' : 'Service'}
@@ -581,6 +673,13 @@ const About: NextPage = () => {
                   {/* Service 10 */}
                   <div className={styles.serviceSection}>
                     <div className={styles.serviceContent}>
+                      <div className={styles.serviceIconWrapper}>
+                        <img
+                          src="/about/Custom_Courses.svg"
+                          alt={locale === 'ru' ? 'Создание авторских курсов, программ и методик' : 'Creating Custom Courses, Programs and Methodologies'}
+                          className={styles.serviceIcon}
+                        />
+                      </div>
                       <div>
                         <span className={styles.serviceBadge}>
                           {locale === 'ru' ? 'Услуга' : 'Service'}
@@ -617,6 +716,13 @@ const About: NextPage = () => {
                   {/* Service 11 */}
                   <div className={styles.serviceSection}>
                     <div className={styles.serviceContent}>
+                      <div className={styles.serviceIconWrapper}>
+                        <img
+                          src="/about/Individual.svg"
+                          alt={locale === 'ru' ? 'Индивидуальные образовательные программы под ключ' : 'Turnkey Individual Educational Programs'}
+                          className={styles.serviceIcon}
+                        />
+                      </div>
                       <div>
                         <span className={styles.serviceBadge}>
                           {locale === 'ru' ? 'Услуга' : 'Service'}
@@ -658,48 +764,90 @@ const About: NextPage = () => {
                   <h2 className={styles.videoGalleryTitle}>
                     {locale === 'ru' ? 'Видеогалерея' : 'Video Gallery'}
                   </h2>
-                  <div className={styles.videoGrid}>
-                    {videoFiles.map((videoSrc, index) => (
-                      <div
-                        key={index}
-                        className={styles.videoThumbnail}
-                        onClick={() => openVideo(videoSrc)}
+                  <div className={styles.videoCarouselWrapper}>
+                    <button 
+                      className={styles.videoCarouselButton} 
+                      onClick={prevVideoSlide} 
+                      aria-label="Previous video"
+                      disabled={currentVideoSlide === 0}
+                    >
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                      </svg>
+                    </button>
+                    <div className={styles.videoCarouselContainer}>
+                      <div 
+                        className={styles.videoCarouselTrack}
+                        style={{ 
+                          '--slide-offset': `${currentVideoSlide}`,
+                        } as React.CSSProperties}
                       >
-                        <div className={styles.videoThumbnailWrapper}>
-                          {!loadedVideos.has(index) && (
-                            <div className={styles.loadingPlaceholder}>
-                              <div className={styles.loadingSpinner}></div>
+                        {videoFiles.map((videoSrc, index) => (
+                          <div key={index} className={styles.videoCarouselSlide}>
+                            <div
+                              className={styles.videoThumbnail}
+                              onClick={() => openVideo(videoSrc)}
+                            >
+                              <div className={styles.videoThumbnailWrapper}>
+                                {!loadedVideos.has(index) && (
+                                  <div className={styles.loadingPlaceholder}>
+                                    <div className={styles.loadingSpinner}></div>
+                                  </div>
+                                )}
+                                <video
+                                  src={videoSrc}
+                                  className={`${styles.videoPreview} ${loadedVideos.has(index) ? styles.loaded : styles.loading}`}
+                                  muted
+                                  playsInline
+                                  onLoadedData={() => handleVideoLoad(index)}
+                                  onMouseEnter={(e) => {
+                                    const video = e.currentTarget;
+                                    if (loadedVideos.has(index)) {
+                                      video.play();
+                                    }
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    const video = e.currentTarget;
+                                    video.pause();
+                                    video.currentTime = 0;
+                                  }}
+                                />
+                                {loadedVideos.has(index) && (
+                                  <div className={styles.playButton}>
+                                    <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+                                      <path d="M8 5v14l11-7z" />
+                                    </svg>
+                                  </div>
+                                )}
+                              </div>
                             </div>
-                          )}
-                          <video
-                            src={videoSrc}
-                            className={`${styles.videoPreview} ${loadedVideos.has(index) ? styles.loaded : styles.loading}`}
-                            muted
-                            playsInline
-                            onLoadedData={() => handleVideoLoad(index)}
-                            onMouseEnter={(e) => {
-                              const video = e.currentTarget;
-                              if (loadedVideos.has(index)) {
-                                video.play();
-                              }
-                            }}
-                            onMouseLeave={(e) => {
-                              const video = e.currentTarget;
-                              video.pause();
-                              video.currentTime = 0;
-                            }}
-                          />
-                          {loadedVideos.has(index) && (
-                            <div className={styles.playButton}>
-                              <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
-                                <path d="M8 5v14l11-7z" />
-                              </svg>
-                            </div>
-                          )}
-                        </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    </div>
+                    <button 
+                      className={styles.videoCarouselButton} 
+                      onClick={nextVideoSlide} 
+                      aria-label="Next video"
+                      disabled={currentVideoSlide >= Math.max(0, videoFiles.length - videosPerView)}
+                    >
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                      </svg>
+                    </button>
                   </div>
+                  {videoFiles.length > videosPerView && (
+                    <div className={styles.videoCarouselIndicators}>
+                      {Array.from({ length: Math.max(1, videoFiles.length - videosPerView + 1) }).map((_, index) => (
+                        <button
+                          key={index}
+                          className={`${styles.videoIndicator} ${currentVideoSlide === index ? styles.active : ''}`}
+                          onClick={() => goToVideoSlide(index)}
+                          aria-label={`Go to video ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               </section>
 

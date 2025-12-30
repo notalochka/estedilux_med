@@ -53,13 +53,9 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
             <div className={styles.container}>
               <div className={styles.heroContent}>
                 <h1 className={styles.heroTitle}>
-                  {locale === 'ru' ? 'Направления обучения и стажировок' : 'Training and Internship Directions'}
+                  {locale === 'ru' ? 'Направления стажировок и обучения' : 'Training and Internship Directions'}
                 </h1>
-                <p className={styles.heroDescription}>
-                  {locale === 'ru'
-                    ? 'Мы не просто обучаем - мы открываем врачам двери в международное профессиональное пространство, где важны компетентность, глубина подготовки и безупречный уровень безопасности.'
-                    : 'We don\'t just teach - we open doors for doctors to the international professional space, where competence, depth of training and impeccable level of safety are important.'}
-                </p>
+                
               </div>
             </div>
           </section>
@@ -69,15 +65,16 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
             <div className={styles.container}>
               {/* Header Section */}
               <div className={styles.categoriesHeader}>
+                
                 <h2 className={styles.categoriesTitle}>
-                  {locale === 'ru' ? 'Направления' : 'Directions'}
+                  {locale === 'ru' ? 'Выберите направление' : 'Choose a direction'}
                 </h2>
                 <p className={styles.categoriesSubtitle}>
                   {locale === 'ru'
-                    ? 'Выберите для себя наиболее удобное направление обучения, или задайте нам вопрос. Мы точно посоветуем вам наилучшее.'
-                    : 'Choose the most convenient training direction for yourself, or ask us. We will definitely recommend the best one for you.'}
+                    ? 'Мы не просто обучаем - мы открываем врачам двери в международное профессиональное пространство, где важны компетентность, глубина подготовки и безупречный уровень безопасности.'
+                    : 'We don\'t just teach - we open doors for doctors to the international professional space, where competence, depth of training and impeccable level of safety are important.'}
                 </p>
-                
+               
                 {/* Arrow from title to cards */}
                 <div className={styles.arrowWrapper}>
                   <div className={styles.arrowContainer}>

@@ -119,9 +119,12 @@
 }
 
 .heroTitleWrapper,
-.aboutTextContent,
 .graduatesSection {
   opacity: 0;
+}
+
+.aboutTextContent {
+  opacity: 1;
 }
 
 
@@ -640,6 +643,40 @@
   transition: all 0.5s;
 }
 
+.serviceIconWrapper {
+  position: relative;
+  z-index: 1;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(69, 155, 205, 0.1), rgba(30, 118, 170, 0.05));
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.serviceSection:hover .serviceIconWrapper {
+  transform: scale(1.1) rotate(5deg);
+  background: linear-gradient(135deg, rgba(69, 155, 205, 0.2), rgba(30, 118, 170, 0.1));
+  box-shadow: 0 8px 16px -4px rgba(69, 155, 205, 0.3);
+}
+
+.serviceIcon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  transition: all 0.4s ease;
+  /* SVG має білий колір, тому використовуємо filter для зміни на синій */
+  filter: brightness(0) saturate(100%) invert(45%) sepia(95%) saturate(500%) hue-rotate(180deg) brightness(1.1);
+}
+
+.serviceSection:hover .serviceIcon {
+  transform: scale(1.1);
+  filter: brightness(0) saturate(100%) invert(30%) sepia(95%) saturate(500%) hue-rotate(180deg) brightness(1.1);
+}
+
 .serviceSection.firstService {
   grid-column: span 2;
   display: flex;
@@ -711,20 +748,98 @@
   letter-spacing: -0.02em;
 }
 
-.videoGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
+.videoCarouselWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
-@media (min-width: 768px) {
-  .videoGrid {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-  }
+.videoCarouselButton {
+  background: #1e76aa;
+  border: none;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.videoCarouselButton:hover:not(:disabled) {
+  background: #155479;
+  transform: scale(1.1);
+}
+
+.videoCarouselButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.videoCarouselButton:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.videoCarouselContainer {
+  flex: 1;
+  overflow: hidden;
+  border-radius: 12px;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+
+.videoCarouselTrack {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  will-change: transform;
+  gap: 1rem;
+  width: 100%;
+  transform: translateX(calc(var(--slide-offset, 0) * -1 * ((100% - 2rem) / 3 + 1rem)));
+}
+
+.videoCarouselSlide {
+  min-width: calc((100% - 2rem) / 3);
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.videoCarouselIndicators {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-xl);
+  flex-wrap: wrap;
+}
+
+.videoIndicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.videoIndicator:hover {
+  background: rgba(0, 0, 0, 0.5);
+  transform: scale(1.2);
+}
+
+.videoIndicator.active {
+  background: #1e76aa;
+  width: 32px;
+  border-radius: 6px;
 }
 
 .videoThumbnail {
@@ -1374,6 +1489,17 @@
     font-size: 0.9375rem;
   }
 
+  .serviceIconWrapper {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+  }
+
+  .serviceIcon {
+    width: 36px;
+    height: 36px;
+  }
+
   .goalSection {
     padding: 3rem 0;
   }
@@ -1395,10 +1521,47 @@
     margin-bottom: var(--spacing-xl);
   }
 
-  .videoGrid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
+  .videoCarouselWrapper {
+    gap: var(--spacing-sm);
     padding: 0 10px;
+  }
+
+  .videoCarouselButton {
+    width: 40px;
+    height: 40px;
+  }
+
+  .videoCarouselButton svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .videoCarouselContainer {
+    overflow: hidden;
+  }
+
+  .videoCarouselTrack {
+    gap: 1rem;
+    transform: translateX(calc(var(--slide-offset, 0) * -1 * (100% + 1rem)));
+  }
+
+  .videoCarouselSlide {
+    min-width: 100%;
+    padding: 0;
+  }
+
+  .videoCarouselIndicators {
+    margin-top: var(--spacing-lg);
+    gap: 8px;
+  }
+
+  .videoIndicator {
+    width: 10px;
+    height: 10px;
+  }
+
+  .videoIndicator.active {
+    width: 24px;
   }
 
   .videoModalContent {

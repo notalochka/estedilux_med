@@ -234,58 +234,32 @@ const Header: React.FC = () => {
             <div className={styles.mobileMenuContent}>
               <Link href="/" className={`${styles.mobileNavLink} ${isActive('/') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'Главная' : 'Home'}
-          </Link>
+              </Link>
               <Link href="/about" className={`${styles.mobileNavLink} ${isActive('/about') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'О нас' : 'About'}
-          </Link>
+              </Link>
               <Link href="/events" className={`${styles.mobileNavLink} ${isActive('/events') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'События' : 'Events'}
-          </Link>
+              </Link>
               <Link href="/blog" className={`${styles.mobileNavLink} ${isActive('/blog') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'Блог' : 'Blog'}
-          </Link>
+              </Link>
               <Link href="/contact" className={`${styles.mobileNavLink} ${isActive('/contact') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'Контакты' : 'Contact'}
-          </Link>
+              </Link>
             </div>
-        <div className={styles.mobileLanguageSwitcher}>
-          <div 
-            ref={langDropdownRef}
-            className={styles.languageSwitcher}
-          >
-            <button
-              onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
-              className={styles.langTrigger}
-              aria-label="Change language"
-              aria-expanded={isLangDropdownOpen}
-            >
-              <Globe size={20} className={styles.langIcon} />
-              <span className={styles.langCurrent}>{locale?.toUpperCase()}</span>
-              <ChevronDown 
-                size={16} 
-                className={`${styles.langChevron} ${isLangDropdownOpen ? styles.open : ''}`} 
-              />
-            </button>
-            
-            {isLangDropdownOpen && (
-              <div className={styles.langDropdown}>
-                {locales?.map((loc) => (
-                  <button
-                    key={loc}
-                    onClick={() => changeLanguage(loc)}
-                    className={`${styles.langOption} ${locale === loc ? styles.active : ''}`}
-                    aria-label={`Switch to ${loc}`}
-                  >
-                    <span>{loc.toUpperCase()}</span>
-                    {locale === loc && (
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
+            <div className={styles.mobileLanguageSwitcher}>
+          <div className={styles.languageToggle}>
+            {locales?.map((loc) => (
+              <button
+                key={loc}
+                onClick={() => changeLanguage(loc)}
+                className={`${styles.langToggleButton} ${locale === loc ? styles.active : ''}`}
+                aria-label={`Switch to ${loc}`}
+              >
+                {loc.toUpperCase()}
+              </button>
+            ))}
           </div>
         </div>
       </div>
