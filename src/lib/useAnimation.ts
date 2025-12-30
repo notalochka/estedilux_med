@@ -20,6 +20,30 @@ export const useAnimation = (options: UseAnimationOptions = {}) => {
     const element = elementRef.current;
     if (!element) return;
 
+    // Перевірка, чи елемент вже в viewport при першому рендері
+    const checkInitialVisibility = () => {
+      const rect = element.getBoundingClientRect();
+      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+      const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+      
+      const isInViewport = 
+        rect.top < windowHeight &&
+        rect.bottom > 0 &&
+        rect.left < windowWidth &&
+        rect.right > 0;
+      
+      if (isInViewport) {
+        setIsVisible(true);
+        return true;
+      }
+      return false;
+    };
+
+    // Якщо елемент вже видимий, встановлюємо isVisible одразу
+    if (checkInitialVisibility() && triggerOnce) {
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {

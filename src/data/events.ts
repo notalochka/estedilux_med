@@ -12,12 +12,12 @@ export const events: Event[] = [
       ru: 'Практический курс по ринопластике с использованием кадаверов и живой хирургии. Изучение анатомии носа и современных техник ринопластики.',
       en: 'Practical rhinoplasty course using cadavers and live surgery. Study of nasal anatomy and modern rhinoplasty techniques.',
     },
-    date: '2025-11-15',
+    date: '2026-01-15',
     location: {
       ru: 'Стамбул, Турция',
       en: 'Istanbul, Turkey',
     },
-    image: '/categories/photo1.jpg',
+    image: '/events/1.jpg',
     price: 2500,
   },
   {
@@ -31,12 +31,12 @@ export const events: Event[] = [
       ru: 'Практический курс по ринопластике с использованием кадаверов и живой хирургии. Изучение анатомии носа и современных техник ринопластики.',
       en: 'Practical rhinoplasty course using cadavers and live surgery. Study of nasal anatomy and modern rhinoplasty techniques.',
     },
-    date: '2025-11-15',
+    date: '2026-09-15',
     location: {
       ru: 'Стамбул, Турция',
       en: 'Istanbul, Turkey',
     },
-    image: '/categories/photo2.jpg',
+    image: '/events/2.jpg',
     price: 2800,
   },
   {
@@ -50,12 +50,12 @@ export const events: Event[] = [
       ru: 'Практический курс по ринопластике с использованием кадаверов и живой хирургии. Изучение анатомии носа и современных техник ринопластики.',
       en: 'Practical rhinoplasty course using cadavers and live surgery. Study of nasal anatomy and modern rhinoplasty techniques.',
     },
-    date: '2025-11-15',
+    date: '2026-08-15',
     location: {
       ru: 'Стамбул, Турция',
       en: 'Istanbul, Turkey',
     },
-    image: '/categories/photo3.jpg',
+    image: '/events/3.jpg',
     price: 3000,
   },
 ];

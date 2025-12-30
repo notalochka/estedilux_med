@@ -64,6 +64,30 @@ db.exec(`
 const { eventCategories } = require('../src/data/eventCategories');
 const { events } = require('../src/data/events');
 
+// Мапінг назв категорій на назви фото
+const categoryToImageMap = {
+  'Эстетическая медицина и дерматология': '/categories/Cosmetology.jpg',
+  'Анатомия и Cadaver программы': '/categories/Cadaver.jpg',
+  'Гинекология и репродуктология': '/categories/Gynecology.jpg',
+  'Стоматология и челюстно-лицевая хирургия': '/categories/Dentistry.jpg',
+  'Пластическая и реконструктивная хирургия': '/categories/Plastic_surgery.jpg',
+  'Общая и малоинвазивная хирургия': '/categories/minimallyinvasive_surgery.jpg',
+  'Ортопедия, травматология и спортивная медицина': '/categories/Orthopedics.jpg',
+  'Неврология и нейрохирургия': '/categories/Neurology.jpg',
+  'Кардиология и кардиохирургия': '/categories/Cardiology.jpg',
+  'Терапевтические направления': '/categories/Therapy.jpg',
+  'Радиология и УЗ-диагностика': '/categories/Radiology.jpg',
+  'Педиатрия': '/categories/Pediatrics.jpg',
+  'Урология': '/categories/Urology.jpg',
+  'Онкология': '/categories/Oncology.jpg',
+  'Офтальмология': '/categories/Ophthalmology.jpg',
+  'Инфекционные заболевания': '/categories/Infectious_diseases.jpg',
+  'Лабораторная медицина и генетика': '/categories/genetics.jpg',
+  'Психиатрия и психотерапия': '/categories/Psychiatry.jpg',
+  'Паллиативная медицина': '/categories/Palliative.jpg',
+  'Специальные программы Estedilux Med': '/categories/Special_programs.jpg',
+};
+
 const createEventCategory = db.prepare(`
   INSERT INTO event_categories (id, title_ru, title_en, description_ru, description_en, subcategories, icon)
   VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -90,6 +114,8 @@ async function importEventCategories() {
       }
       
       const subcategoriesJson = JSON.stringify(category.subcategories);
+      // Використовуємо мапінг для іконки, якщо вона не вказана в даних
+      const iconPath = category.icon || categoryToImageMap[category.title.ru] || null;
       
       createEventCategory.run(
         category.id,
@@ -98,9 +124,9 @@ async function importEventCategories() {
         category.description.ru,
         category.description.en,
         subcategoriesJson,
-        category.icon || null
+        iconPath
       );
-      console.log(`✓ Imported category: ${category.title.ru}`);
+      console.log(`✓ Imported category: ${category.title.ru}${iconPath ? ` (icon: ${iconPath})` : ''}`);
       imported++;
     } catch (error) {
       console.error(`✗ Failed to import category: ${category.title.ru}`, error);
@@ -157,9 +183,56 @@ async function importEvents() {
   console.log(`   Errors: ${errors}`);
 }
 
+async function updateCategoryIcons() {
+  console.log('\n🚀 Starting category icons update...');
+
+  // Отримуємо всі категорії
+  const categories = db.prepare('SELECT id, title_ru, icon FROM event_categories ORDER BY id').all();
+
+  console.log(`Found ${categories.length} categories in database\n`);
+
+  // Підготовлюємо SQL запит для оновлення
+  const updateIcon = db.prepare(`
+    UPDATE event_categories 
+    SET icon = ?, updated_at = CURRENT_TIMESTAMP
+    WHERE id = ?
+  `);
+
+  let updated = 0;
+  let skipped = 0;
+  let notFound = 0;
+
+  // Оновлюємо кожну категорію
+  for (const category of categories) {
+    const imagePath = categoryToImageMap[category.title_ru];
+
+    if (imagePath) {
+      if (category.icon !== imagePath) {
+        updateIcon.run(imagePath, category.id);
+        console.log(`✓ Updated: "${category.title_ru}"`);
+        console.log(`  Old icon: ${category.icon || '(empty)'}`);
+        console.log(`  New icon: ${imagePath}`);
+        updated++;
+      } else {
+        console.log(`⏭️  Skipped: "${category.title_ru}" (already has correct icon)`);
+        skipped++;
+      }
+    } else {
+      console.log(`⚠️  Not found in map: "${category.title_ru}" (id: ${category.id})`);
+      notFound++;
+    }
+  }
+
+  console.log(`\n✅ Icons update completed!`);
+  console.log(`   Updated: ${updated}`);
+  console.log(`   Skipped: ${skipped}`);
+  console.log(`   Not found in map: ${notFound}`);
+}
+
 async function importAll() {
   try {
     await importEventCategories();
+    await updateCategoryIcons();
     await importEvents();
     console.log('\n🎉 All imports completed successfully!');
   } catch (error) {

@@ -131,12 +131,12 @@ const UpcomingEvents: React.FC = () => {
             const { ref, isVisible } = eventRefs[index] || { ref: null, isVisible: false };
             
             return (
-              <article 
-                key={event.id} 
-                ref={ref as React.RefObject<HTMLElement>}
-                className={`${styles.eventCard} ${isVisible ? styles.animateFadeInUp : ''}`}
-                style={{ animationDelay: `${index * 0.15}s`, opacity: isVisible ? 1 : 0 }}
-              >
+                <article 
+                  key={event.id} 
+                  ref={ref as React.RefObject<HTMLElement>}
+                  className={`${styles.eventCard} ${isVisible ? styles.animateFadeInUp : ''}`}
+                  style={{ animationDelay: isVisible ? `${index * 0.15}s` : '0s' }}
+                >
                 <Link href={`/event/${event.id}`} className={styles.eventLink}>
                   <div className={styles.imageWrapper}>
                     {event.image && (

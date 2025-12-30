@@ -34,7 +34,7 @@
   background-clip: text;
   margin: 0 0 4rem 0;
   text-align: center;
-  opacity: 0;
+  opacity: 1;
   letter-spacing: -0.02em;
   animation: gradientShift 5s ease infinite;
 }
@@ -93,6 +93,7 @@
   height: 100%;
   border: 1px solid rgba(255, 255, 255, 0.2);
   position: relative;
+  opacity: 1;
 }
 
 .blogCard::before {

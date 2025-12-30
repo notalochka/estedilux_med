@@ -87,7 +87,7 @@ const BlogPreviewSection: React.FC = () => {
                 <article 
                   ref={ref as React.RefObject<HTMLElement>}
                   className={`${styles.blogCard} ${isVisible ? styles.animateFadeInUp : ''}`}
-                  style={{ animationDelay: `${index * 0.15}s`, opacity: isVisible ? 1 : 0 }}
+                  style={{ animationDelay: isVisible ? `${index * 0.15}s` : '0s' }}
                 >
                   <div className={styles.imageWrapper}>
                     <Image
