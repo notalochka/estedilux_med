@@ -81,7 +81,12 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ value, onChange, name }) => {
           const data = await response.json();
           const imagePath = data.path;
 
-          setPreview(imagePath);
+          // Використовуємо API endpoint для preview
+          const previewPath = imagePath.startsWith('/blog/') || imagePath.startsWith('/events/')
+            ? `/api/images${imagePath}`
+            : imagePath;
+
+          setPreview(previewPath);
           onChange(imagePath);
         } catch (error) {
           console.error('Upload error:', error);

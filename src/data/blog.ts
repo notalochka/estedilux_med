@@ -203,24 +203,177 @@ const oldBlogData = [
   },
   {
     id: 4,
-    image: '/blog/2.jpg',
+    image: '/blog/4.jpg',
     date: '2025-10-10',
     title: {
-      ru: '4️⃣ Как заработать на стажировке в Дубай с Estedilux Med? 💰🚀',
-      en: '4️⃣ How to earn on an internship in Dubai with Estedilux Med? 💰🚀',
+      ru: 'Шесть причин 🤩, почему курс стоит пройти курс "Advanced implant & Maxillofacial Surgery"🔥',
+      en: 'Six reasons 🤩, why the course is worth taking the course "Advanced implant & Maxillofacial Surgery"🔥',
     },
     content: {
       ru: [
         {
+          type: 'heading',
+          content: '✅ Вы отработаете реальные хирургические протоколы',
+        },
+        {
           type: 'paragraph',
-          content: 'Текст статьи о заработке на стажировке в Дубай с Estedilux Med',
+          content: 'Не просто теория, а пошаговая логика работы — от планирования до фиксации импланта. Каждый этап выполняется под контролем наставника: позиционирование, выбор мембраны, техника шва, формирование лоскута.',
+        },
+        {
+          type: 'paragraph',
+          content: '🎯 После курса врач уходит с готовыми решениями для собственных операций.',
+        },
+        {
+          type: 'heading',
+          content: '✅ Разбор сложных клинических случаев',
+        },
+        {
+          type: 'paragraph',
+          content: 'Зигоматические, птеригоидные, All-on-4/6, Ridge Split, GBR - с разбором типичных ошибок и нюансов.',
+        },
+        {
+          type: 'paragraph',
+          content: 'Эти техники - ключ к более дорогим кейсам в практике, поэтому вложение в курс = рост среднего чека врача.',
+        },
+        {
+          type: 'heading',
+          content: '✅ Максимум практики на биоматериале',
+        },
+        {
+          type: 'paragraph',
+          content: 'Малокомплектная группа обеспечивает персональную отработку каждого этапа.'
+        },
+        {
+          type: 'paragraph',
+          content: 'Не наблюдение - а работа руками.'
+        },
+        {
+          type: 'paragraph',
+          content: '- Прямое закрепление моторики, уверенности и скорости.'
+        },
+        {
+          type: 'heading',
+          content: '✅ Интеграция хирургии и имплантологии',
+        },
+        {
+          type: 'paragraph',
+          content: 'Курс объединяет подходы челюстно-лицевой хирургии и классической имплантологии.'
+        },
+        {
+          type: 'paragraph',
+          content: 'Вы поймёте, как адаптировать техники под любой клинический сценарий - от ограниченного костного объёма до атрофии гребня.'
+        },
+        {
+          type: 'heading',
+          content: '✅ Современные материалы и протоколы',
+        },
+        {
+          type: 'paragraph',
+          content: 'Практическая работа с Titan Mesh, PTFE, коллагеновыми мембранами, синтетическими и ксеногенными материалами.'
+        },
+        {
+          type: 'paragraph',
+          content: 'Вы научитесь подбирать материал под задачу и контролировать регенерацию предсказуемо.'
+        },
+        {
+          type: 'heading',
+          content: '✅ Рост профессионального статуса',
+        },
+        {
+          type: 'paragraph',
+          content: 'Программа ориентирована на врачей, готовых перейти на уровень advanced-surgery.'
+        },
+        {
+          type: 'paragraph',
+          content: 'После курса вы можете расширять спектр услуг клиники, принимать сложные случаи и работать на уровне международных стандартов.'
+        },
+        {
+          type: 'paragraph',
+          content: 'Обучайтесь вместе с Estedilux Med 🎓'
         },
       ] as BlogPostContentItem[],
       en: [
         {
+          type: 'heading',
+          content: '✅ You will practice real surgical protocols',
+          },
+          {
           type: 'paragraph',
-          content: 'Text of the article about earning on an internship in Dubai with Estedilux Med',
-        },
+          content: 'Not just theory, but a step-by-step workflow—from planning to implant placement. Each stage is performed under the supervision of a mentor: positioning, membrane selection, suture technique, flap formation.',
+          },
+          {
+          type: 'paragraph',
+          content: '🎯 After the course, the doctor leaves with ready-made solutions for their own surgeries.',
+          },
+          {
+          type: 'heading',
+          content: '✅ Analysis of complex clinical cases',
+          },
+          {
+          type: 'paragraph',
+          content: 'Zygomatic, pterygoid, All-on-4/6, Ridge Split, GBR - with an analysis of typical errors and nuances.',
+          },
+          {
+          type: 'paragraph',
+          content: "These techniques are the key to more expensive cases in practice, so investing in the course = an increase in the average doctor's bill.",
+          },
+          {
+          type: 'heading',
+          content: '✅ Maximum practice on Biomaterial',
+          },
+          {
+          type: 'paragraph',
+          content: 'A small group ensures personalized practice of each stage.'
+          },
+          {
+          type: 'paragraph',
+          content: 'Not observation, but manual work.'
+          },
+          {
+          type: 'paragraph',
+          content: '- Direct reinforcement of motor skills, confidence, and speed.'
+          },
+          {
+          type: 'heading',
+          content: '✅ Integration of surgery and implantology',
+          },
+          {
+          type: 'paragraph',
+          content: 'The course combines approaches from maxillofacial surgery and classical implantology.'
+          },
+          {
+          type: 'paragraph',
+          content: 'You will understand how to adapt techniques to any clinical scenario—from limited bone volume to ridge atrophy.'
+          },
+          {
+          type: 'heading',
+          content: '✅ Modern Materials and Protocols',
+          },
+          {
+          type: 'paragraph',
+          content: 'Practical work with Titan Mesh, PTFE, collagen membranes, synthetic and xenogeneic materials.'
+          },
+          {
+          type: 'paragraph',
+          content: 'You will learn how to select the right material for the task and control regeneration predictably.'
+          },
+          {
+          type: 'heading',
+          content: '✅ Professional Development',
+          },
+          {
+          type: 'paragraph',
+          content: 'The program is designed for doctors ready to advance to the level of advanced surgery.'
+          },
+          {
+            type: 'paragraph',
+          content: "After completing the course, you can expand the clinic's range of services, accept complex cases, and work at international standards."
+          },
+          {
+          type: 'paragraph',
+          content: 'Learn with Estedilux Med 🎓'
+          },
+        
       ] as BlogPostContentItem[],
     },
   },

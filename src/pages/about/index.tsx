@@ -177,12 +177,12 @@ const About: NextPage = () => {
                 className={`${styles.aboutTextContent} ${aboutTextVisible ? styles.animateFadeInUp : ''}`}
               >
                 <h2 className={styles.aboutTextTitle}>
-                  {locale === 'ru' ? 'Про компанию Estedilux Med' : 'About Estedilux Med Company'}
+                  {locale === 'ru' ? 'Про компанию Estedilux\u00A0Med' : 'About Estedilux\u00A0Med Company'}
                 </h2>
                 <p className={styles.aboutTextDescription}>
                   {locale === 'ru'
-                    ? 'Estedilux Med — это международная образовательная платформа, которая объединяет обучение, стажировки, развитие врачей и организацию медицинских мероприятий под ключ. Мы не просто обучаем - мы открываем врачам двери в международное профессиональное пространство, где важны компетентность, глубина подготовки и безупречный уровень безопасности.'
-                    : 'Estedilux Med is an international educational platform that combines training, internships, doctor development and turnkey medical event organization. We don\'t just teach - we open doors for doctors to the international professional space, where competence, depth of training and impeccable level of safety are important.'}
+                    ? 'Estedilux\u00A0Med — это международная образовательная платформа, которая объединяет обучение, стажировки, развитие врачей и организацию медицинских мероприятий под ключ. Мы не просто обучаем - мы открываем врачам двери в международное профессиональное пространство, где важны компетентность, глубина подготовки и безупречный уровень безопасности.'
+                    : 'Estedilux\u00A0Med is an international educational platform that combines training, internships, doctor development and turnkey medical event organization. We don\'t just teach - we open doors for doctors to the international professional space, where competence, depth of training and impeccable level of safety are important.'}
                 </p>
               </div>
             </div>
@@ -195,7 +195,7 @@ const About: NextPage = () => {
           >
             <div className={styles.container}>
               <h2 className={styles.graduatesTitle}>
-                {locale === 'ru' ? 'Выпускники Estedilux Med' : 'Estedilux Med Graduates'}
+                {locale === 'ru' ? 'Выпускники Estedilux\u00A0Med' : 'Estedilux\u00A0Med Graduates'}
               </h2>
               <div className={styles.carouselWrapper}>
                 <button className={styles.carouselButton} onClick={prevSlide} aria-label="Previous slide">
@@ -282,8 +282,8 @@ const About: NextPage = () => {
                 </h2>
                 <p className={styles.aboutTextDescription}>
                   {locale === 'ru'
-                    ? 'Estedilux Med предлагает широкий спектр международных образовательных программ, стажировок и медицинских мероприятий, которые соответствуют высочайшим стандартам качества. Мы открываем врачам доступ к лучшим международным практикам и способствуем их профессиональному росту.'
-                    : 'Estedilux Med offers a wide range of international educational programs, internships and medical events that meet the highest quality standards. We open doors for doctors to the best international practices and help them grow professionally.'}
+                    ? 'Estedilux\u00A0Med предлагает широкий спектр международных образовательных программ, стажировок и медицинских мероприятий, которые соответствуют высочайшим стандартам качества. Мы открываем врачам доступ к лучшим международным практикам и способствуем их профессиональному росту.'
+                    : 'Estedilux\u00A0Med offers a wide range of international educational programs, internships and medical events that meet the highest quality standards. We open doors for doctors to the best international practices and help them grow professionally.'}
                 </p>
               </div>
             </div>

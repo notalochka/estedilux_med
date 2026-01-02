@@ -74,11 +74,7 @@ const CategoryDetail: NextPage<CategoryDetailProps> = ({ category, categoryEvent
                 <h1 className={styles.heroTitle}>
                     {locale === 'ru' ? 'Направления обучения и стажировок' : 'Training and Internship Directions'}
                 </h1>
-                <p className={styles.heroDescription}>
-                {locale === 'ru'
-                    ? 'Мы не просто обучаем - мы открываем врачам двери в международное профессиональное пространство, где важны компетентность, глубина подготовки и безупречный уровень безопасности.'
-                    : 'We don\'t just teach - we open doors for doctors to the international professional space, where competence, depth of training and impeccable level of safety are important.'}
-                </p>
+                
               </div>
             </div>
           </section>

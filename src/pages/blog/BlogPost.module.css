@@ -83,7 +83,6 @@
   color: white;
   margin-bottom: var(--spacing-lg);
   line-height: 1.2;
-  letter-spacing: 0.05em;
 }
 
 .heroChevron {
@@ -139,8 +138,8 @@
 }
 
 .backButton:hover {
-  border-color: #459bcd;
-  color: #459bcd;
+  border-color: #2481eb;
+  color: #0952a7;
   background: rgba(69, 155, 205, 0.05);
   transform: translateX(-4px);
 }

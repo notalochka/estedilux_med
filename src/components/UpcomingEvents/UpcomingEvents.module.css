@@ -51,11 +51,11 @@
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 800;
   font-family: var(--font-heading);
-  color: #003C64;
+  color: #073a76;
   margin-bottom: 4rem;
   text-align: center;
   opacity: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.1em;
 }
 
 .animateFadeInUp {
@@ -135,7 +135,7 @@
   position: absolute;
   top: 1rem;
   left: 1rem;
-  background: #459bcd;
+  background: #2481eb;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
@@ -157,13 +157,13 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #459bcd;
+  color: #2481eb;
   margin-bottom: 0.75rem;
 }
 
 .eventTitle {
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: 400;
   font-family: var(--font-heading);
   color: #1f2937;
   margin-bottom: 1rem;
@@ -191,7 +191,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: #1e76aa;
+  background: #0952a7;
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
@@ -204,7 +204,7 @@
 }
 
 .eventCard:hover .registrationButton {
-  background: #155479;
+  background: #073a76;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(69, 155, 205, 0.4);
 }

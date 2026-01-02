@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
 import MarkdownEditor from '@/components/MarkdownEditor/MarkdownEditor';
+import { getImageUrl } from '@/lib/imageUtils';
 import styles from './BlogAdmin.module.css';
 
 interface BlogPost {
@@ -329,7 +330,7 @@ const BlogAdminPage: NextPage = () => {
                   {blogs.map((blog) => (
                     <div key={blog.id} className={styles.blogCard}>
                       <div className={styles.blogCardImage}>
-                        <img src={blog.image} alt={blog.title.ru} />
+                        <img src={getImageUrl(blog.image)} alt={blog.title.ru} />
                       </div>
                       <div className={styles.blogCardContent}>
                         <div className={styles.blogCardHeader}>

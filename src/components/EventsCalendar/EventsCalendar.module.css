@@ -1,0 +1,156 @@
+.calendar {
+  background: #e3f1ff;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+}
+
+.calHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.month {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  letter-spacing: 0.05em;
+  color: #073a76;
+  text-transform: capitalize;
+}
+
+.nav {
+  background: transparent;
+  border: none;
+  color: #2481eb;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  border-radius: 0.5rem;
+}
+
+.nav:hover {
+  opacity: 0.8;
+  transform: scale(1.1);
+  background: rgba(36, 129, 235, 0.1);
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.weekday {
+  text-align: center;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #6b7280;
+  padding: 0.5rem 0;
+  text-transform: uppercase;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+.day,
+.empty {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: none;
+  background: transparent;
+  color: #1f2937;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.empty {
+  cursor: default;
+}
+
+.day:hover {
+  background: rgba(36, 129, 235, 0.1);
+}
+
+.day.today {
+  background: rgba(36, 129, 235, 0.15);
+  border: 2px solid #2481eb;
+  font-weight: 700;
+  color: #2481eb;
+}
+
+.day.events {
+  cursor: pointer;
+  border: 2px solid #2481eb;
+  background: rgba(36, 129, 235, 0.05);
+}
+
+.day.events:hover {
+  border-color: #0952a7;
+  background: rgba(36, 129, 235, 0.15);
+}
+
+.day.today.events {
+  border-color: #0952a7;
+  background: rgba(36, 129, 235, 0.2);
+}
+
+.day.selected {
+  background: #2481eb;
+  color: white;
+  border-color: #0952a7;
+  font-weight: 700;
+}
+
+.day.selected .dot {
+  background: white;
+}
+
+.dot {
+  position: absolute;
+  bottom: 0.5rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2481eb;
+}
+
+@media (max-width: 768px) {
+  .calendar {
+    padding: 1.5rem;
+  }
+
+  .month {
+    font-size: 1.25rem;
+  }
+
+  .nav {
+    font-size: 1.25rem;
+    padding: 0.25rem 0.75rem;
+  }
+
+  .weekday {
+    font-size: 0.75rem;
+  }
+
+  .day {
+    font-size: 0.75rem;
+  }
+}
+

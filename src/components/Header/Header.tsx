@@ -127,7 +127,19 @@ const Header: React.FC = () => {
     if (path === '/') {
       return asPath === '/' || asPath === `/${locale}`;
     }
-    return asPath.startsWith(path);
+    // Видаляємо locale з asPath для порівняння
+    const pathWithoutLocale = asPath.replace(`/${locale}`, '') || '/';
+    
+    // Для точного співпадіння (наприклад, /event не повинен співпадати з /events)
+    if (path === '/event') {
+      return pathWithoutLocale === '/event' || pathWithoutLocale.startsWith('/event/');
+    }
+    if (path === '/events') {
+      return pathWithoutLocale === '/events' || pathWithoutLocale.startsWith('/events/');
+    }
+    
+    // Для інших шляхів використовуємо startsWith
+    return pathWithoutLocale.startsWith(path);
   };
 
   return (
@@ -140,7 +152,7 @@ const Header: React.FC = () => {
       <div className={styles.container}>
         <div className={styles.logo}>
           <Link href="/" onClick={closeMenu} className={styles.logoLink}>
-            <span className={styles.logoText}>Estedilux Med</span>
+            <span className={styles.logoText}>Estedilux&nbsp;Med</span>
           </Link>
         </div>
 
@@ -152,8 +164,11 @@ const Header: React.FC = () => {
           <Link href="/about" className={`${styles.navLink} ${isActive('/about') ? styles.active : ''}`}>
             {locale === 'ru' ? 'О нас' : 'About'}
           </Link>
-          <Link href="/events" className={`${styles.navLink} ${isActive('/events') ? styles.active : ''}`}>
+          <Link href="/event" className={`${styles.navLink} ${isActive('/event') ? styles.active : ''}`}>
             {locale === 'ru' ? 'События' : 'Events'}
+          </Link>
+          <Link href="/events" className={`${styles.navLink} ${isActive('/events') ? styles.active : ''}`}>
+            {locale === 'ru' ? 'Направления' : 'Directions'}
           </Link>
           <Link href="/blog" className={`${styles.navLink} ${isActive('/blog') ? styles.active : ''}`}>
             {locale === 'ru' ? 'Блог' : 'Blog'}
@@ -243,8 +258,11 @@ const Header: React.FC = () => {
               <Link href="/about" className={`${styles.mobileNavLink} ${isActive('/about') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'О нас' : 'About'}
               </Link>
-              <Link href="/events" className={`${styles.mobileNavLink} ${isActive('/events') ? styles.active : ''}`} onClick={closeMenu}>
+              <Link href="/event" className={`${styles.mobileNavLink} ${isActive('/event') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'События' : 'Events'}
+              </Link>
+              <Link href="/events" className={`${styles.mobileNavLink} ${isActive('/events') ? styles.active : ''}`} onClick={closeMenu}>
+                {locale === 'ru' ? 'Направления' : 'Directions'}
               </Link>
               <Link href="/blog" className={`${styles.mobileNavLink} ${isActive('/blog') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'Блог' : 'Blog'}

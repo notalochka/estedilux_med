@@ -8,6 +8,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import { getImageUrl } from '@/lib/imageUtils';
 import type { BlogPost } from '@/types/blog';
 import styles from './BlogPost.module.css';
 
@@ -104,7 +105,7 @@ const BlogPostPage: NextPage<BlogPostPageProps> = ({ post }) => {
             {/* Full Size Image */}
             <div className={styles.imageWrapper}>
               <Image
-                src={post.image}
+                src={getImageUrl(post.image)}
                 alt={title}
                 width={900}
                 height={600}

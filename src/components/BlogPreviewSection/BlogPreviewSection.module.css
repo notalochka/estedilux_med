@@ -27,7 +27,7 @@
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 800;
   font-family: var(--font-heading);
-  background: linear-gradient(135deg, #003C64 0%, #1e76aa 50%, #459bcd 100%);
+  background: linear-gradient(135deg, #001f43 0%, #0c5ebb 50%, #2481eb 100%);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -35,7 +35,7 @@
   margin: 0 0 4rem 0;
   text-align: center;
   opacity: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.1em;
   animation: gradientShift 5s ease infinite;
 }
 
@@ -81,7 +81,7 @@
 .blogCard {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #c4dceb 0%, #b7d9ed 100%);
+  background: linear-gradient(135deg, #daeafc 0%, #99c9ff 100%);
   box-shadow: 
     0 10px 25px -5px rgba(0, 0, 0, 0.2),
     0 4px 6px -2px rgba(0, 0, 0, 0.05),
@@ -178,8 +178,9 @@
 
 .blogTitle {
   font-size: 1.125rem;
-  font-weight: 600;
+  font-weight: 400;
   font-family: var(--font-heading);
+  letter-spacing: 0.1em;
   color: #1f2937;
   margin: 1.5rem 1.5rem 1.5rem 1.5rem;
   line-height: 1.5;

@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { Calendar, MapPin, DollarSign, X } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import { getImageUrl } from '@/lib/imageUtils';
 import type { Event } from '@/types/events';
 import styles from './EventDetail.module.css';
 
@@ -189,7 +190,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
             <div className={styles.heroBackground}>
               {event.image ? (
                 <Image
-                  src={event.image}
+                  src={getImageUrl(event.image)}
                   alt={title}
                   fill
                   className={styles.heroBannerImage}
@@ -213,11 +214,6 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                 <h1 className={styles.heroTitle}>
                   {title}
                 </h1>
-                {description && (
-                  <p className={styles.heroDescription}>
-                    {description}
-                  </p>
-                )}
               </div>
             </div>
           </section>
@@ -233,7 +229,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                   {event.image && (
                     <div className={styles.imageWrapper}>
                       <Image
-                        src={event.image}
+                        src={getImageUrl(event.image)}
                         alt={title}
                         width={800}
                         height={500}

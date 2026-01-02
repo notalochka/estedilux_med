@@ -37,8 +37,16 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
     const base64String = matches[2];
     const buffer = Buffer.from(base64String, 'base64');
 
+    // Підтримка різних папок для завантаження (blog або events)
+    const folder = req.body.folder || 'blog'; // За замовчуванням blog
+    const allowedFolders = ['blog', 'events'];
+    
+    if (!allowedFolders.includes(folder)) {
+      return res.status(400).json({ error: 'Invalid folder. Allowed: blog, events' });
+    }
+
     const fileName = `${uuidv4()}.${fileType}`;
-    const uploadDir = path.join(process.cwd(), 'public', 'blog');
+    const uploadDir = path.join(process.cwd(), 'public', folder);
     const filePath = path.join(uploadDir, fileName);
 
     try {
@@ -51,7 +59,7 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
 
     await writeFile(filePath, buffer);
 
-    const publicPath = `/blog/${fileName}`;
+    const publicPath = `/${folder}/${fileName}`;
     
     return res.status(200).json({ path: publicPath });
   } catch (error: any) {

@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { Calendar, Search } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import { getImageUrl } from '@/lib/imageUtils';
 import type { BlogPost } from '@/types/blog';
 import styles from './Blog.module.css';
 
@@ -203,7 +204,7 @@ const Blog: NextPage = () => {
                           <Link href={`/blog/${post.id}`} className={styles.postLink}>
                             <div className={styles.imageWrapper}>
                               <Image
-                                src={post.image}
+                                src={getImageUrl(post.image)}
                                 alt={title}
                                 fill
                                 className={styles.postImage}

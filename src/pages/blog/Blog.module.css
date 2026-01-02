@@ -85,7 +85,6 @@
   color: white;
   margin-bottom: var(--spacing-lg);
   line-height: 1.1;
-  letter-spacing: -0.02em;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
@@ -215,7 +214,7 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: #003C64;
+  background: #0952a7;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
@@ -267,7 +266,7 @@
 }
 
 .postCard:hover .readMore {
-  color: #003C64;
+  color: #0952a7;
   gap: 0.75rem;
 }
 

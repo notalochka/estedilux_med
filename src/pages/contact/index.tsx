@@ -101,7 +101,7 @@ const Contact: NextPage = () => {
           <section className={styles.hero}>
             <div className={styles.heroBackground}>
               <Image
-                src="/photo5.jpg"
+                src="/contact_hero.jpg"
                 alt="Estedilux Med Background"
                 fill
                 className={styles.heroBannerImage}
@@ -134,7 +134,7 @@ const Contact: NextPage = () => {
               >
               <div className={styles.formHeader}>
                 <h2 className={styles.formTitle}>
-                  {locale === 'ru' ? 'Свяжитесь с командой Estedilux Med' : 'Contact the Estedilux Med team'}
+                  {locale === 'ru' ? 'Свяжитесь с командой Estedilux\u00A0Med' : 'Contact the Estedilux\u00A0Med team'}
                 </h2>
                 <p className={styles.formDescription}>
                   {locale === 'ru'

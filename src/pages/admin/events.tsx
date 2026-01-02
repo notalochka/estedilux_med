@@ -12,6 +12,7 @@ import {
   X
 } from 'lucide-react';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
+import { getImageUrl } from '@/lib/imageUtils';
 import styles from './EventsAdmin.module.css';
 import type { Event, EventCategory } from '@/types/events';
 
@@ -417,7 +418,7 @@ const EventsAdminPage: NextPage = () => {
                     <div key={event.id} className={styles.eventCard}>
                       {event.image && (
                         <div className={styles.eventCardImage}>
-                          <img src={event.image} alt={event.title.ru} />
+                          <img src={getImageUrl(event.image)} alt={event.title.ru} />
                         </div>
                       )}
                       <div className={styles.eventCardContent}>

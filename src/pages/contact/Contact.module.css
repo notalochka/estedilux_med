@@ -95,7 +95,6 @@
   color: white;
   margin-bottom: var(--spacing-lg);
   line-height: 1.1;
-  letter-spacing: -0.02em;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
@@ -191,8 +190,9 @@
   opacity: 0;
   min-height: 600px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  height: 100%;
 }
 
 .contactInfoCard {
@@ -201,13 +201,12 @@
 }
 
 .contactInfoTitle {
-  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-size: clamp(1.85rem, 4vw, 3.25rem);
   font-weight: 700;
   font-family: var(--font-heading);
   color: #0f172a;
   margin-bottom: 2.5rem;
   line-height: 1.2;
-  letter-spacing: -0.02em;
 }
 
 .contactInfoList {
@@ -284,7 +283,6 @@
   color: #0f172a;
   margin-bottom: 1rem;
   line-height: 1.2;
-  letter-spacing: -0.02em;
 }
 
 .formDescription {
@@ -414,7 +412,7 @@
 
 .submitButton {
   padding: 1.125rem 2rem;
-  background: linear-gradient(135deg, #1e76aa 0%, #459bcd 100%);
+  background: linear-gradient(135deg, #0952a7 0%, #2481eb 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -446,7 +444,7 @@
 }
 
 .submitButton:hover {
-  background: linear-gradient(135deg, #155479 0%, #1e76aa 100%);
+  background: linear-gradient(135deg, #073c79 0%, #1e69bf 100%);
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(30, 118, 170, 0.4);
 }
@@ -472,7 +470,7 @@
 }
 
 .contactInfoTitle {
-  font-size: var(--font-size-xl);
+  font-size: 2rem;
   font-weight: 600;
   color: var(--color-primary-dark);
   margin-bottom: var(--spacing-md);
@@ -505,7 +503,7 @@
 .contactInfoIcon {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  background: linear-gradient(135deg, #0952a7 0%, #2481eb 100%);
   border-radius: 10px;
   display: flex;
   align-items: center;
