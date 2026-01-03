@@ -148,7 +148,7 @@ const Header: React.FC = () => {
         className={styles.scrollProgress}
         style={{ width: `${scrollProgress}%` }}
       />
-      <header className={`${styles.header} ${isScrolled ? styles.scrolled : styles.transparent}`}>
+    <header className={`${styles.header} ${isScrolled ? styles.scrolled : styles.transparent}`}>
       <div className={styles.container}>
         <div className={styles.logo}>
           <Link href="/" onClick={closeMenu} className={styles.logoLink}>
@@ -199,21 +199,21 @@ const Header: React.FC = () => {
           
           {isLangDropdownOpen && (
             <div className={styles.langDropdown}>
-              {locales?.map((loc) => (
-                <button
-                  key={loc}
-                  onClick={() => changeLanguage(loc)}
+          {locales?.map((loc) => (
+            <button
+              key={loc}
+              onClick={() => changeLanguage(loc)}
                   className={`${styles.langOption} ${locale === loc ? styles.active : ''}`}
-                  aria-label={`Switch to ${loc}`}
-                >
+              aria-label={`Switch to ${loc}`}
+            >
                   <span>{loc.toUpperCase()}</span>
                   {locale === loc && (
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>
                   )}
-                </button>
-              ))}
+            </button>
+          ))}
             </div>
           )}
         </div>
@@ -258,24 +258,24 @@ const Header: React.FC = () => {
             <div className={styles.mobileMenuContent}>
               <Link href="/" className={`${styles.mobileNavLink} ${isActive('/') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'Главная' : 'Home'}
-              </Link>
+          </Link>
               <Link href="/about" className={`${styles.mobileNavLink} ${isActive('/about') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'О нас' : 'About'}
-              </Link>
+          </Link>
               <Link href="/event" className={`${styles.mobileNavLink} ${isActive('/event') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'События' : 'Events'}
-              </Link>
+          </Link>
               <Link href="/events" className={`${styles.mobileNavLink} ${isActive('/events') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'Направления' : 'Directions'}
               </Link>
               <Link href="/blog" className={`${styles.mobileNavLink} ${isActive('/blog') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'Блог' : 'Blog'}
-              </Link>
+          </Link>
               <Link href="/contact" className={`${styles.mobileNavLink} ${isActive('/contact') ? styles.active : ''}`} onClick={closeMenu}>
                 {locale === 'ru' ? 'Контакты' : 'Contact'}
-              </Link>
+          </Link>
             </div>
-            <div className={styles.mobileLanguageSwitcher}>
+        <div className={styles.mobileLanguageSwitcher}>
               <div 
                 ref={langDropdownRef}
                 className={styles.languageSwitcher}
@@ -296,25 +296,25 @@ const Header: React.FC = () => {
                 
                 {isLangDropdownOpen && (
                   <div className={styles.langDropdown}>
-                    {locales?.map((loc) => (
-                      <button
-                        key={loc}
-                        onClick={() => changeLanguage(loc)}
+          {locales?.map((loc) => (
+            <button
+              key={loc}
+              onClick={() => changeLanguage(loc)}
                         className={`${styles.langOption} ${locale === loc ? styles.active : ''}`}
-                        aria-label={`Switch to ${loc}`}
-                      >
+              aria-label={`Switch to ${loc}`}
+            >
                         <span>{loc.toUpperCase()}</span>
                         {locale === loc && (
                           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <polyline points="20 6 9 17 4 12"></polyline>
                           </svg>
                         )}
-                      </button>
-                    ))}
+            </button>
+          ))}
                   </div>
                 )}
               </div>
-            </div>
+        </div>
       </div>
         </>
       )}
