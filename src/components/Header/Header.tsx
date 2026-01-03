@@ -225,11 +225,15 @@ const Header: React.FC = () => {
           className={styles.burgerButton}
           aria-label="Toggle menu"
         >
-          <div className={styles.burgerLines}>
-            <span className={`${styles.burgerLine} ${styles.burgerLineTop}`}></span>
-            <span className={`${styles.burgerLine} ${styles.burgerLineMiddle}`}></span>
-            <span className={`${styles.burgerLine} ${styles.burgerLineBottom}`}></span>
-          </div>
+          {isMenuOpen ? (
+            <X size={32} strokeWidth={3} className={styles.burgerIcon} />
+          ) : (
+            <div className={styles.burgerLines}>
+              <span className={`${styles.burgerLine} ${styles.burgerLineTop}`}></span>
+              <span className={`${styles.burgerLine} ${styles.burgerLineMiddle}`}></span>
+              <span className={`${styles.burgerLine} ${styles.burgerLineBottom}`}></span>
+            </div>
+          )}
         </button>
       </div>
 

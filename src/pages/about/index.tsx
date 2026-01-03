@@ -140,7 +140,7 @@ const About: NextPage = () => {
           <section className={styles.hero}>
             <div className={styles.heroBackground}>
               <Image
-                src="/photo3.jpg"
+                src="/hero_background.jpg"
                 alt="Estedilux Med Background"
                 fill
                 className={styles.heroBannerImage}

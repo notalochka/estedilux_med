@@ -136,7 +136,7 @@ const Blog: NextPage = () => {
           <section className={styles.hero}>
             <div className={styles.heroBackground}>
               <Image
-                src="/blog_main.jpg"
+                src="/hero_background.jpg"
                 alt="Estedilux Med Blog Background"
                 fill
                 className={styles.heroBannerImage}
