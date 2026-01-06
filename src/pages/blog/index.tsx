@@ -90,14 +90,6 @@ const Blog: NextPage = () => {
     setDisplayedCount(prev => prev + 3);
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const months = locale === 'ru' 
-      ? ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
-      : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    
-    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-  };
 
   const getPreviewText = (post: BlogPost): string => {
     const content = locale === 'ru' ? post.content.ru : post.content.en;
@@ -211,10 +203,6 @@ const Blog: NextPage = () => {
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 quality={90}
                               />
-                              <div className={styles.dateBadge}>
-                                <Calendar size={14} />
-                                <span>{formatDate(post.date)}</span>
-                              </div>
                             </div>
                             
                             <div className={styles.postContent}>

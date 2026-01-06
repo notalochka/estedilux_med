@@ -265,19 +265,7 @@ const Contact: NextPage = () => {
                         <span className={styles.contactInfoText}>+380 50 999 43 49</span>
                       </div>
                     </a>
-                    <div className={styles.contactInfoItem}>
-                      <div className={styles.contactInfoIcon}>
-                        <MapPin size={20} />
-                      </div>
-                      <div className={styles.contactInfoContent}>
-                        <span className={styles.contactInfoLabel}>
-                          {locale === 'ru' ? 'Местоположение' : 'Location'}
-                        </span>
-                        <span className={styles.contactInfoText}>
-                          {locale === 'ru' ? 'Украина' : 'Ukraine'}
-                        </span>
-                      </div>
-                    </div>
+                    
                   </div>
                 </div>
               </div>
