@@ -23,7 +23,7 @@ const Hero: React.FC = () => {
           priority
         />
         <Image
-          src="/main_hero.jpg"
+          src="/hero_background.jpg"
           alt="Estedilux Med Background"
           fill
           className={`${styles.heroImage} ${styles.heroImageDesktop}`}

@@ -330,6 +330,23 @@
   background: #1e76aa;
 }
 
+.burgerIcon {
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.header.scrolled .burgerIcon {
+  color: #111827;
+}
+
+.burgerButton:hover .burgerIcon {
+  color: rgba(30, 118, 170, 1);
+}
+
+.header.scrolled .burgerButton:hover .burgerIcon {
+  color: #1e76aa;
+}
+
 /* Мобільне меню Overlay */
 .mobileOverlay {
   display: none;

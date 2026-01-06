@@ -48,7 +48,7 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
           <section className={styles.hero}>
             <div className={styles.heroBackground}>
               <Image
-                src="/photo2.jpg"
+                src="/photo1.jpg"
                 alt="Estedilux Med Background"
                 fill
                 className={styles.heroBannerImage}
