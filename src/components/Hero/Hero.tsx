@@ -16,7 +16,7 @@ const Hero: React.FC = () => {
     <section className={styles.hero}>
       <div className={styles.heroBackground}>
         <Image
-          src="/hero_background.jpg"
+          src="/main_hero_mobile.png"
           alt="Estedilux Med Background"
           fill
           className={`${styles.heroImage} ${styles.heroImageMobile}`}
