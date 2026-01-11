@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { Calendar, MapPin, ShoppingCart, X } from 'lucide-react';
 import { useAnimation } from '@/lib/useAnimation';
 import { getImageUrl } from '@/lib/imageUtils';
+import { getCountryFromLocation } from '@/lib/countryUtils';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import EventsCalendar from '@/components/EventsCalendar/EventsCalendar';
@@ -85,13 +86,28 @@ const Event: NextPage = () => {
     });
   }, [events, selectedDate]);
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string, endDateString?: string) => {
     const date = new Date(dateString);
     const months = locale === 'ru' 
-      ? ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+      ? ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
       : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     
-    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+    const startDay = date.getDate();
+    const startMonth = months[date.getMonth()];
+    
+    if (endDateString) {
+      const endDate = new Date(endDateString);
+      const endDay = endDate.getDate();
+      const endMonth = months[endDate.getMonth()];
+      
+      if (startMonth === endMonth) {
+        return `${startDay} - ${endDay}\n${startMonth}`;
+      } else {
+        return `${startDay} ${startMonth} -\n${endDay} ${endMonth}`;
+      }
+    }
+    
+    return `${startDay}\n${startMonth}`;
   };
 
   const getCategoryTitle = (categoryId: number) => {
@@ -135,7 +151,7 @@ const Event: NextPage = () => {
           <section className={styles.hero}>
             <div className={styles.heroBackground}>
               <Image
-                src="/photo1.jpg"
+                src="/events_hero.jpg"
                 alt="Estedilux Med Events Background"
                 fill
                 className={styles.heroBannerImage}
@@ -175,97 +191,67 @@ const Event: NextPage = () => {
                         ? `События на ${selectedDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}`
                         : `Events on ${selectedDate.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}`
                       : locale === 'ru'
-                      ? 'Все события Estedilux\u00A0Med'
-                      : 'All Events Estedilux\u00A0Med'}
+                      ? 'РАСПИСАНИЕ'
+                      : 'SCHEDULE'}
                   </h2>
-                  <p className={styles.eventsCount}>
-                  {locale === 'ru' ? 'Всего событий:' : 'Total events:'} {filteredEvents.length}
-                  </p>
+                  {!selectedDate && (
+                    <>
+                      <div className={styles.eventsSubtitle}>
+                        <span>Estedilux Med</span>
+                        <span className={styles.eventsYear}>2026</span>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
 
               <div className={styles.contentGrid}>
-                {/* Events Grid */}
-                <div>
-                  {isLoading ? (
-                    <div className={styles.loading}>
-                      {locale === 'ru' ? 'Загрузка событий...' : 'Loading events...'}
-                    </div>
-                  ) : filteredEvents.length === 0 ? (
-                    <div className={styles.noEvents}>
-                      <p>{locale === 'ru' ? 'События не найдены' : 'No events found'}</p>
-                    </div>
-                  ) : (
+                {isLoading ? (
+                  <div className={styles.loading}>
+                    {locale === 'ru' ? 'Загрузка событий...' : 'Loading events...'}
+                  </div>
+                ) : filteredEvents.length === 0 ? (
+                  <div className={styles.noEvents}>
+                    <p>{locale === 'ru' ? 'События не найдены' : 'No events found'}</p>
+                  </div>
+                ) : (
+                  <>
                     <div className={styles.eventsGrid}>
-                        {filteredEvents.map((event, index) => {
-                          const categoryTitle = getCategoryTitle(event.categoryId);
-                          const isLastOdd = filteredEvents.length % 2 !== 0 && index === filteredEvents.length - 1;
+                        {filteredEvents.map((event) => {
+                          const eventTitle = locale === 'ru' ? event.title.ru : event.title.en;
+                          const locationText = event.location ? (locale === 'ru' ? event.location.ru : event.location.en) : '';
+                          const countryInfo = locationText ? getCountryFromLocation(locationText) : null;
+                          
                           return (
-                            <article key={event.id} className={`${styles.eventCard} ${isLastOdd ? styles.eventCardWide : ''}`}>
+                            <article key={event.id} className={styles.eventCard}>
                               <Link href={`/event/${event.id}`} className={styles.eventLink}>
-                                <div className={styles.imageWrapper}>
-                                  {event.image && (
-                                    <Image
-                                      src={getImageUrl(event.image)}
-                                      alt={locale === 'ru' ? event.title.ru : event.title.en}
-                                      fill
-                                      className={styles.eventImage}
-                                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                    />
-                                  )}
+                                <div className={styles.eventCardContent}>
                                   {event.date && (
-                                    <div className={styles.dateBadge}>
-                                      <Calendar size={14} />
-                                      <span>{formatDate(event.date)}</span>
-                                    </div>
-                                  )}
-                                </div>
-                                
-                                <div className={styles.eventContent}>
-                                  {categoryTitle && (
-                                    <div className={styles.category}>
-                                      {categoryTitle}
+                                    <div className={styles.eventDate}>
+                                      {formatDate(event.date, event.endDate)}
                                     </div>
                                   )}
                                   
                                   <h3 className={styles.eventTitle}>
-                                    {locale === 'ru' ? event.title.ru : event.title.en}
+                                    {eventTitle}
                                   </h3>
                                   
-                                  {event.location && (
-                                    <div className={styles.location}>
-                                      <MapPin size={14} />
-                                      <span>{locale === 'ru' ? event.location.ru : event.location.en}</span>
+                                  {countryInfo && (
+                                    <div className={styles.eventFlag}>
+                                      {countryInfo.emoji}
                                     </div>
                                   )}
-                                  
-                                  <div className={styles.registrationButton}>
-                                    <ShoppingCart size={16} />
-                                    <span>{locale === 'ru' ? 'Регистрация' : 'Registration'}</span>
-                                  </div>
                                 </div>
                               </Link>
                             </article>
                           );
                         })}
                     </div>
-                  )}
-                </div>
-
-                {/* Calendar Sidebar */}
-                <aside className={styles.calendarSidebar}>
-                  <EventsCalendar
-                    events={events}
-                    selectedDate={selectedDate}
-                    onDateSelect={setSelectedDate}
-                  />
-                  {selectedDate && (
-                    <button onClick={clearFilter} className={styles.clearFilter}>
-                      <X size={16} />
-                      <span>{locale === 'ru' ? 'Очистить фильтр' : 'Clear filter'}</span>
-                    </button>
-                  )}
-                </aside>
+                    <div className={styles.eventsFooter}>
+                      <p>International Medical Education</p>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

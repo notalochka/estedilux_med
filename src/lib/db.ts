@@ -99,6 +99,11 @@ export function initDatabase() {
   } catch (e) {
   }
 
+  try {
+    db.exec('ALTER TABLE events ADD COLUMN end_date TEXT');
+  } catch (e) {
+  }
+
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_event_date ON events(date)
   `);
@@ -236,13 +241,13 @@ export const getEventById = db.prepare(`
 `);
 
 export const createEvent = db.prepare(`
-  INSERT INTO events (category_id, title_ru, title_en, description_ru, description_en, date, location_ru, location_en, price, duration, image, published)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  INSERT INTO events (category_id, title_ru, title_en, description_ru, description_en, date, end_date, location_ru, location_en, price, duration, image, published)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `);
 
 export const updateEvent = db.prepare(`
   UPDATE events 
-  SET category_id = ?, title_ru = ?, title_en = ?, description_ru = ?, description_en = ?, date = ?, location_ru = ?, location_en = ?, price = ?, duration = ?, image = ?, published = ?, updated_at = CURRENT_TIMESTAMP
+  SET category_id = ?, title_ru = ?, title_en = ?, description_ru = ?, description_en = ?, date = ?, end_date = ?, location_ru = ?, location_en = ?, price = ?, duration = ?, image = ?, published = ?, updated_at = CURRENT_TIMESTAMP
   WHERE id = ?
 `);
 

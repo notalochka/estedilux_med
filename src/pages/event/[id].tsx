@@ -7,6 +7,7 @@ import { Calendar, MapPin, DollarSign, X } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import { getImageUrl } from '@/lib/imageUtils';
+import { getCountryFromLocation } from '@/lib/countryUtils';
 import type { Event } from '@/types/events';
 import styles from './EventDetail.module.css';
 
@@ -150,15 +151,34 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
     ? (locale === 'ru' ? event.location.ru : event.location.en)
     : '';
 
-  const formatDate = (dateString?: string) => {
+  const formatDate = (dateString?: string, endDateString?: string) => {
     if (!dateString) return '';
     const date = new Date(dateString);
     const months = locale === 'ru' 
       ? ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
       : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     
-    return `${date.getDate()} ${months[date.getMonth()]}, ${date.getFullYear()}`;
+    const startDay = date.getDate();
+    const startMonth = months[date.getMonth()];
+    const year = date.getFullYear();
+    
+    if (endDateString) {
+      const endDate = new Date(endDateString);
+      const endDay = endDate.getDate();
+      const endMonth = months[endDate.getMonth()];
+      
+      // Якщо місяці однакові, показуємо тільки один раз
+      if (startMonth === endMonth) {
+        return `${startDay} - ${endDay} ${startMonth}, ${year}`;
+      } else {
+        return `${startDay} ${startMonth} - ${endDay} ${endMonth}, ${year}`;
+      }
+    }
+    
+    return `${startDay} ${startMonth}, ${year}`;
   };
+
+  const countryInfo = location ? getCountryFromLocation(location) : null;
 
   const formatPrice = (price?: number) => {
     if (!price) return '';
@@ -267,7 +287,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                           <span className={styles.detailLabel}>
                             {locale === 'ru' ? 'Дата' : 'Date'}
                           </span>
-                          <span className={styles.detailValue}>{formatDate(event.date)}</span>
+                          <span className={styles.detailValue}>{formatDate(event.date, event.endDate)}</span>
                         </div>
                       </div>
                     )}
@@ -280,7 +300,10 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                           <span className={styles.detailLabel}>
                             {locale === 'ru' ? 'Место проведения' : 'Location'}
                           </span>
-                          <span className={styles.detailValue}>{location}</span>
+                          <span className={styles.detailValue}>
+                            {countryInfo && <span className={styles.countryFlag}>{countryInfo.emoji}</span>}
+                            {location}
+                          </span>
                         </div>
                       </div>
                     )}
@@ -535,6 +558,7 @@ export const getServerSideProps: GetServerSideProps<EventDetailPageProps> = asyn
         }
       } : {}),
       ...(eventData.date ? { date: eventData.date } : {}),
+      ...(eventData.end_date ? { endDate: eventData.end_date } : {}),
       ...(eventData.location_ru || eventData.location_en ? {
         location: {
           ru: eventData.location_ru || '',

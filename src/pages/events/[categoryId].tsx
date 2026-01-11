@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { Calendar, MapPin, ArrowLeft } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import { getCountryFromLocation } from '@/lib/countryUtils';
 import type { EventCategory, Event } from '@/types/events';
 import styles from './CategoryDetail.module.css';
 
@@ -60,7 +61,7 @@ const CategoryDetail: NextPage<CategoryDetailProps> = ({ category, categoryEvent
           <section className={styles.hero}>
             <div className={styles.heroBackground}>
               <Image
-                src="/photo1.jpg"
+                src="/directions_hero.jpg"
                 alt="Estedilux Med Background"
                 fill
                 className={styles.heroBannerImage}
@@ -179,12 +180,17 @@ const CategoryDetail: NextPage<CategoryDetailProps> = ({ category, categoryEvent
                             <h3 className={styles.eventTitle}>
                               {locale === 'ru' ? event.title.ru : event.title.en}
                             </h3>
-                            {event.location && (
-                              <div className={styles.eventLocation}>
-                                <MapPin size={14} />
-                                <span>{locale === 'ru' ? event.location.ru : event.location.en}</span>
-                              </div>
-                            )}
+                            {event.location && (() => {
+                              const locationText = locale === 'ru' ? event.location.ru : event.location.en;
+                              const countryInfo = getCountryFromLocation(locationText);
+                              return (
+                                <div className={styles.eventLocation}>
+                                  {countryInfo && <span className={styles.countryFlag}>{countryInfo.emoji}</span>}
+                                  <MapPin size={14} />
+                                  <span>{locationText}</span>
+                                </div>
+                              );
+                            })()}
                             {event.description && (
                               <p className={styles.eventDescription}>
                                 {locale === 'ru' ? event.description.ru : event.description.en}
@@ -283,6 +289,7 @@ export const getServerSideProps: GetServerSideProps<CategoryDetailProps> = async
         }
       } : {}),
       ...(event.date ? { date: event.date } : {}),
+      ...(event.end_date ? { endDate: event.end_date } : {}),
       ...(event.location_ru || event.location_en ? {
         location: {
           ru: event.location_ru || '',

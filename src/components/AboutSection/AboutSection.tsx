@@ -22,7 +22,7 @@ const AboutSection: React.FC = () => {
           >
             <div className={styles.imageWrapper}>
               <Image
-                src="/about_main.jpg"
+                src="/photo1.jpg"
                 alt={locale === 'ru' ? 'Команда Estedilux Med' : 'Estedilux Med Team'}
                 fill
                 className={styles.aboutImage}

@@ -40,6 +40,7 @@ const EventsAdminPage: NextPage = () => {
     description_ru: '',
     description_en: '',
     date: '',
+    end_date: '',
     location_ru: '',
     location_en: '',
     price: '',
@@ -115,6 +116,7 @@ const EventsAdminPage: NextPage = () => {
       description_ru: '',
       description_en: '',
       date: '',
+      end_date: '',
       location_ru: '',
       location_en: '',
       price: '',
@@ -134,6 +136,7 @@ const EventsAdminPage: NextPage = () => {
       description_ru: event.description?.ru || '',
       description_en: event.description?.en || '',
       date: event.date || '',
+      end_date: event.endDate || '',
       location_ru: event.location?.ru || '',
       location_en: event.location?.en || '',
       price: event.price ? String(event.price) : '',
@@ -210,6 +213,7 @@ const EventsAdminPage: NextPage = () => {
       description_ru: '',
       description_en: '',
       date: '',
+      end_date: '',
       location_ru: '',
       location_en: '',
       price: '',
@@ -316,11 +320,19 @@ const EventsAdminPage: NextPage = () => {
                     </select>
                   </div>
                   <div className={styles.formGroup}>
-                    <label>Дата</label>
+                    <label>Дата начала</label>
                     <input
                       type="date"
                       value={formData.date}
                       onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                    />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Дата окончания (необязательно)</label>
+                    <input
+                      type="date"
+                      value={formData.end_date}
+                      onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
                     />
                   </div>
                   <div className={styles.formGroup}>

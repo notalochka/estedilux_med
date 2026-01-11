@@ -33,6 +33,7 @@ export interface Event {
     en: string;
   };
   date?: string;
+  endDate?: string;
   location?: {
     ru: string;
     en: string;

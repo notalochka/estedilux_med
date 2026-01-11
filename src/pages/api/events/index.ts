@@ -43,6 +43,7 @@ async function publicHandler(req: NextApiRequest, res: NextApiResponse) {
           }
         } : {}),
         ...(event.date ? { date: event.date } : {}),
+        ...(event.end_date ? { endDate: event.end_date } : {}),
         ...(event.location_ru || event.location_en ? {
           location: {
             ru: event.location_ru || '',
@@ -96,6 +97,7 @@ async function adminGetHandler(req: AuthenticatedRequest, res: NextApiResponse) 
           }
         } : {}),
         ...(event.date ? { date: event.date } : {}),
+        ...(event.end_date ? { endDate: event.end_date } : {}),
         ...(event.location_ru || event.location_en ? {
           location: {
             ru: event.location_ru || '',
@@ -121,7 +123,7 @@ async function adminGetHandler(req: AuthenticatedRequest, res: NextApiResponse) 
 async function protectedHandler(req: AuthenticatedRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
-      const { category_id, title_ru, title_en, description_ru, description_en, date, location_ru, location_en, price, duration, image, published } = req.body;
+      const { category_id, title_ru, title_en, description_ru, description_en, date, end_date, location_ru, location_en, price, duration, image, published } = req.body;
 
       if (!category_id || !title_ru || !title_en) {
         return res.status(400).json({ error: 'Category ID, title_ru, and title_en are required' });
@@ -139,6 +141,7 @@ async function protectedHandler(req: AuthenticatedRequest, res: NextApiResponse)
         description_ru || null,
         description_en || null,
         date || null,
+        end_date || null,
         location_ru || null,
         location_en || null,
         price !== undefined && price !== null ? parseFloat(price) : null,
