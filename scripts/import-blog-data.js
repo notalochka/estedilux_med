@@ -1,30 +1,23 @@
 // Реєструємо ts-node для підтримки TypeScript
-const tsConfigPaths = require('tsconfig-paths');
-const tsConfig = require('../tsconfig.json');
+const tsNode = require('ts-node');
+const ts = require('typescript');
 
-// Реєструємо path mapping
-const baseUrl = tsConfig.compilerOptions.baseUrl || '.';
-const paths = tsConfig.compilerOptions.paths || {};
-tsConfigPaths.register({
-  baseUrl,
-  paths,
-});
+const compilerOptions = {
+  module: ts.ModuleKind.CommonJS,
+  moduleResolution: ts.ModuleResolutionKind.NodeJs,
+  esModuleInterop: true,
+  allowSyntheticDefaultImports: true,
+  resolveJsonModule: true,
+  skipLibCheck: true,
+  target: ts.ScriptTarget.ES2020,
+};
 
-require('ts-node').register({
+tsNode.register({
   transpileOnly: true,
-  compilerOptions: {
-    target: 'ES2020',
-    lib: ['ES2020'],
-    module: 'commonjs',
-    moduleResolution: 'node',
-    esModuleInterop: true,
-    allowSyntheticDefaultImports: true,
-    resolveJsonModule: true,
-    skipLibCheck: true,
-    strict: false,
-    baseUrl: '.',
-    paths: tsConfig.compilerOptions.paths,
-  },
+  compilerOptions,
+  typeCheck: false,
+  files: false,
+  ignore: ['(?:^|/)node_modules/'],
 });
 
 const Database = require('better-sqlite3');

@@ -1,58 +1,4 @@
-// Реєструємо ts-node для підтримки TypeScript
-let tsNodeRegistered = false;
-
-try {
-  const tsNode = require('ts-node');
-  const ts = require('typescript');
-  
-  // Створюємо правильний compiler host
-  const createCompilerHost = (options) => {
-    const host = ts.createCompilerHost(options);
-    const originalFileExists = host.fileExists;
-    host.fileExists = (fileName) => {
-      try {
-        return originalFileExists.call(host, fileName);
-      } catch (e) {
-        return false;
-      }
-    };
-    return host;
-  };
-  
-  tsNode.register({
-    transpileOnly: true,
-    compilerOptions: {
-      module: 'commonjs',
-      moduleResolution: 'node',
-      esModuleInterop: true,
-      allowSyntheticDefaultImports: true,
-      resolveJsonModule: true,
-      skipLibCheck: true,
-      target: 'ES2020',
-    },
-    typeCheck: false,
-    files: false,
-    ignore: ['(?:^|/)node_modules/'],
-  });
-  
-  tsNodeRegistered = true;
-} catch (error) {
-  console.error('❌ Failed to register ts-node:', error.message);
-  console.error('   Trying to use tsx or alternative method...');
-  
-  // Спробуємо використати tsx якщо він встановлений
-  try {
-    require('tsx/cjs/register');
-    tsNodeRegistered = true;
-    console.log('✓ Using tsx instead');
-  } catch (e) {
-    console.error('❌ tsx also not available');
-    console.error('   Please install: npm install -D tsx');
-    console.error('   Or use: npx tsx scripts/import-events-data.js');
-    process.exit(1);
-  }
-}
-
+// Альтернативна версія без ts-node (використовує JSON для даних)
 const Database = require('better-sqlite3');
 const path = require('path');
 const fs = require('fs');
@@ -144,34 +90,6 @@ try {
   db.exec('ALTER TABLE events ADD COLUMN end_date TEXT');
 } catch (e) {}
 
-// Імпортуємо дані з файлів
-let eventCategories = [];
-let events = [];
-let events2026 = [];
-
-try {
-  const eventCategoriesModule = require('../src/data/eventCategories.ts');
-  eventCategories = eventCategoriesModule.eventCategories || [];
-} catch (error) {
-  console.error('❌ Failed to load eventCategories:', error.message);
-  process.exit(1);
-}
-
-try {
-  const eventsModule = require('../src/data/events.ts');
-  events = eventsModule.events || [];
-} catch (error) {
-  console.warn('⚠️  Failed to load events.ts:', error.message);
-}
-
-try {
-  const events2026Module = require('../src/data/events2026.ts');
-  events2026 = events2026Module.events2026 || [];
-} catch (error) {
-  console.warn('⚠️  events2026.ts not found or has errors, skipping 2026 events import');
-  console.warn('   Error:', error.message);
-}
-
 // Мапінг назв категорій на назви фото
 const categoryToImageMap = {
   'Эстетическая медицина и дерматология': '/categories/Cosmetology.jpg',
@@ -206,44 +124,89 @@ const createEvent = db.prepare(`
   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `);
 
+// Функція для завантаження TypeScript модулів через eval (обхід проблеми з ts-node)
+function loadTSModule(modulePath) {
+  const fullPath = path.join(process.cwd(), modulePath);
+  const content = fs.readFileSync(fullPath, 'utf-8');
+  
+  // Простий парсер для експортів (для eventCategories та events)
+  // Це спрощена версія, яка працює для наших файлів
+  const exports = {};
+  
+  if (modulePath.includes('eventCategories')) {
+    // Завантажуємо через require з динамічним компілятором
+    try {
+      const tsNode = require('ts-node');
+      tsNode.register({
+        transpileOnly: true,
+        compilerOptions: {
+          module: 'commonjs',
+          moduleResolution: 'node',
+          esModuleInterop: true,
+          allowSyntheticDefaultImports: true,
+          resolveJsonModule: true,
+          skipLibCheck: true,
+        },
+      });
+      return require(fullPath);
+    } catch (e) {
+      console.error('Failed to load with ts-node:', e.message);
+      // Fallback: використовуємо JSON файл якщо він є
+      const jsonPath = fullPath.replace('.ts', '.json');
+      if (fs.existsSync(jsonPath)) {
+        return require(jsonPath);
+      }
+      throw e;
+    }
+  }
+  
+  return require(fullPath);
+}
+
 async function importEventCategories() {
   console.log('🚀 Starting event categories import...');
   let imported = 0;
   let skipped = 0;
   let errors = 0;
 
-  for (const category of eventCategories) {
-    try {
-      const existingCategory = db.prepare('SELECT id FROM event_categories WHERE id = ?').get(category.id);
-      if (existingCategory) {
-        console.log(`- Skipping existing category: ${category.title.ru}`);
-        skipped++;
-        continue;
+  try {
+    const { eventCategories } = loadTSModule('src/data/eventCategories.ts');
+    
+    for (const category of eventCategories) {
+      try {
+        const existingCategory = db.prepare('SELECT id FROM event_categories WHERE id = ?').get(category.id);
+        if (existingCategory) {
+          console.log(`- Skipping existing category: ${category.title.ru}`);
+          skipped++;
+          continue;
+        }
+        
+        const subcategoriesJson = JSON.stringify(category.subcategories);
+        const iconPath = category.icon || categoryToImageMap[category.title.ru] || null;
+        
+        createEventCategory.run(
+          category.id,
+          category.title.ru,
+          category.title.en,
+          category.title.tr || null,
+          category.title.uk || null,
+          category.description.ru,
+          category.description.en,
+          category.description.tr || null,
+          category.description.uk || null,
+          subcategoriesJson,
+          iconPath
+        );
+        console.log(`✓ Imported category: ${category.title.ru}${iconPath ? ` (icon: ${iconPath})` : ''}`);
+        imported++;
+      } catch (error) {
+        console.error(`✗ Failed to import category: ${category.title.ru}`, error.message);
+        errors++;
       }
-      
-      const subcategoriesJson = JSON.stringify(category.subcategories);
-      // Використовуємо мапінг для іконки, якщо вона не вказана в даних
-      const iconPath = category.icon || categoryToImageMap[category.title.ru] || null;
-      
-      createEventCategory.run(
-        category.id,
-        category.title.ru,
-        category.title.en,
-        category.title.tr || null,
-        category.title.uk || null,
-        category.description.ru,
-        category.description.en,
-        category.description.tr || null,
-        category.description.uk || null,
-        subcategoriesJson,
-        iconPath
-      );
-      console.log(`✓ Imported category: ${category.title.ru}${iconPath ? ` (icon: ${iconPath})` : ''}`);
-      imported++;
-    } catch (error) {
-      console.error(`✗ Failed to import category: ${category.title.ru}`, error);
-      errors++;
     }
+  } catch (error) {
+    console.error('✗ Failed to load eventCategories:', error.message);
+    errors++;
   }
   
   console.log(`\n✅ Categories import completed!`);
@@ -258,43 +221,50 @@ async function importEvents() {
   let skipped = 0;
   let errors = 0;
 
-  for (const event of events) {
-    try {
-      const existingEvent = db.prepare('SELECT id FROM events WHERE id = ?').get(event.id);
-      if (existingEvent) {
-        console.log(`- Skipping existing event: ${event.title.ru}`);
-        skipped++;
-        continue;
+  try {
+    const { events } = loadTSModule('src/data/events.ts');
+    
+    for (const event of events) {
+      try {
+        const existingEvent = db.prepare('SELECT id FROM events WHERE id = ?').get(event.id);
+        if (existingEvent) {
+          console.log(`- Skipping existing event: ${event.title.ru}`);
+          skipped++;
+          continue;
+        }
+        
+        createEvent.run(
+          event.id,
+          event.categoryId,
+          event.title.ru,
+          event.title.en,
+          event.title.tr || null,
+          event.title.uk || null,
+          event.description?.ru || null,
+          event.description?.en || null,
+          event.description?.tr || null,
+          event.description?.uk || null,
+          event.date || null,
+          event.endDate || null,
+          event.location?.ru || null,
+          event.location?.en || null,
+          event.location?.tr || null,
+          event.location?.uk || null,
+          event.price || null,
+          event.duration || null,
+          event.image || null,
+          event.published !== false ? 1 : 0
+        );
+        console.log(`✓ Imported event: ${event.title.ru}`);
+        imported++;
+      } catch (error) {
+        console.error(`✗ Failed to import event: ${event.title.ru}`, error.message);
+        errors++;
       }
-      
-      createEvent.run(
-        event.id,
-        event.categoryId,
-        event.title.ru,
-        event.title.en,
-        event.title.tr || null,
-        event.title.uk || null,
-        event.description?.ru || null,
-        event.description?.en || null,
-        event.description?.tr || null,
-        event.description?.uk || null,
-        event.date || null,
-        event.endDate || null,
-        event.location?.ru || null,
-        event.location?.en || null,
-        event.location?.tr || null,
-        event.location?.uk || null,
-        event.price || null,
-        event.duration || null,
-        event.image || null,
-        event.published !== false ? 1 : 0
-      );
-      console.log(`✓ Imported event: ${event.title.ru}`);
-      imported++;
-    } catch (error) {
-      console.error(`✗ Failed to import event: ${event.title.ru}`, error);
-      errors++;
     }
+  } catch (error) {
+    console.error('✗ Failed to load events:', error.message);
+    errors++;
   }
   
   console.log(`\n✅ Events import completed!`);
@@ -303,15 +273,72 @@ async function importEvents() {
   console.log(`   Errors: ${errors}`);
 }
 
+async function importEvents2026() {
+  console.log('\n🚀 Starting events 2026 import...');
+  let imported = 0;
+  let skipped = 0;
+  let errors = 0;
+
+  try {
+    const { events2026 } = loadTSModule('src/data/events2026.ts');
+    
+    for (const event of events2026) {
+      try {
+        const existingEvent = db.prepare('SELECT id FROM events WHERE id = ?').get(event.id);
+        if (existingEvent) {
+          console.log(`- Skipping existing event: ${event.title.ru}`);
+          skipped++;
+          continue;
+        }
+        
+        createEvent.run(
+          event.id,
+          event.categoryId,
+          event.title.ru,
+          event.title.en,
+          event.title.tr || null,
+          event.title.uk || null,
+          event.description?.ru || null,
+          event.description?.en || null,
+          event.description?.tr || null,
+          event.description?.uk || null,
+          event.date || null,
+          event.endDate || null,
+          event.location?.ru || null,
+          event.location?.en || null,
+          event.location?.tr || null,
+          event.location?.uk || null,
+          event.price || null,
+          event.duration || null,
+          event.image || null,
+          event.published !== false ? 1 : 0
+        );
+        console.log(`✓ Imported event 2026: ${event.title.ru}`);
+        imported++;
+      } catch (error) {
+        console.error(`✗ Failed to import event 2026: ${event.title.ru}`, error.message);
+        errors++;
+      }
+    }
+  } catch (error) {
+    console.error('✗ Failed to load events2026:', error.message);
+    console.error('   This is optional, continuing...');
+    errors++;
+  }
+  
+  console.log(`\n✅ Events 2026 import completed!`);
+  console.log(`   Imported: ${imported}`);
+  console.log(`   Skipped: ${skipped}`);
+  console.log(`   Errors: ${errors}`);
+}
+
 async function updateCategoryIcons() {
   console.log('\n🚀 Starting category icons update...');
 
-  // Отримуємо всі категорії
   const categories = db.prepare('SELECT id, title_ru, icon FROM event_categories ORDER BY id').all();
 
   console.log(`Found ${categories.length} categories in database\n`);
 
-  // Підготовлюємо SQL запит для оновлення
   const updateIcon = db.prepare(`
     UPDATE event_categories 
     SET icon = ?, updated_at = CURRENT_TIMESTAMP
@@ -322,7 +349,6 @@ async function updateCategoryIcons() {
   let skipped = 0;
   let notFound = 0;
 
-  // Оновлюємо кожну категорію
   for (const category of categories) {
     const imagePath = categoryToImageMap[category.title_ru];
 
@@ -349,57 +375,6 @@ async function updateCategoryIcons() {
   console.log(`   Not found in map: ${notFound}`);
 }
 
-async function importEvents2026() {
-  console.log('\n🚀 Starting events 2026 import...');
-  let imported = 0;
-  let skipped = 0;
-  let errors = 0;
-
-  for (const event of events2026) {
-    try {
-      const existingEvent = db.prepare('SELECT id FROM events WHERE id = ?').get(event.id);
-      if (existingEvent) {
-        console.log(`- Skipping existing event: ${event.title.ru}`);
-        skipped++;
-        continue;
-      }
-      
-      createEvent.run(
-        event.id,
-        event.categoryId,
-        event.title.ru,
-        event.title.en,
-        event.title.tr || null,
-        event.title.uk || null,
-        event.description?.ru || null,
-        event.description?.en || null,
-        event.description?.tr || null,
-        event.description?.uk || null,
-        event.date || null,
-        event.endDate || null,
-        event.location?.ru || null,
-        event.location?.en || null,
-        event.location?.tr || null,
-        event.location?.uk || null,
-        event.price || null,
-        event.duration || null,
-        event.image || null,
-        event.published !== false ? 1 : 0
-      );
-      console.log(`✓ Imported event 2026: ${event.title.ru}`);
-      imported++;
-    } catch (error) {
-      console.error(`✗ Failed to import event 2026: ${event.title.ru}`, error);
-      errors++;
-    }
-  }
-  
-  console.log(`\n✅ Events 2026 import completed!`);
-  console.log(`   Imported: ${imported}`);
-  console.log(`   Skipped: ${skipped}`);
-  console.log(`   Errors: ${errors}`);
-}
-
 async function importAll() {
   try {
     await importEventCategories();
@@ -416,4 +391,3 @@ async function importAll() {
 }
 
 importAll();
-
