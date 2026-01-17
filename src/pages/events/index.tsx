@@ -103,7 +103,7 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
               <div className={styles.categoriesGrid}>
                 {categories.map((category, index) => {
                   // Використовуємо icon з бази даних, якщо він є, інакше fallback на старий шлях
-                  const categoryImage = category.icon || `/categories/photo${(index % 7) + 1}.jpg`;
+                  const categoryImage = category.icon || `/categories/category_fallback_${(index % 4) + 1}.jpg`;
                   const displaySubcategories = category.subcategories.slice(0, 4);
                   
                   // Визначаємо розмір картки залежно від позиції

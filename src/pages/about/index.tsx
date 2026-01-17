@@ -346,7 +346,7 @@ const About: NextPage = () => {
                     </div>
                     <div className={styles.serviceImageWrapper}>
                       <Image
-                        src="/photo1.jpg"
+                        src="/about_team_main.jpg"
                         alt={t({ ru: 'Международное обучение для врачей', en: 'International Training for Doctors', tr: 'Doktorlar için Uluslararası Eğitim', uk: 'Міжнародне навчання для лікарів' }, locale)}
                         fill
                         className={styles.serviceImage}

@@ -11,7 +11,8 @@
     "type-check": "tsc --noEmit",
     "import-blog": "node scripts/import-blog-data.js",
     "import-events": "node scripts/import-events-data.js",
-    "clear-db": "node scripts/clear-db.js"
+    "clear-db": "node scripts/clear-db.js",
+    "rename-images": "node scripts/rename-images.js"
   },
   "dependencies": {
     "@types/bcryptjs": "^3.0.0",

@@ -4,7 +4,7 @@
  */
 export function getImageUrl(imagePath: string | null | undefined): string {
   if (!imagePath) {
-    return '/photo1.jpg'; // fallback image
+    return '/about_team_main.jpg'; // fallback image
   }
 
   // Якщо це вже повний URL (http/https), повертаємо як є
