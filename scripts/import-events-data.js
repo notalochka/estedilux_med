@@ -3,21 +3,6 @@ let tsNodeRegistered = false;
 
 try {
   const tsNode = require('ts-node');
-  const ts = require('typescript');
-  
-  // Створюємо правильний compiler host
-  const createCompilerHost = (options) => {
-    const host = ts.createCompilerHost(options);
-    const originalFileExists = host.fileExists;
-    host.fileExists = (fileName) => {
-      try {
-        return originalFileExists.call(host, fileName);
-      } catch (e) {
-        return false;
-      }
-    };
-    return host;
-  };
   
   tsNode.register({
     transpileOnly: true,
@@ -36,6 +21,7 @@ try {
   });
   
   tsNodeRegistered = true;
+  console.log('✓ ts-node registered successfully');
 } catch (error) {
   console.error('❌ Failed to register ts-node:', error.message);
   console.error('   Trying to use tsx or alternative method...');

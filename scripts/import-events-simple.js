@@ -195,12 +195,41 @@ const events2026 = [
 
 async function importEvents2026() {
   console.log('🚀 Starting events 2026 import...\n');
+  
+  // Спочатку перевіряємо, чи існують категорії
+  const checkCategory = db.prepare('SELECT id FROM event_categories WHERE id = ?');
+  const getAllCategories = db.prepare('SELECT id, title_ru FROM event_categories ORDER BY id');
+  const categories = getAllCategories.all();
+  
+  if (categories.length === 0) {
+    console.error('❌ No categories found in database!');
+    console.error('   Please run: npm run import-events (to import categories first)');
+    console.error('   Or use: npx tsx scripts/import-events-data.js');
+    db.close();
+    process.exit(1);
+  }
+  
+  console.log(`📋 Found ${categories.length} categories in database:`);
+  categories.forEach(cat => {
+    console.log(`   - ID ${cat.id}: ${cat.title_ru}`);
+  });
+  console.log('');
+  
   let imported = 0;
   let skipped = 0;
   let errors = 0;
 
   for (const event of events2026) {
     try {
+      // Перевіряємо, чи існує категорія
+      const categoryExists = checkCategory.get(event.categoryId);
+      if (!categoryExists) {
+        console.error(`✗ Category ID ${event.categoryId} not found for event: ${event.title.ru}`);
+        console.error(`   Available category IDs: ${categories.map(c => c.id).join(', ')}`);
+        errors++;
+        continue;
+      }
+      
       const existingEvent = db.prepare('SELECT id FROM events WHERE id = ?').get(event.id);
       if (existingEvent) {
         console.log(`- Skipping existing event: ${event.title.ru}`);
@@ -230,10 +259,11 @@ async function importEvents2026() {
         event.image || null,
         event.published !== false ? 1 : 0
       );
-      console.log(`✓ Imported event 2026: ${event.title.ru}`);
+      console.log(`✓ Imported event 2026: ${event.title.ru} (Category: ${categoryExists.title_ru})`);
       imported++;
     } catch (error) {
-      console.error(`✗ Failed to import event 2026: ${event.title.ru}`, error.message);
+      console.error(`✗ Failed to import event 2026: ${event.title.ru}`);
+      console.error(`   Error: ${error.message}`);
       errors++;
     }
   }

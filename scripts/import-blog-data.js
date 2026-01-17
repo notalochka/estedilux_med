@@ -1,20 +1,17 @@
 // Реєструємо ts-node для підтримки TypeScript
 const tsNode = require('ts-node');
-const ts = require('typescript');
-
-const compilerOptions = {
-  module: ts.ModuleKind.CommonJS,
-  moduleResolution: ts.ModuleResolutionKind.NodeJs,
-  esModuleInterop: true,
-  allowSyntheticDefaultImports: true,
-  resolveJsonModule: true,
-  skipLibCheck: true,
-  target: ts.ScriptTarget.ES2020,
-};
 
 tsNode.register({
   transpileOnly: true,
-  compilerOptions,
+  compilerOptions: {
+    module: 'commonjs',
+    moduleResolution: 'node',
+    esModuleInterop: true,
+    allowSyntheticDefaultImports: true,
+    resolveJsonModule: true,
+    skipLibCheck: true,
+    target: 'ES2020',
+  },
   typeCheck: false,
   files: false,
   ignore: ['(?:^|/)node_modules/'],
