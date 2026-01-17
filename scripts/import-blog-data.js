@@ -43,15 +43,29 @@ const db = new Database(dbPath);
 // Імпортуємо дані з blog.ts
 const { blogPosts } = require('../src/data/blog.ts');
 
+// Додаємо колонки для турецької та української мов для блогів
+try {
+  db.exec('ALTER TABLE blogs ADD COLUMN title_tr TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE blogs ADD COLUMN title_uk TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE blogs ADD COLUMN content_tr TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE blogs ADD COLUMN content_uk TEXT');
+} catch (e) {}
+
 const getBlogById = db.prepare('SELECT * FROM blogs WHERE id = ?');
 const updateBlog = db.prepare(`
   UPDATE blogs 
-  SET image = ?, date = ?, title_ru = ?, title_en = ?, content_ru = ?, content_en = ?, published = ?
+  SET image = ?, date = ?, title_ru = ?, title_en = ?, title_tr = ?, title_uk = ?, content_ru = ?, content_en = ?, content_tr = ?, content_uk = ?, published = ?
   WHERE id = ?
 `);
 const createBlog = db.prepare(`
-  INSERT INTO blogs (id, image, date, title_ru, title_en, content_ru, content_en, published)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  INSERT INTO blogs (id, image, date, title_ru, title_en, title_tr, title_uk, content_ru, content_en, content_tr, content_uk, published)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `);
 
 async function importBlogData() {
@@ -73,8 +87,12 @@ async function importBlogData() {
           post.date,
           post.title.ru,
           post.title.en,
+          post.title.tr || null,
+          post.title.uk || null,
           post.content.ru,
           post.content.en,
+          post.content.tr || null,
+          post.content.uk || null,
           1,
           post.id
         );
@@ -88,8 +106,12 @@ async function importBlogData() {
           post.date,
           post.title.ru,
           post.title.en,
+          post.title.tr || null,
+          post.title.uk || null,
           post.content.ru,
           post.content.en,
+          post.content.tr || null,
+          post.content.uk || null,
           1
         );
         console.log(`✓ Imported: ${post.title.ru}`);

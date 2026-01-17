@@ -40,6 +40,20 @@ db.exec(`
   )
 `);
 
+// Додаємо колонки для турецької та української мов для категорій
+try {
+  db.exec('ALTER TABLE event_categories ADD COLUMN title_tr TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE event_categories ADD COLUMN title_uk TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE event_categories ADD COLUMN description_tr TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE event_categories ADD COLUMN description_uk TEXT');
+} catch (e) {}
+
 db.exec(`
   CREATE TABLE IF NOT EXISTS events (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -49,20 +63,56 @@ db.exec(`
     description_ru TEXT,
     description_en TEXT,
     date TEXT,
+    end_date TEXT,
     location_ru TEXT,
     location_en TEXT,
     price REAL,
     duration TEXT,
     image TEXT,
+    published INTEGER DEFAULT 1,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES event_categories(id)
   )
 `);
 
+// Додаємо колонки для турецької та української мов для подій
+try {
+  db.exec('ALTER TABLE events ADD COLUMN title_tr TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE events ADD COLUMN title_uk TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE events ADD COLUMN description_tr TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE events ADD COLUMN description_uk TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE events ADD COLUMN location_tr TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE events ADD COLUMN location_uk TEXT');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE events ADD COLUMN published INTEGER DEFAULT 1');
+} catch (e) {}
+try {
+  db.exec('ALTER TABLE events ADD COLUMN end_date TEXT');
+} catch (e) {}
+
 // Імпортуємо дані з файлів
-const { eventCategories } = require('../src/data/eventCategories');
-const { events } = require('../src/data/events');
+const { eventCategories } = require('../src/data/eventCategories.ts');
+const { events } = require('../src/data/events.ts');
+let events2026 = [];
+try {
+  const events2026Module = require('../src/data/events2026.ts');
+  events2026 = events2026Module.events2026 || [];
+} catch (error) {
+  console.warn('⚠️  events2026.ts not found or has errors, skipping 2026 events import');
+  console.warn('   Error:', error.message);
+}
 
 // Мапінг назв категорій на назви фото
 const categoryToImageMap = {
@@ -89,13 +139,13 @@ const categoryToImageMap = {
 };
 
 const createEventCategory = db.prepare(`
-  INSERT INTO event_categories (id, title_ru, title_en, description_ru, description_en, subcategories, icon)
-  VALUES (?, ?, ?, ?, ?, ?, ?)
+  INSERT INTO event_categories (id, title_ru, title_en, title_tr, title_uk, description_ru, description_en, description_tr, description_uk, subcategories, icon)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `);
 
 const createEvent = db.prepare(`
-  INSERT INTO events (id, category_id, title_ru, title_en, description_ru, description_en, date, location_ru, location_en, price, duration, image)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  INSERT INTO events (id, category_id, title_ru, title_en, title_tr, title_uk, description_ru, description_en, description_tr, description_uk, date, end_date, location_ru, location_en, location_tr, location_uk, price, duration, image, published)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `);
 
 async function importEventCategories() {
@@ -121,8 +171,12 @@ async function importEventCategories() {
         category.id,
         category.title.ru,
         category.title.en,
+        category.title.tr || null,
+        category.title.uk || null,
         category.description.ru,
         category.description.en,
+        category.description.tr || null,
+        category.description.uk || null,
         subcategoriesJson,
         iconPath
       );
@@ -160,14 +214,22 @@ async function importEvents() {
         event.categoryId,
         event.title.ru,
         event.title.en,
+        event.title.tr || null,
+        event.title.uk || null,
         event.description?.ru || null,
         event.description?.en || null,
+        event.description?.tr || null,
+        event.description?.uk || null,
         event.date || null,
+        event.endDate || null,
         event.location?.ru || null,
         event.location?.en || null,
+        event.location?.tr || null,
+        event.location?.uk || null,
         event.price || null,
         event.duration || null,
-        event.image || null
+        event.image || null,
+        event.published !== false ? 1 : 0
       );
       console.log(`✓ Imported event: ${event.title.ru}`);
       imported++;
@@ -229,11 +291,63 @@ async function updateCategoryIcons() {
   console.log(`   Not found in map: ${notFound}`);
 }
 
+async function importEvents2026() {
+  console.log('\n🚀 Starting events 2026 import...');
+  let imported = 0;
+  let skipped = 0;
+  let errors = 0;
+
+  for (const event of events2026) {
+    try {
+      const existingEvent = db.prepare('SELECT id FROM events WHERE id = ?').get(event.id);
+      if (existingEvent) {
+        console.log(`- Skipping existing event: ${event.title.ru}`);
+        skipped++;
+        continue;
+      }
+      
+      createEvent.run(
+        event.id,
+        event.categoryId,
+        event.title.ru,
+        event.title.en,
+        event.title.tr || null,
+        event.title.uk || null,
+        event.description?.ru || null,
+        event.description?.en || null,
+        event.description?.tr || null,
+        event.description?.uk || null,
+        event.date || null,
+        event.endDate || null,
+        event.location?.ru || null,
+        event.location?.en || null,
+        event.location?.tr || null,
+        event.location?.uk || null,
+        event.price || null,
+        event.duration || null,
+        event.image || null,
+        event.published !== false ? 1 : 0
+      );
+      console.log(`✓ Imported event 2026: ${event.title.ru}`);
+      imported++;
+    } catch (error) {
+      console.error(`✗ Failed to import event 2026: ${event.title.ru}`, error);
+      errors++;
+    }
+  }
+  
+  console.log(`\n✅ Events 2026 import completed!`);
+  console.log(`   Imported: ${imported}`);
+  console.log(`   Skipped: ${skipped}`);
+  console.log(`   Errors: ${errors}`);
+}
+
 async function importAll() {
   try {
     await importEventCategories();
     await updateCategoryIcons();
     await importEvents();
+    await importEvents2026();
     console.log('\n🎉 All imports completed successfully!');
   } catch (error) {
     console.error('❌ Import failed:', error);

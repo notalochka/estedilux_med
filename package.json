@@ -11,6 +11,7 @@
     "type-check": "tsc --noEmit",
     "import-blog": "node scripts/import-blog-data.js",
     "import-events": "node scripts/import-events-data.js",
+    "update-events-translations": "node scripts/update-events-translations.js",
     "clear-db": "node scripts/clear-db.js",
     "rename-images": "node scripts/rename-images.js",
     "replace-hero-images": "node scripts/replace-hero-images.js"
