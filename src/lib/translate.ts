@@ -56,13 +56,22 @@ export async function translateText(options: TranslateOptions): Promise<string> 
     });
 
     if (response.ok) {
-      const data = await response.json();
-      if (data.translatedText) {
-        return data.translatedText;
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const data = await response.json();
+        if (data.translatedText) {
+          return data.translatedText;
+        }
+      } else {
+        // Якщо не JSON, пропускаємо
+        const textResponse = await response.text();
+        console.warn('LibreTranslate returned non-JSON response:', textResponse.substring(0, 100));
       }
+    } else {
+      console.warn(`LibreTranslate returned status ${response.status}`);
     }
-  } catch (error) {
-    console.warn('LibreTranslate failed, trying fallback:', error);
+  } catch (error: any) {
+    console.warn('LibreTranslate failed, trying fallback:', error.message || error);
   }
 
   // Спроба 2: MyMemory Translation API (fallback)
@@ -77,17 +86,24 @@ export async function translateText(options: TranslateOptions): Promise<string> 
     );
 
     if (response.ok) {
-      const data = await response.json();
-      if (data.responseData && data.responseData.translatedText) {
-        return data.responseData.translatedText;
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const data = await response.json();
+        if (data.responseData && data.responseData.translatedText) {
+          return data.responseData.translatedText;
+        }
+      } else {
+        console.warn('MyMemory returned non-JSON response');
       }
+    } else {
+      console.warn(`MyMemory returned status ${response.status}`);
     }
-  } catch (error) {
-    console.warn('MyMemory Translation failed:', error);
+  } catch (error: any) {
+    console.warn('MyMemory Translation failed:', error.message || error);
   }
 
   // Якщо всі спроби не вдалися, повертаємо оригінал
-  console.error(`Failed to translate text from ${from} to ${to}`);
+  console.error(`Failed to translate text from ${from} to ${to}. Returning original text.`);
   return text;
 }
 

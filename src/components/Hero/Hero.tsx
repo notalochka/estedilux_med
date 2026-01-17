@@ -17,17 +17,10 @@ const Hero: React.FC = () => {
     <section className={styles.hero}>
       <div className={styles.heroBackground}>
         <Image
-          src="/main_hero_mobile.png"
-          alt="Estedilux Med Background"
-          fill
-          className={`${styles.heroImage} ${styles.heroImageMobile}`}
-          priority
-        />
-        <Image
           src="/main_hero.jpg"
           alt="Estedilux Med Background"
           fill
-          className={`${styles.heroImage} ${styles.heroImageDesktop}`}
+          className={styles.heroImage}
           priority
         />
       </div>

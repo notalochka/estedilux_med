@@ -23,24 +23,6 @@
   object-fit: cover;
 }
 
-.heroImageMobile {
-  display: block;
-}
-
-.heroImageDesktop {
-  display: none;
-}
-
-@media (min-width: 1024px) {
-  .heroImageMobile {
-    display: none;
-  }
-
-  .heroImageDesktop {
-    display: block;
-  }
-}
-
 .heroOverlay {
   position: absolute;
   top: 0;

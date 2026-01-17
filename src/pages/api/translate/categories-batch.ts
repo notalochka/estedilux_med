@@ -31,42 +31,66 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
 
         // Перекладаємо title
         if (languagesToTranslate.includes('tr') && !category.title_tr) {
-          const translated = await translateText({
-            from: 'en',
-            to: 'tr',
-            text: category.title_en || category.title_ru,
-          });
-          updates.push('title_tr = ?');
-          values.push(translated);
+          try {
+            const translated = await translateText({
+              from: 'en',
+              to: 'tr',
+              text: category.title_en || category.title_ru,
+            });
+            if (translated && translated !== (category.title_en || category.title_ru)) {
+              updates.push('title_tr = ?');
+              values.push(translated);
+            }
+          } catch (error: any) {
+            console.error(`Failed to translate title_tr for category ${category.id}:`, error.message);
+          }
         }
         if (languagesToTranslate.includes('uk') && !category.title_uk) {
-          const translated = await translateText({
-            from: 'ru',
-            to: 'uk',
-            text: category.title_ru || category.title_en,
-          });
-          updates.push('title_uk = ?');
-          values.push(translated);
+          try {
+            const translated = await translateText({
+              from: 'ru',
+              to: 'uk',
+              text: category.title_ru || category.title_en,
+            });
+            if (translated && translated !== (category.title_ru || category.title_en)) {
+              updates.push('title_uk = ?');
+              values.push(translated);
+            }
+          } catch (error: any) {
+            console.error(`Failed to translate title_uk for category ${category.id}:`, error.message);
+          }
         }
 
         // Перекладаємо description
         if (languagesToTranslate.includes('tr') && !category.description_tr) {
-          const translated = await translateText({
-            from: 'en',
-            to: 'tr',
-            text: category.description_en || category.description_ru,
-          });
-          updates.push('description_tr = ?');
-          values.push(translated);
+          try {
+            const translated = await translateText({
+              from: 'en',
+              to: 'tr',
+              text: category.description_en || category.description_ru,
+            });
+            if (translated && translated !== (category.description_en || category.description_ru)) {
+              updates.push('description_tr = ?');
+              values.push(translated);
+            }
+          } catch (error: any) {
+            console.error(`Failed to translate description_tr for category ${category.id}:`, error.message);
+          }
         }
         if (languagesToTranslate.includes('uk') && !category.description_uk) {
-          const translated = await translateText({
-            from: 'ru',
-            to: 'uk',
-            text: category.description_ru || category.description_en,
-          });
-          updates.push('description_uk = ?');
-          values.push(translated);
+          try {
+            const translated = await translateText({
+              from: 'ru',
+              to: 'uk',
+              text: category.description_ru || category.description_en,
+            });
+            if (translated && translated !== (category.description_ru || category.description_en)) {
+              updates.push('description_uk = ?');
+              values.push(translated);
+            }
+          } catch (error: any) {
+            console.error(`Failed to translate description_uk for category ${category.id}:`, error.message);
+          }
         }
 
         // Перекладаємо subcategories
@@ -80,19 +104,33 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
                   const translated: any = { ...subcat };
 
                   if (languagesToTranslate.includes('tr') && !subcat.tr) {
-                    translated.tr = await translateText({
-                      from: 'en',
-                      to: 'tr',
-                      text: subcat.en || subcat.ru,
-                    });
+                    try {
+                      const translatedText = await translateText({
+                        from: 'en',
+                        to: 'tr',
+                        text: subcat.en || subcat.ru,
+                      });
+                      if (translatedText && translatedText !== (subcat.en || subcat.ru)) {
+                        translated.tr = translatedText;
+                      }
+                    } catch (error: any) {
+                      console.error(`Failed to translate subcategory tr for category ${category.id}:`, error.message);
+                    }
                   }
 
                   if (languagesToTranslate.includes('uk') && !subcat.uk) {
-                    translated.uk = await translateText({
-                      from: 'ru',
-                      to: 'uk',
-                      text: subcat.ru || subcat.en,
-                    });
+                    try {
+                      const translatedText = await translateText({
+                        from: 'ru',
+                        to: 'uk',
+                        text: subcat.ru || subcat.en,
+                      });
+                      if (translatedText && translatedText !== (subcat.ru || subcat.en)) {
+                        translated.uk = translatedText;
+                      }
+                    } catch (error: any) {
+                      console.error(`Failed to translate subcategory uk for category ${category.id}:`, error.message);
+                    }
                   }
 
                   // Перекладаємо description підкатегорії
@@ -101,18 +139,32 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
                       translated.description = {};
                     }
                     if (languagesToTranslate.includes('tr') && !subcat.description.tr) {
-                      translated.description.tr = await translateText({
-                        from: 'en',
-                        to: 'tr',
-                        text: subcat.description.en || subcat.description.ru || '',
-                      });
+                      try {
+                        const translatedText = await translateText({
+                          from: 'en',
+                          to: 'tr',
+                          text: subcat.description.en || subcat.description.ru || '',
+                        });
+                        if (translatedText && translatedText !== (subcat.description.en || subcat.description.ru || '')) {
+                          translated.description.tr = translatedText;
+                        }
+                      } catch (error: any) {
+                        console.error(`Failed to translate subcategory description tr for category ${category.id}:`, error.message);
+                      }
                     }
                     if (languagesToTranslate.includes('uk') && !subcat.description.uk) {
-                      translated.description.uk = await translateText({
-                        from: 'ru',
-                        to: 'uk',
-                        text: subcat.description.ru || subcat.description.en || '',
-                      });
+                      try {
+                        const translatedText = await translateText({
+                          from: 'ru',
+                          to: 'uk',
+                          text: subcat.description.ru || subcat.description.en || '',
+                        });
+                        if (translatedText && translatedText !== (subcat.description.ru || subcat.description.en || '')) {
+                          translated.description.uk = translatedText;
+                        }
+                      } catch (error: any) {
+                        console.error(`Failed to translate subcategory description uk for category ${category.id}:`, error.message);
+                      }
                     }
                   }
 
@@ -134,8 +186,8 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
           translatedCount++;
         }
 
-        // Додаємо невелику затримку, щоб не перевантажити API перекладу
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        // Додаємо затримку, щоб не перевантажити API перекладу
+        await new Promise((resolve) => setTimeout(resolve, 500));
       } catch (error: any) {
         errors.push(`Category ${category.id}: ${error.message}`);
       }

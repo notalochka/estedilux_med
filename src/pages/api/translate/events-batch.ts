@@ -31,65 +31,101 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
 
         // Перекладаємо title
         if (languagesToTranslate.includes('tr') && !event.title_tr && (event.title_en || event.title_ru)) {
-          const translated = await translateText({
-            from: 'en',
-            to: 'tr',
-            text: event.title_en || event.title_ru,
-          });
-          updates.push('title_tr = ?');
-          values.push(translated);
+          try {
+            const translated = await translateText({
+              from: 'en',
+              to: 'tr',
+              text: event.title_en || event.title_ru,
+            });
+            if (translated && translated !== (event.title_en || event.title_ru)) {
+              updates.push('title_tr = ?');
+              values.push(translated);
+            }
+          } catch (error: any) {
+            console.error(`Failed to translate title_tr for event ${event.id}:`, error.message);
+          }
         }
         if (languagesToTranslate.includes('uk') && !event.title_uk && (event.title_ru || event.title_en)) {
-          const translated = await translateText({
-            from: 'ru',
-            to: 'uk',
-            text: event.title_ru || event.title_en,
-          });
-          updates.push('title_uk = ?');
-          values.push(translated);
+          try {
+            const translated = await translateText({
+              from: 'ru',
+              to: 'uk',
+              text: event.title_ru || event.title_en,
+            });
+            if (translated && translated !== (event.title_ru || event.title_en)) {
+              updates.push('title_uk = ?');
+              values.push(translated);
+            }
+          } catch (error: any) {
+            console.error(`Failed to translate title_uk for event ${event.id}:`, error.message);
+          }
         }
 
         // Перекладаємо description
         if (event.description_ru || event.description_en) {
           if (languagesToTranslate.includes('tr') && !event.description_tr) {
-            const translated = await translateText({
-              from: 'en',
-              to: 'tr',
-              text: event.description_en || event.description_ru || '',
-            });
-            updates.push('description_tr = ?');
-            values.push(translated);
+            try {
+              const translated = await translateText({
+                from: 'en',
+                to: 'tr',
+                text: event.description_en || event.description_ru || '',
+              });
+              if (translated && translated !== (event.description_en || event.description_ru || '')) {
+                updates.push('description_tr = ?');
+                values.push(translated);
+              }
+            } catch (error: any) {
+              console.error(`Failed to translate description_tr for event ${event.id}:`, error.message);
+            }
           }
           if (languagesToTranslate.includes('uk') && !event.description_uk) {
-            const translated = await translateText({
-              from: 'ru',
-              to: 'uk',
-              text: event.description_ru || event.description_en || '',
-            });
-            updates.push('description_uk = ?');
-            values.push(translated);
+            try {
+              const translated = await translateText({
+                from: 'ru',
+                to: 'uk',
+                text: event.description_ru || event.description_en || '',
+              });
+              if (translated && translated !== (event.description_ru || event.description_en || '')) {
+                updates.push('description_uk = ?');
+                values.push(translated);
+              }
+            } catch (error: any) {
+              console.error(`Failed to translate description_uk for event ${event.id}:`, error.message);
+            }
           }
         }
 
         // Перекладаємо location
         if (event.location_ru || event.location_en) {
           if (languagesToTranslate.includes('tr') && !event.location_tr) {
-            const translated = await translateText({
-              from: 'en',
-              to: 'tr',
-              text: event.location_en || event.location_ru || '',
-            });
-            updates.push('location_tr = ?');
-            values.push(translated);
+            try {
+              const translated = await translateText({
+                from: 'en',
+                to: 'tr',
+                text: event.location_en || event.location_ru || '',
+              });
+              if (translated && translated !== (event.location_en || event.location_ru || '')) {
+                updates.push('location_tr = ?');
+                values.push(translated);
+              }
+            } catch (error: any) {
+              console.error(`Failed to translate location_tr for event ${event.id}:`, error.message);
+            }
           }
           if (languagesToTranslate.includes('uk') && !event.location_uk) {
-            const translated = await translateText({
-              from: 'ru',
-              to: 'uk',
-              text: event.location_ru || event.location_en || '',
-            });
-            updates.push('location_uk = ?');
-            values.push(translated);
+            try {
+              const translated = await translateText({
+                from: 'ru',
+                to: 'uk',
+                text: event.location_ru || event.location_en || '',
+              });
+              if (translated && translated !== (event.location_ru || event.location_en || '')) {
+                updates.push('location_uk = ?');
+                values.push(translated);
+              }
+            } catch (error: any) {
+              console.error(`Failed to translate location_uk for event ${event.id}:`, error.message);
+            }
           }
         }
 
@@ -100,8 +136,8 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
           translatedCount++;
         }
 
-        // Додаємо невелику затримку, щоб не перевантажити API перекладу
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        // Додаємо затримку, щоб не перевантажити API перекладу
+        await new Promise((resolve) => setTimeout(resolve, 500));
       } catch (error: any) {
         errors.push(`Event ${event.id}: ${error.message}`);
       }
