@@ -24,17 +24,22 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
           return res.status(404).json({ error: 'Category not found' });
         }
 
+        const parsedSubcategories = JSON.parse(category.subcategories);
         const formattedCategory: EventCategory = {
           id: category.id,
           title: {
             ru: category.title_ru,
             en: category.title_en,
+            ...(category.title_tr ? { tr: category.title_tr } : {}),
+            ...(category.title_uk ? { uk: category.title_uk } : {}),
           },
           description: {
             ru: category.description_ru,
             en: category.description_en,
+            ...(category.description_tr ? { tr: category.description_tr } : {}),
+            ...(category.description_uk ? { uk: category.description_uk } : {}),
           },
-          subcategories: JSON.parse(category.subcategories),
+          subcategories: parsedSubcategories,
           icon: category.icon || undefined,
         };
 
@@ -42,19 +47,26 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       } else {
         const categories = getAllEventCategories.all() as any[];
 
-        const formattedCategories: EventCategory[] = categories.map((category) => ({
-          id: category.id,
-          title: {
-            ru: category.title_ru,
-            en: category.title_en,
-          },
-          description: {
-            ru: category.description_ru,
-            en: category.description_en,
-          },
-          subcategories: JSON.parse(category.subcategories),
-          icon: category.icon || undefined,
-        }));
+        const formattedCategories: EventCategory[] = categories.map((category) => {
+          const parsedSubcategories = JSON.parse(category.subcategories);
+          return {
+            id: category.id,
+            title: {
+              ru: category.title_ru,
+              en: category.title_en,
+              ...(category.title_tr ? { tr: category.title_tr } : {}),
+              ...(category.title_uk ? { uk: category.title_uk } : {}),
+            },
+            description: {
+              ru: category.description_ru,
+              en: category.description_en,
+              ...(category.description_tr ? { tr: category.description_tr } : {}),
+              ...(category.description_uk ? { uk: category.description_uk } : {}),
+            },
+            subcategories: parsedSubcategories,
+            icon: category.icon || undefined,
+          };
+        });
 
         return res.status(200).json(formattedCategories);
       }

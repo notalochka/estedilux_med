@@ -9,7 +9,8 @@ import {
   Trash2, 
   ArrowLeft,
   Save,
-  X
+  X,
+  Languages
 } from 'lucide-react';
 import ImageUpload from '@/components/ImageUpload/ImageUpload';
 import { getImageUrl } from '@/lib/imageUtils';
@@ -32,6 +33,8 @@ const EventsAdminPage: NextPage = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [translatingEventId, setTranslatingEventId] = useState<number | null>(null);
   
   const [formData, setFormData] = useState({
     category_id: '',
@@ -147,6 +150,22 @@ const EventsAdminPage: NextPage = () => {
     setShowForm(true);
   };
 
+  const refreshEventAfterTranslate = async (eventId: number) => {
+    try {
+      const response = await fetch(`/api/events/${eventId}`, {
+        credentials: 'include',
+      });
+      if (response.ok) {
+        const updatedEvent: Event = await response.json();
+        if (editingEvent && editingEvent.id === eventId) {
+          handleEdit(updatedEvent);
+        }
+      }
+    } catch (error) {
+      console.error('Error refreshing event:', error);
+    }
+  };
+
   const handleDelete = async (id: number) => {
     if (!confirm('Вы уверены, что хотите удалить это событие?')) {
       return;
@@ -221,6 +240,148 @@ const EventsAdminPage: NextPage = () => {
       image: '',
       published: true,
     });
+  };
+
+  const handleTranslateEvent = async (eventId: number) => {
+    if (!confirm('Перекласти подію турецькою та українською мовами? Це може зайняти деякий час.')) {
+      return;
+    }
+
+    setIsTranslating(true);
+    setTranslatingEventId(eventId);
+
+    try {
+      const response = await fetch('/api/translate/event', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          eventId,
+          languages: ['tr', 'uk'],
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to translate event');
+      }
+
+      const result = await response.json();
+      alert('Переклад успішно згенеровано!');
+      
+      // Оновлюємо список подій
+      await fetchEvents(categories);
+      
+      // Якщо форма відкрита і це та сама подія, оновлюємо форму
+      if (editingEvent && editingEvent.id === eventId) {
+        await refreshEventAfterTranslate(eventId);
+      }
+    } catch (error: any) {
+      console.error('Error translating event:', error);
+      alert(`Помилка при перекладі: ${error.message || 'Невідома помилка'}`);
+    } finally {
+      setIsTranslating(false);
+      setTranslatingEventId(null);
+    }
+  };
+
+  const handleTranslateFromForm = async () => {
+    if (!formData.title_ru && !formData.title_en) {
+      alert('Спочатку введіть назву події (RU або EN)');
+      return;
+    }
+
+    if (!confirm('Перекласти подію турецькою та українською мовами? Це може зайняти деякий час.')) {
+      return;
+    }
+
+    setIsTranslating(true);
+
+    try {
+      // Спочатку зберігаємо подію, якщо вона нова
+      if (!editingEvent) {
+        // Зберігаємо подію спочатку
+        const saveResponse = await fetch('/api/events', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            ...formData,
+            price: formData.price ? parseFloat(formData.price) : null,
+          }),
+        });
+
+        if (!saveResponse.ok) throw new Error('Failed to save event');
+        
+        const saveResult = await saveResponse.json();
+        const newEventId = saveResult.id;
+
+        // Тепер перекладаємо
+        const translateResponse = await fetch('/api/translate/event', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            eventId: newEventId,
+            languages: ['tr', 'uk'],
+          }),
+        });
+
+        if (!translateResponse.ok) {
+          const error = await translateResponse.json();
+          throw new Error(error.message || 'Failed to translate event');
+        }
+
+        alert('Подію збережено та перекладено!');
+        
+        // Оновлюємо список подій
+        await fetchEvents(categories);
+        
+        // Отримуємо оновлену подію з перекладами
+        await refreshEventAfterTranslate(newEventId);
+        
+        // Закриваємо форму
+        setShowForm(false);
+        setEditingEvent(null);
+      } else {
+        // Для існуючої події просто перекладаємо
+        const translateResponse = await fetch('/api/translate/event', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            eventId: editingEvent.id,
+            languages: ['tr', 'uk'],
+          }),
+        });
+
+        if (!translateResponse.ok) {
+          const error = await translateResponse.json();
+          throw new Error(error.message || 'Failed to translate event');
+        }
+
+        alert('Переклад успішно згенеровано!');
+        
+        // Оновлюємо список подій
+        await fetchEvents(categories);
+        
+        // Оновлюємо форму з новими даними
+        await refreshEventAfterTranslate(editingEvent.id);
+      }
+    } catch (error: any) {
+      console.error('Error translating event:', error);
+      alert(`Помилка: ${error.message || 'Невідома помилка'}`);
+    } finally {
+      setIsTranslating(false);
+    }
   };
 
   if (isLoading) {
@@ -411,6 +572,15 @@ const EventsAdminPage: NextPage = () => {
                   <button type="button" onClick={handleCancel} className={styles.cancelButton}>
                     Отмена
                   </button>
+                  <button 
+                    type="button" 
+                    onClick={handleTranslateFromForm} 
+                    className={styles.translateButton}
+                    disabled={isTranslating || !formData.title_ru && !formData.title_en}
+                  >
+                    <Languages size={18} />
+                    {isTranslating ? 'Переклад...' : 'Перекласти іншими мовами'}
+                  </button>
                   <button type="submit" className={styles.saveButton} disabled={isSaving}>
                     <Save size={18} />
                     {isSaving ? 'Сохранение...' : 'Сохранить'}
@@ -474,6 +644,15 @@ const EventsAdminPage: NextPage = () => {
                           >
                             <Edit size={16} />
                             Редактировать
+                          </button>
+                          <button
+                            onClick={() => handleTranslateEvent(event.id)}
+                            className={styles.translateButton}
+                            disabled={isTranslating && translatingEventId === event.id}
+                            title="Перекласти турецькою та українською"
+                          >
+                            <Languages size={16} />
+                            {isTranslating && translatingEventId === event.id ? 'Переклад...' : 'Перекласти'}
                           </button>
                           <button
                             onClick={() => handleDelete(event.id)}

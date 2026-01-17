@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { X, Globe, ChevronDown } from 'lucide-react';
 import styles from './Header.module.css';
+import { t } from '@/lib/translations';
 
 const Header: React.FC = () => {
   const router = useRouter();
@@ -159,22 +160,22 @@ const Header: React.FC = () => {
         {/* Десктоп навігація */}
         <nav className={styles.nav}>
           <Link href="/" className={`${styles.navLink} ${isActive('/') ? styles.active : ''}`}>
-            {locale === 'ru' ? 'Главная' : 'Home'}
+            {t({ ru: 'Главная', en: 'Home', tr: 'Ana Sayfa', uk: 'Головна' }, locale)}
           </Link>
           <Link href="/about" className={`${styles.navLink} ${isActive('/about') ? styles.active : ''}`}>
-            {locale === 'ru' ? 'О нас' : 'About'}
+            {t({ ru: 'О нас', en: 'About', tr: 'Hakkımızda', uk: 'Про нас' }, locale)}
           </Link>
           <Link href="/event" className={`${styles.navLink} ${isActive('/event') ? styles.active : ''}`}>
-            {locale === 'ru' ? 'События' : 'Events'}
+            {t({ ru: 'События', en: 'Events', tr: 'Etkinlikler', uk: 'Події' }, locale)}
           </Link>
           <Link href="/events" className={`${styles.navLink} ${isActive('/events') ? styles.active : ''}`}>
-            {locale === 'ru' ? 'Направления' : 'Directions'}
+            {t({ ru: 'Направления', en: 'Directions', tr: 'Yönler', uk: 'Напрямки' }, locale)}
           </Link>
           <Link href="/blog" className={`${styles.navLink} ${isActive('/blog') ? styles.active : ''}`}>
-            {locale === 'ru' ? 'Блог' : 'Blog'}
+            {t({ ru: 'Блог', en: 'Blog', tr: 'Blog', uk: 'Блог' }, locale)}
           </Link>
           <Link href="/contact" className={`${styles.navLink} ${isActive('/contact') ? styles.active : ''}`}>
-            {locale === 'ru' ? 'Контакты' : 'Contact'}
+            {t({ ru: 'Контакты', en: 'Contact', tr: 'İletişim', uk: 'Контакти' }, locale)}
           </Link>
         </nav>
 
@@ -255,26 +256,26 @@ const Header: React.FC = () => {
             </button>
           </div>
           <div className={styles.mobileMenu}>
-            <div className={styles.mobileMenuContent}>
-              <Link href="/" className={`${styles.mobileNavLink} ${isActive('/') ? styles.active : ''}`} onClick={closeMenu}>
-                {locale === 'ru' ? 'Главная' : 'Home'}
-          </Link>
-              <Link href="/about" className={`${styles.mobileNavLink} ${isActive('/about') ? styles.active : ''}`} onClick={closeMenu}>
-                {locale === 'ru' ? 'О нас' : 'About'}
-          </Link>
-              <Link href="/event" className={`${styles.mobileNavLink} ${isActive('/event') ? styles.active : ''}`} onClick={closeMenu}>
-                {locale === 'ru' ? 'События' : 'Events'}
-          </Link>
-              <Link href="/events" className={`${styles.mobileNavLink} ${isActive('/events') ? styles.active : ''}`} onClick={closeMenu}>
-                {locale === 'ru' ? 'Направления' : 'Directions'}
-              </Link>
-              <Link href="/blog" className={`${styles.mobileNavLink} ${isActive('/blog') ? styles.active : ''}`} onClick={closeMenu}>
-                {locale === 'ru' ? 'Блог' : 'Blog'}
-          </Link>
-              <Link href="/contact" className={`${styles.mobileNavLink} ${isActive('/contact') ? styles.active : ''}`} onClick={closeMenu}>
-                {locale === 'ru' ? 'Контакты' : 'Contact'}
-          </Link>
-            </div>
+          <div className={styles.mobileMenuContent}>
+            <Link href="/" className={`${styles.mobileNavLink} ${isActive('/') ? styles.active : ''}`} onClick={closeMenu}>
+              {t({ ru: 'Главная', en: 'Home', tr: 'Ana Sayfa', uk: 'Головна' }, locale)}
+            </Link>
+            <Link href="/about" className={`${styles.mobileNavLink} ${isActive('/about') ? styles.active : ''}`} onClick={closeMenu}>
+              {t({ ru: 'О нас', en: 'About', tr: 'Hakkımızda', uk: 'Про нас' }, locale)}
+            </Link>
+            <Link href="/event" className={`${styles.mobileNavLink} ${isActive('/event') ? styles.active : ''}`} onClick={closeMenu}>
+              {t({ ru: 'События', en: 'Events', tr: 'Etkinlikler', uk: 'Події' }, locale)}
+            </Link>
+            <Link href="/events" className={`${styles.mobileNavLink} ${isActive('/events') ? styles.active : ''}`} onClick={closeMenu}>
+              {t({ ru: 'Направления', en: 'Directions', tr: 'Yönler', uk: 'Напрямки' }, locale)}
+            </Link>
+            <Link href="/blog" className={`${styles.mobileNavLink} ${isActive('/blog') ? styles.active : ''}`} onClick={closeMenu}>
+              {t({ ru: 'Блог', en: 'Blog', tr: 'Blog', uk: 'Блог' }, locale)}
+            </Link>
+            <Link href="/contact" className={`${styles.mobileNavLink} ${isActive('/contact') ? styles.active : ''}`} onClick={closeMenu}>
+              {t({ ru: 'Контакты', en: 'Contact', tr: 'İletişim', uk: 'Контакти' }, locale)}
+            </Link>
+          </div>
         <div className={styles.mobileLanguageSwitcher}>
               <div 
                 ref={langDropdownRef}

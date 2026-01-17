@@ -8,6 +8,7 @@ import { Calendar, MapPin, ShoppingCart, X } from 'lucide-react';
 import { useAnimation } from '@/lib/useAnimation';
 import { getImageUrl } from '@/lib/imageUtils';
 import { getCountryFromLocation } from '@/lib/countryUtils';
+import { t } from '@/lib/translations';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import EventsCalendar from '@/components/EventsCalendar/EventsCalendar';
@@ -88,9 +89,14 @@ const Event: NextPage = () => {
 
   const formatDate = (dateString: string, endDateString?: string) => {
     const date = new Date(dateString);
-    const months = locale === 'ru' 
-      ? ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
-      : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const months = 
+      locale === 'ru' 
+        ? ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
+        : locale === 'tr'
+        ? ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']
+        : locale === 'uk'
+        ? ['Січня', 'Лютого', 'Березня', 'Квітня', 'Травня', 'Червня', 'Липня', 'Серпня', 'Вересня', 'Жовтня', 'Листопада', 'Грудня']
+        : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     
     const startDay = date.getDate();
     const startMonth = months[date.getMonth()];
@@ -112,9 +118,12 @@ const Event: NextPage = () => {
 
   const getCategoryTitle = (categoryId: number) => {
     const category = categories.find((cat) => cat.id === categoryId);
-    return category 
-      ? (locale === 'ru' ? category.title.ru : category.title.en)
-      : '';
+    if (!category) return '';
+    
+    if (locale === 'ru') return category.title.ru;
+    if (locale === 'tr') return category.title.tr || category.title.en;
+    if (locale === 'uk') return category.title.uk || category.title.ru;
+    return category.title.en;
   };
 
   const scrollToContent = () => {
@@ -132,15 +141,19 @@ const Event: NextPage = () => {
     <>
       <Head>
         <title>
-          {locale === 'ru' ? 'События - Estedilux Med' : 'Events - Estedilux Med'}
+          {t({ ru: 'События - Estedilux Med', en: 'Events - Estedilux Med', tr: 'Etkinlikler - Estedilux Med', uk: 'Події - Estedilux Med' }, locale)}
         </title>
         <meta
           name="description"
-          content={
-            locale === 'ru'
-              ? 'Все события и мероприятия Estedilux Med'
-              : 'All events and activities Estedilux Med'
-          }
+          content={t(
+            {
+              ru: 'Все события и мероприятия Estedilux Med',
+              en: 'All events and activities Estedilux Med',
+              tr: 'Estedilux Med\'in tüm etkinlikleri ve faaliyetleri',
+              uk: 'Всі події та заходи Estedilux Med',
+            },
+            locale
+          )}
         />
       </Head>
 
@@ -167,7 +180,7 @@ const Event: NextPage = () => {
                   className={`${styles.heroTitleWrapper} ${heroVisible ? styles.animateFadeInUp : ''}`}
                 >
                   <h1 className={styles.heroTitle}>
-                    {locale === 'ru' ? 'События' : 'Events'}
+                    {t({ ru: 'События', en: 'Events', tr: 'Etkinlikler', uk: 'Події' }, locale)}
                   </h1>
                   <div className={styles.heroChevron} onClick={scrollToContent}>
                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -188,11 +201,13 @@ const Event: NextPage = () => {
                   <h2 className={styles.eventsTitle}>
                     {selectedDate
                       ? locale === 'ru'
-                        ? `События на ${selectedDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}`
+                        ? t({ ru: `События на ${selectedDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}`, en: `Events on ${selectedDate.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}`, tr: `${selectedDate.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })} tarihindeki Etkinlikler`, uk: `Події на ${selectedDate.toLocaleDateString('uk-UA', { day: 'numeric', month: 'long', year: 'numeric' })}` }, locale)
+                        : locale === 'tr'
+                        ? `${selectedDate.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })} tarihindeki Etkinlikler`
+                        : locale === 'uk'
+                        ? `Події на ${selectedDate.toLocaleDateString('uk-UA', { day: 'numeric', month: 'long', year: 'numeric' })}`
                         : `Events on ${selectedDate.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}`
-                      : locale === 'ru'
-                      ? 'РАСПИСАНИЕ'
-                      : 'SCHEDULE'}
+                      : t({ ru: 'РАСПИСАНИЕ', en: 'SCHEDULE', tr: 'PROGRAM', uk: 'РОЗКЛАД' }, locale)}
                   </h2>
                   {!selectedDate && (
                     <>
@@ -208,18 +223,18 @@ const Event: NextPage = () => {
               <div className={styles.contentGrid}>
                 {isLoading ? (
                   <div className={styles.loading}>
-                    {locale === 'ru' ? 'Загрузка событий...' : 'Loading events...'}
+                    {t({ ru: 'Загрузка событий...', en: 'Loading events...', tr: 'Etkinlikler yükleniyor...', uk: 'Завантаження подій...' }, locale)}
                   </div>
                 ) : filteredEvents.length === 0 ? (
                   <div className={styles.noEvents}>
-                    <p>{locale === 'ru' ? 'События не найдены' : 'No events found'}</p>
+                    <p>{t({ ru: 'События не найдены', en: 'No events found', tr: 'Etkinlik bulunamadı', uk: 'Події не знайдено' }, locale)}</p>
                   </div>
                 ) : (
                   <>
                     <div className={styles.eventsGrid}>
                         {filteredEvents.map((event) => {
-                          const eventTitle = locale === 'ru' ? event.title.ru : event.title.en;
-                          const locationText = event.location ? (locale === 'ru' ? event.location.ru : event.location.en) : '';
+                          const eventTitle = locale === 'ru' ? event.title.ru : locale === 'tr' ? (event.title.tr || event.title.en) : locale === 'uk' ? (event.title.uk || event.title.ru) : event.title.en;
+                          const locationText = event.location ? (locale === 'ru' ? event.location.ru : locale === 'tr' ? (event.location.tr || event.location.en) : locale === 'uk' ? (event.location.uk || event.location.ru) : event.location.en) : '';
                           const countryInfo = locationText ? getCountryFromLocation(locationText) : null;
                           
                           return (
@@ -248,7 +263,7 @@ const Event: NextPage = () => {
                         })}
                     </div>
                     <div className={styles.eventsFooter}>
-                      <p>International Medical Education</p>
+                      <p>{t({ ru: 'Международное медицинское образование', en: 'International Medical Education', tr: 'Uluslararası Tıp Eğitimi', uk: 'Міжнародна медична освіта' }, locale)}</p>
                     </div>
                   </>
                 )}

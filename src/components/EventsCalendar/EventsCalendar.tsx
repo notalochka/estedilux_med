@@ -15,8 +15,10 @@ interface EventsCalendarProps {
   onDateSelect: (date: Date | null) => void;
 }
 
-const WEEKDAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'];
+const WEEKDAYS_RU = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'];
 const WEEKDAYS_EN = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const WEEKDAYS_TR = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
+const WEEKDAYS_UK = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'];
 
 type CalendarCell = 
   | { key: string; day?: never; date?: never; events?: never }
@@ -25,7 +27,11 @@ type CalendarCell =
 const EventsCalendar: React.FC<EventsCalendarProps> = ({ events, selectedDate, onDateSelect }) => {
   const router = useRouter();
   const { locale } = router;
-  const weekdays = locale === 'ru' ? WEEKDAYS : WEEKDAYS_EN;
+  const weekdays = 
+    locale === 'ru' ? WEEKDAYS_RU 
+    : locale === 'tr' ? WEEKDAYS_TR 
+    : locale === 'uk' ? WEEKDAYS_UK 
+    : WEEKDAYS_EN;
 
   const today = useMemo(() => {
     const d = new Date();
@@ -40,6 +46,18 @@ const EventsCalendar: React.FC<EventsCalendarProps> = ({ events, selectedDate, o
     const date = new Date(viewYear, viewMonth);
     if (locale === 'ru') {
       return date.toLocaleDateString('ru-RU', {
+        month: 'long',
+        year: 'numeric',
+      });
+    }
+    if (locale === 'tr') {
+      return date.toLocaleDateString('tr-TR', {
+        month: 'long',
+        year: 'numeric',
+      });
+    }
+    if (locale === 'uk') {
+      return date.toLocaleDateString('uk-UA', {
         month: 'long',
         year: 'numeric',
       });

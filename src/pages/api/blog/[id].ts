@@ -42,10 +42,14 @@ async function publicHandler(req: NextApiRequest, res: NextApiResponse) {
         title: {
           ru: blog.title_ru,
           en: blog.title_en,
+          ...(blog.title_tr ? { tr: blog.title_tr } : {}),
+          ...(blog.title_uk ? { uk: blog.title_uk } : {}),
         },
         content: {
           ru: blog.content_ru,
           en: blog.content_en,
+          ...(blog.content_tr ? { tr: blog.content_tr } : {}),
+          ...(blog.content_uk ? { uk: blog.content_uk } : {}),
         },
         published: blog.published === 1,
         created_at: blog.created_at,

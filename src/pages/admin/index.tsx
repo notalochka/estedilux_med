@@ -119,6 +119,16 @@ const AdminPage: NextPage = () => {
                   Создание и редактирование статей блога
                 </p>
               </Link>
+
+              <Link href="/admin/categories" className={styles.card}>
+                <div className={styles.cardIcon}>
+                  <FolderOpen size={32} />
+                </div>
+                <h3 className={styles.cardTitle}>Категории</h3>
+                <p className={styles.cardDescription}>
+                  Управление категориями событий и переводы
+                </p>
+              </Link>
             </div>
           </div>
         </main>

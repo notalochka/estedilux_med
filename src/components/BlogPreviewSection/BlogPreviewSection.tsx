@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useAnimation } from '@/lib/useAnimation';
+import { t } from '@/lib/translations';
 import type { BlogPost } from '@/types/blog';
 import styles from './BlogPreviewSection.module.css';
 
@@ -46,7 +47,7 @@ const BlogPreviewSection: React.FC = () => {
       <section className={styles.blogSection}>
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>
-            {locale === 'ru' ? 'Блог' : 'Blog'}
+            {t({ ru: 'Блог', en: 'Blog', tr: 'Blog', uk: 'Блог' }, locale)}
           </h2>
           <div className={styles.blogGrid}>
             {[1, 2, 3].map((i) => (
@@ -72,11 +73,11 @@ const BlogPreviewSection: React.FC = () => {
           ref={titleRef as React.RefObject<HTMLHeadingElement>}
           className={`${styles.sectionTitle} ${titleVisible ? styles.animateFadeInUp : ''}`}
         >
-          {locale === 'ru' ? 'Блог' : 'Blog'}
+          {t({ ru: 'Блог', en: 'Blog', tr: 'Blog', uk: 'Блог' }, locale)}
         </h2>
         <div className={styles.blogGrid}>
           {blogPosts.map((post, index) => {
-            const title = locale === 'ru' ? post.title.ru : post.title.en;
+            const title = locale === 'ru' ? post.title.ru : locale === 'tr' ? (post.title.tr || post.title.en) : locale === 'uk' ? (post.title.uk || post.title.ru) : post.title.en;
             const { ref, isVisible } = postRefs[index] || { ref: null, isVisible: false };
             return (
               <Link 

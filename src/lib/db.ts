@@ -52,6 +52,24 @@ export function initDatabase() {
     }
   }
 
+  // Додаємо колонки для турецької та української мов для blogs
+  try {
+    db.exec('ALTER TABLE blogs ADD COLUMN title_tr TEXT');
+  } catch (e) {
+  }
+  try {
+    db.exec('ALTER TABLE blogs ADD COLUMN title_uk TEXT');
+  } catch (e) {
+  }
+  try {
+    db.exec('ALTER TABLE blogs ADD COLUMN content_tr TEXT');
+  } catch (e) {
+  }
+  try {
+    db.exec('ALTER TABLE blogs ADD COLUMN content_uk TEXT');
+  } catch (e) {
+  }
+
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_blog_date ON blogs(date)
   `);
@@ -101,6 +119,50 @@ export function initDatabase() {
 
   try {
     db.exec('ALTER TABLE events ADD COLUMN end_date TEXT');
+  } catch (e) {
+  }
+
+  // Додаємо колонки для турецької та української мов для events
+  try {
+    db.exec('ALTER TABLE events ADD COLUMN title_tr TEXT');
+  } catch (e) {
+  }
+  try {
+    db.exec('ALTER TABLE events ADD COLUMN title_uk TEXT');
+  } catch (e) {
+  }
+  try {
+    db.exec('ALTER TABLE events ADD COLUMN description_tr TEXT');
+  } catch (e) {
+  }
+  try {
+    db.exec('ALTER TABLE events ADD COLUMN description_uk TEXT');
+  } catch (e) {
+  }
+  try {
+    db.exec('ALTER TABLE events ADD COLUMN location_tr TEXT');
+  } catch (e) {
+  }
+  try {
+    db.exec('ALTER TABLE events ADD COLUMN location_uk TEXT');
+  } catch (e) {
+  }
+
+  // Додаємо колонки для турецької та української мов для event_categories
+  try {
+    db.exec('ALTER TABLE event_categories ADD COLUMN title_tr TEXT');
+  } catch (e) {
+  }
+  try {
+    db.exec('ALTER TABLE event_categories ADD COLUMN title_uk TEXT');
+  } catch (e) {
+  }
+  try {
+    db.exec('ALTER TABLE event_categories ADD COLUMN description_tr TEXT');
+  } catch (e) {
+  }
+  try {
+    db.exec('ALTER TABLE event_categories ADD COLUMN description_uk TEXT');
   } catch (e) {
   }
 
@@ -216,6 +278,18 @@ export const updateEventCategory = db.prepare(`
   WHERE id = ?
 `);
 
+// Prepared statements для оновлення перекладів категорій
+export const updateEventCategoryTranslations = db.prepare(`
+  UPDATE event_categories 
+  SET title_tr = COALESCE(?, title_tr), 
+      title_uk = COALESCE(?, title_uk),
+      description_tr = COALESCE(?, description_tr),
+      description_uk = COALESCE(?, description_uk),
+      subcategories = COALESCE(?, subcategories),
+      updated_at = CURRENT_TIMESTAMP
+  WHERE id = ?
+`);
+
 export const deleteEventCategory = db.prepare(`
   DELETE FROM event_categories WHERE id = ?
 `);
@@ -248,6 +322,19 @@ export const createEvent = db.prepare(`
 export const updateEvent = db.prepare(`
   UPDATE events 
   SET category_id = ?, title_ru = ?, title_en = ?, description_ru = ?, description_en = ?, date = ?, end_date = ?, location_ru = ?, location_en = ?, price = ?, duration = ?, image = ?, published = ?, updated_at = CURRENT_TIMESTAMP
+  WHERE id = ?
+`);
+
+// Prepared statements для оновлення перекладів подій
+export const updateEventTranslations = db.prepare(`
+  UPDATE events 
+  SET title_tr = COALESCE(?, title_tr), 
+      title_uk = COALESCE(?, title_uk),
+      description_tr = COALESCE(?, description_tr),
+      description_uk = COALESCE(?, description_uk),
+      location_tr = COALESCE(?, location_tr),
+      location_uk = COALESCE(?, location_uk),
+      updated_at = CURRENT_TIMESTAMP
   WHERE id = ?
 `);
 

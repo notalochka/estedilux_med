@@ -9,6 +9,7 @@ import remarkGfm from 'remark-gfm';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import { getImageUrl } from '@/lib/imageUtils';
+import { t } from '@/lib/translations';
 import type { BlogPost } from '@/types/blog';
 import styles from './BlogPost.module.css';
 
@@ -31,14 +32,19 @@ const BlogPostPage: NextPage<BlogPostPageProps> = ({ post }) => {
     }
   };
 
-  const title = locale === 'ru' ? post.title.ru : post.title.en;
-  const content = locale === 'ru' ? post.content.ru : post.content.en;
+  const title = locale === 'ru' ? post.title.ru : locale === 'tr' ? (post.title.tr || post.title.en) : locale === 'uk' ? (post.title.uk || post.title.ru) : post.title.en;
+  const content = locale === 'ru' ? post.content.ru : locale === 'tr' ? (post.content.tr || post.content.en) : locale === 'uk' ? (post.content.uk || post.content.ru) : post.content.en;
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    const months = locale === 'ru' 
-      ? ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
-      : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const months = 
+      locale === 'ru' 
+        ? ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+        : locale === 'tr'
+        ? ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']
+        : locale === 'uk'
+        ? ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень']
+        : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     
     return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
   };
@@ -47,7 +53,7 @@ const BlogPostPage: NextPage<BlogPostPageProps> = ({ post }) => {
     <>
       <Head>
         <title>
-          {title} - {locale === 'ru' ? 'Блог Estedilux Med' : 'Blog Estedilux Med'}
+          {title} - {t({ ru: 'Блог Estedilux Med', en: 'Blog Estedilux Med', tr: 'Blog Estedilux Med', uk: 'Блог Estedilux Med' }, locale)}
         </title>
         <meta
           name="description"
@@ -75,7 +81,7 @@ const BlogPostPage: NextPage<BlogPostPageProps> = ({ post }) => {
               <div className={styles.heroContent}>
                 <div className={styles.heroTitleWrapper}>
                   <h1 className={styles.heroTitle}>
-                    {locale === 'ru' ? 'Блог' : 'Blog'}
+                    {t({ ru: 'Блог', en: 'Blog', tr: 'Blog', uk: 'Блог' }, locale)}
                   </h1>
                   <div className={styles.heroChevron} onClick={scrollToContent}>
                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -93,7 +99,7 @@ const BlogPostPage: NextPage<BlogPostPageProps> = ({ post }) => {
             {/* Back Button */}
             <button onClick={handleBack} className={styles.backButton}>
               <ArrowLeft size={20} />
-              <span>{locale === 'ru' ? 'Вернуться к блогу' : 'Back to blog'}</span>
+              <span>{t({ ru: 'Вернуться к блогу', en: 'Back to blog', tr: 'Bloga dön', uk: 'Повернутися до блогу' }, locale)}</span>
             </button>
 
             {/* Title */}
@@ -196,10 +202,14 @@ export const getServerSideProps: GetServerSideProps<BlogPostPageProps> = async (
       title: {
         ru: blog.title_ru,
         en: blog.title_en,
+        ...(blog.title_tr ? { tr: blog.title_tr } : {}),
+        ...(blog.title_uk ? { uk: blog.title_uk } : {}),
       },
       content: {
         ru: blog.content_ru,
         en: blog.content_en,
+        ...(blog.content_tr ? { tr: blog.content_tr } : {}),
+        ...(blog.content_uk ? { uk: blog.content_uk } : {}),
       },
       published: blog.published === 1,
     };

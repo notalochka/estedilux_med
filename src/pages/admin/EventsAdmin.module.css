@@ -394,7 +394,8 @@
 }
 
 .editButton,
-.deleteButton {
+.deleteButton,
+.translateButton {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -414,6 +415,20 @@
 
 .editButton:hover {
   background: #e5e7eb;
+}
+
+.translateButton {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.translateButton:hover:not(:disabled) {
+  background: #bfdbfe;
+}
+
+.translateButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .deleteButton {

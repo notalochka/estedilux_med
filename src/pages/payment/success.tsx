@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { CheckCircle, XCircle, ArrowLeft, Loader2 } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import { t } from '@/lib/translations';
 import styles from './PaymentSuccess.module.css';
 
 interface PaymentStatus {
@@ -109,15 +110,15 @@ const PaymentSuccessPage: NextPage = () => {
       <Head>
         <title>
           {isPaymentFailed
-            ? (locale === 'ru' ? 'Оплата не выполнена - Estedilux Med' : 'Payment Failed - Estedilux Med')
-            : (locale === 'ru' ? 'Оплата успешна - Estedilux Med' : 'Payment Successful - Estedilux Med')}
+            ? t({ ru: 'Оплата не выполнена - Estedilux Med', en: 'Payment Failed - Estedilux Med', tr: 'Ödeme Başarısız - Estedilux Med', uk: 'Оплата не виконана - Estedilux Med' }, locale)
+            : t({ ru: 'Оплата успешна - Estedilux Med', en: 'Payment Successful - Estedilux Med', tr: 'Ödeme Başarılı - Estedilux Med', uk: 'Оплата успішна - Estedilux Med' }, locale)}
         </title>
         <meta
           name="description"
           content={
             isPaymentFailed
-              ? (locale === 'ru' ? 'Оплата не была выполнена' : 'Payment was not completed')
-              : (locale === 'ru' ? 'Оплата успешно завершена' : 'Payment successfully completed')
+              ? t({ ru: 'Оплата не была выполнена', en: 'Payment was not completed', tr: 'Ödeme tamamlanmadı', uk: 'Оплата не була виконана' }, locale)
+              : t({ ru: 'Оплата успешно завершена', en: 'Payment successfully completed', tr: 'Ödeme başarıyla tamamlandı', uk: 'Оплата успішно завершена' }, locale)
           }
         />
       </Head>
@@ -130,7 +131,7 @@ const PaymentSuccessPage: NextPage = () => {
               <div className={styles.loading}>
                 <Loader2 size={48} className={styles.spinner} />
                 <p className={styles.loadingText}>
-                  {locale === 'ru' ? 'Проверка статуса оплаты...' : 'Checking payment status...'}
+                  {t({ ru: 'Проверка статуса оплаты...', en: 'Checking payment status...', tr: 'Ödeme durumu kontrol ediliyor...', uk: 'Перевірка статусу оплати...' }, locale)}
                 </p>
               </div>
             ) : error ? (
@@ -139,12 +140,12 @@ const PaymentSuccessPage: NextPage = () => {
                   <XCircle size={64} className={styles.errorIcon} />
                 </div>
                 <h1 className={styles.title}>
-                  {locale === 'ru' ? 'Ошибка' : 'Error'}
+                  {t({ ru: 'Ошибка', en: 'Error', tr: 'Hata', uk: 'Помилка' }, locale)}
                 </h1>
                 <p className={styles.message}>{error}</p>
                 <div className={styles.actions}>
                   <Link href="/events" className={styles.eventsLink}>
-                    {locale === 'ru' ? 'Все события' : 'All Events'}
+                    {t({ ru: 'Все события', en: 'All Events', tr: 'Tüm Etkinlikler', uk: 'Всі події' }, locale)}
                   </Link>
                 </div>
               </div>
@@ -154,17 +155,23 @@ const PaymentSuccessPage: NextPage = () => {
                   <XCircle size={64} className={styles.failedIcon} />
                 </div>
                 <h1 className={styles.title}>
-                  {locale === 'ru' ? 'Оплата не выполнена' : 'Payment Failed'}
+                  {t({ ru: 'Оплата не выполнена', en: 'Payment Failed', tr: 'Ödeme Başarısız', uk: 'Оплата не виконана' }, locale)}
                 </h1>
                 <p className={styles.message}>
-                  {locale === 'ru'
-                    ? 'К сожалению, оплата не была успешно обработана. Пожалуйста, проверьте данные вашей карты и попробуйте снова. Если проблема сохраняется, свяжитесь с вашим банком или используйте другую карту.'
-                    : 'Unfortunately, the payment was not successfully processed. Please check your card details and try again. If the problem persists, contact your bank or use another card.'}
+                  {t(
+                    {
+                      ru: 'К сожалению, оплата не была успешно обработана. Пожалуйста, проверьте данные вашей карты и попробуйте снова. Если проблема сохраняется, свяжитесь с вашим банком или используйте другую карту.',
+                      en: 'Unfortunately, the payment was not successfully processed. Please check your card details and try again. If the problem persists, contact your bank or use another card.',
+                      tr: 'Maalesef ödeme başarıyla işlenemedi. Lütfen kart bilgilerinizi kontrol edin ve tekrar deneyin. Sorun devam ederse, bankanızla iletişime geçin veya başka bir kart kullanın.',
+                      uk: 'На жаль, оплата не була успішно оброблена. Будь ласка, перевірте дані вашої картки та спробуйте ще раз. Якщо проблема зберігається, зв\'яжіться з вашим банком або використайте іншу картку.',
+                    },
+                    locale
+                  )}
                 </p>
                 {(router.query.orderRef || paymentStatus?.orderReference) && (
                   <div className={styles.orderInfo}>
                     <p className={styles.orderLabel}>
-                      {locale === 'ru' ? 'Номер заказа:' : 'Order Number:'}
+                      {t({ ru: 'Номер заказа:', en: 'Order Number:', tr: 'Sipariş Numarası:', uk: 'Номер замовлення:' }, locale)}
                     </p>
                     <p className={styles.orderNumber}>
                       {paymentStatus?.orderReference || router.query.orderRef}
@@ -178,14 +185,14 @@ const PaymentSuccessPage: NextPage = () => {
                       className={styles.backLink}
                     >
                       <ArrowLeft size={20} />
-                      <span>{locale === 'ru' ? 'Вернуться к событию' : 'Back to Event'}</span>
+                      <span>{t({ ru: 'Вернуться к событию', en: 'Back to Event', tr: 'Etkinliğe Dön', uk: 'Повернутися до події' }, locale)}</span>
                     </Link>
                   )}
                   <Link 
                     href="/events"
                     className={styles.eventsLink}
                   >
-                    {locale === 'ru' ? 'Все события' : 'All Events'}
+                    {t({ ru: 'Все события', en: 'All Events', tr: 'Tüm Etkinlikler', uk: 'Всі події' }, locale)}
                   </Link>
                 </div>
               </div>
@@ -195,17 +202,23 @@ const PaymentSuccessPage: NextPage = () => {
                   <Loader2 size={64} className={styles.pendingIcon} />
                 </div>
                 <h1 className={styles.title}>
-                  {locale === 'ru' ? 'Оплата обрабатывается' : 'Payment Processing'}
+                  {t({ ru: 'Оплата обрабатывается', en: 'Payment Processing', tr: 'Ödeme İşleniyor', uk: 'Оплата обробляється' }, locale)}
                 </h1>
                 <p className={styles.message}>
-                  {locale === 'ru'
-                    ? 'Ваша оплата обрабатывается. Пожалуйста, подождите несколько минут. Мы обновим статус автоматически.'
-                    : 'Your payment is being processed. Please wait a few minutes. We will update the status automatically.'}
+                  {t(
+                    {
+                      ru: 'Ваша оплата обрабатывается. Пожалуйста, подождите несколько минут. Мы обновим статус автоматически.',
+                      en: 'Your payment is being processed. Please wait a few minutes. We will update the status automatically.',
+                      tr: 'Ödemeniz işleniyor. Lütfen birkaç dakika bekleyin. Durumu otomatik olarak güncelleyeceğiz.',
+                      uk: 'Ваша оплата обробляється. Будь ласка, зачекайте кілька хвилин. Ми оновимо статус автоматично.',
+                    },
+                    locale
+                  )}
                 </p>
                 {(router.query.orderRef || paymentStatus?.orderReference) && (
                   <div className={styles.orderInfo}>
                     <p className={styles.orderLabel}>
-                      {locale === 'ru' ? 'Номер заказа:' : 'Order Number:'}
+                      {t({ ru: 'Номер заказа:', en: 'Order Number:', tr: 'Sipariş Numarası:', uk: 'Номер замовлення:' }, locale)}
                     </p>
                     <p className={styles.orderNumber}>
                       {paymentStatus?.orderReference || router.query.orderRef}
@@ -219,14 +232,14 @@ const PaymentSuccessPage: NextPage = () => {
                       className={styles.backLink}
                     >
                       <ArrowLeft size={20} />
-                      <span>{locale === 'ru' ? 'Вернуться к событию' : 'Back to Event'}</span>
+                      <span>{t({ ru: 'Вернуться к событию', en: 'Back to Event', tr: 'Etkinliğe Dön', uk: 'Повернутися до події' }, locale)}</span>
                     </Link>
                   )}
                   <Link 
                     href="/events"
                     className={styles.eventsLink}
                   >
-                    {locale === 'ru' ? 'Все события' : 'All Events'}
+                    {t({ ru: 'Все события', en: 'All Events', tr: 'Tüm Etkinlikler', uk: 'Всі події' }, locale)}
                   </Link>
                 </div>
               </div>
@@ -236,17 +249,23 @@ const PaymentSuccessPage: NextPage = () => {
                   <CheckCircle size={64} className={styles.successIcon} />
                 </div>
                 <h1 className={styles.title}>
-                  {locale === 'ru' ? 'Оплата успешно завершена!' : 'Payment Successfully Completed!'}
+                  {t({ ru: 'Оплата успешно завершена!', en: 'Payment Successfully Completed!', tr: 'Ödeme Başarıyla Tamamlandı!', uk: 'Оплата успішно завершена!' }, locale)}
                 </h1>
                 <p className={styles.message}>
-                  {locale === 'ru' 
-                    ? 'Спасибо за регистрацию! Ваша оплата была успешно обработана. Наши менеджеры свяжутся с вами в ближайшее время.'
-                    : 'Thank you for registration! Your payment has been successfully processed. Our managers will contact you shortly.'}
+                  {t(
+                    {
+                      ru: 'Спасибо за регистрацию! Ваша оплата была успешно обработана. Наши менеджеры свяжутся с вами в ближайшее время.',
+                      en: 'Thank you for registration! Your payment has been successfully processed. Our managers will contact you shortly.',
+                      tr: 'Kayıt için teşekkürler! Ödemeniz başarıyla işlendi. Yöneticilerimiz kısa süre içinde sizinle iletişime geçecektir.',
+                      uk: 'Дякуємо за реєстрацію! Ваша оплата була успішно оброблена. Наші менеджери зв\'яжуться з вами найближчим часом.',
+                    },
+                    locale
+                  )}
                 </p>
                 {(router.query.orderRef || paymentStatus?.orderReference) && (
                   <div className={styles.orderInfo}>
                     <p className={styles.orderLabel}>
-                      {locale === 'ru' ? 'Номер заказа:' : 'Order Number:'}
+                      {t({ ru: 'Номер заказа:', en: 'Order Number:', tr: 'Sipariş Numarası:', uk: 'Номер замовлення:' }, locale)}
                     </p>
                     <p className={styles.orderNumber}>
                       {paymentStatus?.orderReference || router.query.orderRef}
@@ -260,14 +279,14 @@ const PaymentSuccessPage: NextPage = () => {
                       className={styles.backLink}
                     >
                       <ArrowLeft size={20} />
-                      <span>{locale === 'ru' ? 'Вернуться к событию' : 'Back to Event'}</span>
+                      <span>{t({ ru: 'Вернуться к событию', en: 'Back to Event', tr: 'Etkinliğe Dön', uk: 'Повернутися до події' }, locale)}</span>
                     </Link>
                   )}
                   <Link 
                     href="/events"
                     className={styles.eventsLink}
                   >
-                    {locale === 'ru' ? 'Все события' : 'All Events'}
+                    {t({ ru: 'Все события', en: 'All Events', tr: 'Tüm Etkinlikler', uk: 'Всі події' }, locale)}
                   </Link>
                 </div>
               </div>

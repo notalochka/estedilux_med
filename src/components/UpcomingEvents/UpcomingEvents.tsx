@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Calendar, MapPin, ShoppingCart } from 'lucide-react';
 import { useAnimation } from '@/lib/useAnimation';
+import { t } from '@/lib/translations';
 import type { Event, EventCategory } from '@/types/events';
 import styles from './UpcomingEvents.module.css';
 
@@ -97,18 +98,26 @@ const UpcomingEvents: React.FC = () => {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    const months = locale === 'ru' 
-      ? ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
-      : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const months = 
+      locale === 'ru' 
+        ? ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+        : locale === 'tr'
+        ? ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']
+        : locale === 'uk'
+        ? ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень']
+        : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     
     return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
   };
 
   const getCategoryTitle = (categoryId: number) => {
     const category = categories.find((cat) => cat.id === categoryId);
-    return category 
-      ? (locale === 'ru' ? category.title.ru : category.title.en)
-      : '';
+    if (!category) return '';
+    
+    if (locale === 'ru') return category.title.ru;
+    if (locale === 'tr') return category.title.tr || category.title.en;
+    if (locale === 'uk') return category.title.uk || category.title.ru;
+    return category.title.en;
   };
 
   if (isLoading || upcomingEvents.length === 0) {
@@ -122,7 +131,7 @@ const UpcomingEvents: React.FC = () => {
           ref={titleRef as React.RefObject<HTMLHeadingElement>}
           className={`${styles.title} ${titleVisible ? styles.animateFadeInUp : ''}`}
         >
-          {locale === 'ru' ? 'Предстоящие программы' : 'Upcoming Programs'}
+          {t({ ru: 'Предстоящие программы', en: 'Upcoming Programs', tr: 'Yaklaşan Programlar', uk: 'Майбутні програми' }, locale)}
         </h2>
         
         <div className={styles.eventsGrid}>
@@ -142,7 +151,7 @@ const UpcomingEvents: React.FC = () => {
                     {event.image && (
                       <Image
                         src={event.image}
-                        alt={locale === 'ru' ? event.title.ru : event.title.en}
+                        alt={locale === 'ru' ? event.title.ru : locale === 'tr' ? (event.title.tr || event.title.en) : locale === 'uk' ? (event.title.uk || event.title.ru) : event.title.en}
                         fill
                         className={styles.eventImage}
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -164,19 +173,19 @@ const UpcomingEvents: React.FC = () => {
                     )}
                     
                     <h3 className={styles.eventTitle}>
-                      {locale === 'ru' ? event.title.ru : event.title.en}
+                      {locale === 'ru' ? event.title.ru : locale === 'tr' ? (event.title.tr || event.title.en) : locale === 'uk' ? (event.title.uk || event.title.ru) : event.title.en}
                     </h3>
                     
                     {event.location && (
                       <div className={styles.location}>
                         <MapPin size={14} />
-                        <span>{locale === 'ru' ? event.location.ru : event.location.en}</span>
+                        <span>{locale === 'ru' ? event.location.ru : locale === 'tr' ? (event.location.tr || event.location.en) : locale === 'uk' ? (event.location.uk || event.location.ru) : event.location.en}</span>
                       </div>
                     )}
                     
                     <div className={styles.registrationButton}>
                       <ShoppingCart size={16} />
-                      <span>{locale === 'ru' ? 'Регистрация' : 'Registration'}</span>
+                      <span>{t({ ru: 'Регистрация', en: 'Registration', tr: 'Kayıt', uk: 'Реєстрація' }, locale)}</span>
                     </div>
                   </div>
                 </Link>

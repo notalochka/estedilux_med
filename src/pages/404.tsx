@@ -5,17 +5,46 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import { t } from '@/lib/translations';
 
 const NotFound: NextPage = () => {
   const router = useRouter();
   const { locale } = router;
 
+  const title = t(
+    {
+      ru: '404 - Страница не найдена',
+      en: '404 - Page Not Found',
+      tr: '404 - Sayfa Bulunamadı',
+      uk: '404 - Сторінку не знайдено',
+    },
+    locale
+  );
+
+  const pageNotFound = t(
+    {
+      ru: 'Страница не найдена',
+      en: 'Page not found',
+      tr: 'Sayfa bulunamadı',
+      uk: 'Сторінку не знайдено',
+    },
+    locale
+  );
+
+  const returnHome = t(
+    {
+      ru: 'Вернуться на главную',
+      en: 'Return to Home',
+      tr: 'Ana Sayfaya Dön',
+      uk: 'Повернутися на головну',
+    },
+    locale
+  );
+
   return (
     <>
       <Head>
-        <title>
-          {locale === 'ru' ? '404 - Страница не найдена' : '404 - Page Not Found'}
-        </title>
+        <title>{title}</title>
       </Head>
 
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -32,9 +61,7 @@ const NotFound: NextPage = () => {
           <div style={{ textAlign: 'center' }}>
             <h1 style={{ fontSize: 'var(--font-size-4xl)', marginBottom: '1rem' }}>404</h1>
             <p style={{ fontSize: 'var(--font-size-xl)', marginBottom: '2rem', color: 'var(--color-text-light)' }}>
-              {locale === 'ru'
-                ? 'Страница не найдена'
-                : 'Page not found'}
+              {pageNotFound}
             </p>
             <Link
               href="/"
@@ -47,7 +74,7 @@ const NotFound: NextPage = () => {
                 display: 'inline-block',
               }}
             >
-              {locale === 'ru' ? 'Вернуться на главную' : 'Return to Home'}
+              {returnHome}
             </Link>
           </div>
         </main>

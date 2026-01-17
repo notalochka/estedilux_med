@@ -8,6 +8,7 @@ import { Calendar, Search } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import { getImageUrl } from '@/lib/imageUtils';
+import { t } from '@/lib/translations';
 import type { BlogPost } from '@/types/blog';
 import styles from './Blog.module.css';
 
@@ -56,8 +57,8 @@ const Blog: NextPage = () => {
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase().trim();
       filtered = filtered.filter((post) => {
-        const title = locale === 'ru' ? post.title.ru.toLowerCase() : post.title.en.toLowerCase();
-        const content = locale === 'ru' ? post.content.ru : post.content.en;
+        const title = locale === 'ru' ? post.title.ru.toLowerCase() : locale === 'tr' ? (post.title.tr || post.title.en).toLowerCase() : locale === 'uk' ? (post.title.uk || post.title.ru).toLowerCase() : post.title.en.toLowerCase();
+        const content = locale === 'ru' ? post.content.ru : locale === 'tr' ? (post.content.tr || post.content.en) : locale === 'uk' ? (post.content.uk || post.content.ru) : post.content.en;
         
         // Перевіряємо назву
         if (title.includes(query)) return true;
@@ -92,7 +93,7 @@ const Blog: NextPage = () => {
 
 
   const getPreviewText = (post: BlogPost): string => {
-    const content = locale === 'ru' ? post.content.ru : post.content.en;
+    const content = locale === 'ru' ? post.content.ru : locale === 'tr' ? (post.content.tr || post.content.en) : locale === 'uk' ? (post.content.uk || post.content.ru) : post.content.en;
     // Видаляємо Markdown синтаксис для прев'ю
     const plainText = content
       .replace(/^#+\s+/gm, '') // Видаляємо заголовки
@@ -109,15 +110,19 @@ const Blog: NextPage = () => {
     <>
       <Head>
         <title>
-          {locale === 'ru' ? 'Блог - Estedilux Med' : 'Blog - Estedilux Med'}
+          {t({ ru: 'Блог - Estedilux Med', en: 'Blog - Estedilux Med', tr: 'Blog - Estedilux Med', uk: 'Блог - Estedilux Med' }, locale)}
         </title>
         <meta
           name="description"
-          content={
-            locale === 'ru'
-              ? 'Статьи и новости о медицинском образовании'
-              : 'Articles and news about medical education'
-          }
+          content={t(
+            {
+              ru: 'Статьи и новости о медицинском образовании',
+              en: 'Articles and news about medical education',
+              tr: 'Tıp eğitimi hakkında makaleler ve haberler',
+              uk: 'Статті та новини про медичну освіту',
+            },
+            locale
+          )}
         />
       </Head>
 
@@ -141,7 +146,7 @@ const Blog: NextPage = () => {
               <div className={styles.heroContent}>
                 <div className={styles.heroTitleWrapper}>
                   <h1 className={styles.heroTitle}>
-                    {locale === 'ru' ? 'Блог' : 'Blog'}
+                    {t({ ru: 'Блог', en: 'Blog', tr: 'Blog', uk: 'Блог' }, locale)}
                   </h1>
                   <div className={styles.heroChevron} onClick={scrollToBlogContent}>
                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -163,7 +168,7 @@ const Blog: NextPage = () => {
                   <input
                     type="text"
                     className={styles.searchInput}
-                    placeholder={locale === 'ru' ? 'Поиск по блогу...' : 'Search articles...'}
+                    placeholder={t({ ru: 'Поиск по блогу...', en: 'Search articles...', tr: 'Makalelerde ara...', uk: 'Пошук по блогу...' }, locale)}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -172,23 +177,19 @@ const Blog: NextPage = () => {
 
               {isLoading ? (
                 <p className={styles.emptyMessage}>
-                  {locale === 'ru' ? 'Загрузка...' : 'Loading...'}
+                  {t({ ru: 'Загрузка...', en: 'Loading...', tr: 'Yükleniyor...', uk: 'Завантаження...' }, locale)}
                 </p>
               ) : filteredAndSortedPosts.length === 0 ? (
                 <p className={styles.emptyMessage}>
                   {searchQuery.trim()
-                    ? (locale === 'ru'
-                        ? 'Статьи не найдены'
-                        : 'No articles found')
-                    : (locale === 'ru'
-                        ? 'Скоро здесь появятся статьи и новости'
-                        : 'Articles and news will appear here soon')}
+                    ? t({ ru: 'Статьи не найдены', en: 'No articles found', tr: 'Makale bulunamadı', uk: 'Статті не знайдено' }, locale)
+                    : t({ ru: 'Скоро здесь появятся статьи и новости', en: 'Articles and news will appear here soon', tr: 'Yakında burada makaleler ve haberler görünecek', uk: 'Незабаром тут з\'являться статті та новини' }, locale)}
                 </p>
               ) : (
                 <>
                   <div className={styles.postsGrid}>
                     {displayedPosts.map((post) => {
-                      const title = locale === 'ru' ? post.title.ru : post.title.en;
+                      const title = locale === 'ru' ? post.title.ru : locale === 'tr' ? (post.title.tr || post.title.en) : locale === 'uk' ? (post.title.uk || post.title.ru) : post.title.en;
                       const previewText = getPreviewText(post);
                       
                       return (
@@ -217,7 +218,7 @@ const Blog: NextPage = () => {
                               )}
                               
                               <div className={styles.readMore}>
-                                {locale === 'ru' ? 'Читать далее' : 'Read more'}
+                                {t({ ru: 'Читать далее', en: 'Read more', tr: 'Devamını oku', uk: 'Читати далі' }, locale)}
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                   <polyline points="9 18 15 12 9 6"></polyline>
                                 </svg>
@@ -232,7 +233,7 @@ const Blog: NextPage = () => {
                   {hasMore && (
                     <div className={styles.loadMoreWrapper}>
                       <button onClick={handleLoadMore} className={styles.loadMoreButton}>
-                        {locale === 'ru' ? 'Загрузить ещё' : 'Load more'}
+                        {t({ ru: 'Загрузить ещё', en: 'Load more', tr: 'Daha fazla yükle', uk: 'Завантажити ще' }, locale)}
                       </button>
                     </div>
                   )}

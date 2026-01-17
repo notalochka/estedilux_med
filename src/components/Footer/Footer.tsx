@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Mail, Phone, Instagram, Facebook, ArrowUpRight } from 'lucide-react';
+import { t } from '@/lib/translations';
 import styles from './Footer.module.css';
 
 const Footer: React.FC = () => {
@@ -9,11 +10,11 @@ const Footer: React.FC = () => {
   const { locale } = router;
 
   const quickLinks = [
-    { href: '/', label: locale === 'ru' ? 'Главная' : 'Home' },
-    { href: '/about', label: locale === 'ru' ? 'О нас' : 'About' },
-    { href: '/events', label: locale === 'ru' ? 'События' : 'Events' },
-    { href: '/blog', label: locale === 'ru' ? 'Блог' : 'Blog' },
-    { href: '/contact', label: locale === 'ru' ? 'Контакты' : 'Contact' },
+    { href: '/', label: t({ ru: 'Главная', en: 'Home', tr: 'Ana Sayfa', uk: 'Головна' }, locale) },
+    { href: '/about', label: t({ ru: 'О нас', en: 'About', tr: 'Hakkımızda', uk: 'Про нас' }, locale) },
+    { href: '/events', label: t({ ru: 'События', en: 'Events', tr: 'Etkinlikler', uk: 'Події' }, locale) },
+    { href: '/blog', label: t({ ru: 'Блог', en: 'Blog', tr: 'Blog', uk: 'Блог' }, locale) },
+    { href: '/contact', label: t({ ru: 'Контакты', en: 'Contact', tr: 'İletişim', uk: 'Контакти' }, locale) },
   ];
 
   const contactOptions = [
@@ -51,13 +52,19 @@ const Footer: React.FC = () => {
               <span className={styles.logoText}>Estedilux Med</span>
             </Link>
             <p className={styles.description}>
-              {locale === 'ru'
-                ? 'Estedilux Med — это международная образовательная платформа, которая объединяет обучение, стажировки, развитие врачей и организацию медицинских мероприятий под ключ.'
-                : 'Estedilux Med is an international educational platform that combines training, internships, doctor development and turnkey medical event organization.'}
+              {t(
+                {
+                  ru: 'Estedilux Med — это международная образовательная платформа, которая объединяет обучение, стажировки, развитие врачей и организацию медицинских мероприятий под ключ.',
+                  en: 'Estedilux Med is an international educational platform that combines training, internships, doctor development and turnkey medical event organization.',
+                  tr: 'Estedilux Med, eğitim, stajlar, doktor gelişimi ve anahtar teslim tıbbi etkinlik organizasyonunu birleştiren uluslararası bir eğitim platformudur.',
+                  uk: 'Estedilux Med — це міжнародна освітня платформа, яка об\'єднує навчання, стажування, розвиток лікарів та організацію медичних заходів під ключ.',
+                },
+                locale
+              )}
             </p>
             <Link href="/contact" className={styles.ctaButton}>
               <span className={styles.ctaText}>
-                {locale === 'ru' ? 'Связаться с нами' : 'Contact Us'}
+                {t({ ru: 'Связаться с нами', en: 'Contact Us', tr: 'Bizimle İletişime Geçin', uk: 'Зв\'язатися з нами' }, locale)}
               </span>
               <ArrowUpRight size={16} className={styles.ctaIcon} />
               <div className={styles.ctaGradient} />
@@ -66,7 +73,7 @@ const Footer: React.FC = () => {
 
           <div className={styles.navSection}>
             <h4 className={styles.sectionTitle}>
-              {locale === 'ru' ? 'Навигация' : 'Navigation'}
+              {t({ ru: 'Навигация', en: 'Navigation', tr: 'Gezinme', uk: 'Навігація' }, locale)}
             </h4>
             <div className={styles.navGrid}>
               {quickLinks.map((link) => (
@@ -83,7 +90,7 @@ const Footer: React.FC = () => {
 
           <div className={styles.contactSection}>
             <h4 className={styles.sectionTitle}>
-              {locale === 'ru' ? 'Контактная информация' : 'Contact Information'}
+              {t({ ru: 'Контактная информация', en: 'Contact Information', tr: 'İletişim Bilgileri', uk: 'Контактна інформація' }, locale)}
             </h4>
             <div className={styles.contactList}>
               {contactOptions.map((contact) => (
@@ -107,7 +114,7 @@ const Footer: React.FC = () => {
             © {new Date().getFullYear()} Estedilux Med. All rights reserved.
           </p>
           <p className={styles.developed}>
-            {locale === 'ru' ? 'Разработано' : 'Developed by'}{' '}
+            {t({ ru: 'Разработано', en: 'Developed by', tr: 'Geliştiren', uk: 'Розроблено' }, locale)}{' '}
             <a
               href="https://new.telebots.site/"
               target="_blank"

@@ -42,11 +42,15 @@ async function publicHandler(req: NextApiRequest, res: NextApiResponse) {
         title: {
           ru: event.title_ru,
           en: event.title_en,
+          ...(event.title_tr ? { tr: event.title_tr } : {}),
+          ...(event.title_uk ? { uk: event.title_uk } : {}),
         },
         ...(event.description_ru || event.description_en ? {
           description: {
             ru: event.description_ru || '',
             en: event.description_en || '',
+            ...(event.description_tr ? { tr: event.description_tr } : {}),
+            ...(event.description_uk ? { uk: event.description_uk } : {}),
           }
         } : {}),
         ...(event.date ? { date: event.date } : {}),
@@ -55,6 +59,8 @@ async function publicHandler(req: NextApiRequest, res: NextApiResponse) {
           location: {
             ru: event.location_ru || '',
             en: event.location_en || '',
+            ...(event.location_tr ? { tr: event.location_tr } : {}),
+            ...(event.location_uk ? { uk: event.location_uk } : {}),
           }
         } : {}),
         ...(event.price !== null && event.price !== undefined ? { price: event.price } : {}),
@@ -175,11 +181,15 @@ async function adminGetHandler(req: AuthenticatedRequest, res: NextApiResponse) 
         title: {
           ru: event.title_ru,
           en: event.title_en,
+          ...(event.title_tr ? { tr: event.title_tr } : {}),
+          ...(event.title_uk ? { uk: event.title_uk } : {}),
         },
         ...(event.description_ru || event.description_en ? {
           description: {
             ru: event.description_ru || '',
             en: event.description_en || '',
+            ...(event.description_tr ? { tr: event.description_tr } : {}),
+            ...(event.description_uk ? { uk: event.description_uk } : {}),
           }
         } : {}),
         ...(event.date ? { date: event.date } : {}),
@@ -188,6 +198,8 @@ async function adminGetHandler(req: AuthenticatedRequest, res: NextApiResponse) 
           location: {
             ru: event.location_ru || '',
             en: event.location_en || '',
+            ...(event.location_tr ? { tr: event.location_tr } : {}),
+            ...(event.location_uk ? { uk: event.location_uk } : {}),
           }
         } : {}),
         ...(event.price !== null && event.price !== undefined ? { price: event.price } : {}),

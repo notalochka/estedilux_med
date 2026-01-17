@@ -5,17 +5,25 @@ export interface EventCategory {
   title: {
     ru: string;
     en: string;
+    tr?: string;
+    uk?: string;
   };
   description: {
     ru: string;
     en: string;
+    tr?: string;
+    uk?: string;
   };
   subcategories: {
     ru: string;
     en: string;
+    tr?: string;
+    uk?: string;
     description?: {
       ru: string;
       en: string;
+      tr?: string;
+      uk?: string;
     };
   }[];
   icon?: string;
@@ -27,16 +35,22 @@ export interface Event {
   title: {
     ru: string;
     en: string;
+    tr?: string;
+    uk?: string;
   };
   description?: {
     ru: string;
     en: string;
+    tr?: string;
+    uk?: string;
   };
   date?: string;
   endDate?: string;
   location?: {
     ru: string;
     en: string;
+    tr?: string;
+    uk?: string;
   };
   price?: number;
   duration?: string;

@@ -28,5 +28,5 @@ export interface ContactFormData {
   message: string;
 }
 
-export type Locale = 'ru' | 'en';
+export type Locale = 'ru' | 'en' | 'tr' | 'uk';
 

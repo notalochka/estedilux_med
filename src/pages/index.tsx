@@ -9,27 +9,37 @@ import UpcomingEvents from '@/components/UpcomingEvents/UpcomingEvents';
 import AboutSection from '@/components/AboutSection/AboutSection';
 import SolutionsSection from '@/components/SolutionsSection/SolutionsSection';
 import BlogPreviewSection from '@/components/BlogPreviewSection/BlogPreviewSection';
+import { t } from '@/lib/translations';
 
 const Home: NextPage = () => {
   const router = useRouter();
   const { locale } = router;
 
+  const title = t(
+    {
+      ru: 'Estedilux Med - Обучение врачей за рубежом',
+      en: 'Estedilux Med - Medical Training Abroad',
+      tr: 'Estedilux Med - Yurtdışında Doktor Eğitimi',
+      uk: 'Estedilux Med - Навчання лікарів за кордоном',
+    },
+    locale
+  );
+
+  const description = t(
+    {
+      ru: 'Профессиональные медицинские программы для развития карьеры врачей',
+      en: 'Professional medical programs for doctors career development',
+      tr: 'Doktorların kariyer gelişimi için profesyonel tıbbi programlar',
+      uk: 'Професійні медичні програми для розвитку кар\'єри лікарів',
+    },
+    locale
+  );
+
   return (
     <>
       <Head>
-        <title>
-          {locale === 'ru'
-            ? 'Estedilux Med - Обучение врачей за рубежом'
-            : 'Estedilux Med - Medical Training Abroad'}
-        </title>
-        <meta
-          name="description"
-          content={
-            locale === 'ru'
-              ? 'Профессиональные медицинские программы для развития карьеры врачей'
-              : 'Professional medical programs for doctors career development'
-          }
-        />
+        <title>{title}</title>
+        <meta name="description" content={description} />
       </Head>
 
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>

@@ -8,6 +8,7 @@ import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import { getImageUrl } from '@/lib/imageUtils';
 import { getCountryFromLocation } from '@/lib/countryUtils';
+import { t } from '@/lib/translations';
 import type { Event } from '@/types/events';
 import styles from './EventDetail.module.css';
 
@@ -76,7 +77,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
     setError('');
     
     if (!event.price) {
-      setError(locale === 'ru' ? 'Событие не имеет цены' : 'Event has no price');
+      setError(t({ ru: 'Событие не имеет цены', en: 'Event has no price', tr: 'Etkinliğin fiyatı yok', uk: 'Подія не має ціни' }, locale));
       setIsSubmitting(false);
       return;
     }
@@ -108,7 +109,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
       const result = await response.json();
 
       if (!response.ok || !result.success) {
-        throw new Error(result.error || (locale === 'ru' ? 'Ошибка создания платежа' : 'Payment creation error'));
+        throw new Error(result.error || t({ ru: 'Ошибка создания платежа', en: 'Payment creation error', tr: 'Ödeme oluşturma hatası', uk: 'Помилка створення платежу' }, locale));
       }
 
       // Створюємо форму для WayForPay
@@ -138,25 +139,30 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
       form.submit();
     } catch (err: any) {
       console.error('Payment error:', err);
-      setError(err.message || (locale === 'ru' ? 'Ошибка при создании платежа. Попробуйте позже.' : 'Error creating payment. Please try again later.'));
+      setError(err.message || t({ ru: 'Ошибка при создании платежа. Попробуйте позже.', en: 'Error creating payment. Please try again later.', tr: 'Ödeme oluşturulurken hata. Lütfen daha sonra tekrar deneyin.', uk: 'Помилка при створенні платежу. Спробуйте пізніше.' }, locale));
       setIsSubmitting(false);
     }
   };
 
-  const title = locale === 'ru' ? event.title.ru : event.title.en;
+  const title = locale === 'ru' ? event.title.ru : locale === 'tr' ? (event.title.tr || event.title.en) : locale === 'uk' ? (event.title.uk || event.title.ru) : event.title.en;
   const description = event.description 
-    ? (locale === 'ru' ? event.description.ru : event.description.en)
+    ? (locale === 'ru' ? event.description.ru : locale === 'tr' ? (event.description.tr || event.description.en) : locale === 'uk' ? (event.description.uk || event.description.ru) : event.description.en)
     : '';
   const location = event.location 
-    ? (locale === 'ru' ? event.location.ru : event.location.en)
+    ? (locale === 'ru' ? event.location.ru : locale === 'tr' ? (event.location.tr || event.location.en) : locale === 'uk' ? (event.location.uk || event.location.ru) : event.location.en)
     : '';
 
   const formatDate = (dateString?: string, endDateString?: string) => {
     if (!dateString) return '';
     const date = new Date(dateString);
-    const months = locale === 'ru' 
-      ? ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
-      : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const months = 
+      locale === 'ru' 
+        ? ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
+        : locale === 'tr'
+        ? ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']
+        : locale === 'uk'
+        ? ['Січня', 'Лютого', 'Березня', 'Квітня', 'Травня', 'Червня', 'Липня', 'Серпня', 'Вересня', 'Жовтня', 'Листопада', 'Грудня']
+        : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     
     const startDay = date.getDate();
     const startMonth = months[date.getMonth()];
@@ -182,7 +188,8 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
 
   const formatPrice = (price?: number) => {
     if (!price) return '';
-    return new Intl.NumberFormat(locale === 'ru' ? 'ru-RU' : 'en-US', {
+    const localeMap = locale === 'ru' ? 'ru-RU' : locale === 'tr' ? 'tr-TR' : locale === 'uk' ? 'uk-UA' : 'en-US';
+    return new Intl.NumberFormat(localeMap, {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 2,
@@ -194,7 +201,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
     <>
       <Head>
         <title>
-          {title} - {locale === 'ru' ? 'События Estedilux Med' : 'Events Estedilux Med'}
+          {title} - {t({ ru: 'События Estedilux Med', en: 'Events Estedilux Med', tr: 'Etkinlikler Estedilux Med', uk: 'Події Estedilux Med' }, locale)}
         </title>
         <meta
           name="description"
@@ -264,7 +271,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                   {description && (
                     <div className={styles.descriptionSection}>
                       <h3 className={styles.descriptionTitle}>
-                        {locale === 'ru' ? 'Описание программы' : 'Program Description'}
+                        {t({ ru: 'Описание программы', en: 'Program Description', tr: 'Program Açıklaması', uk: 'Опис програми' }, locale)}
                       </h3>
                       <p className={styles.description}>{description}</p>
                     </div>
@@ -276,7 +283,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                   {/* Event Details Card */}
                   <div className={styles.detailsCard}>
                     <h3 className={styles.detailsCardTitle}>
-                      {locale === 'ru' ? 'Детали события' : 'Event Details'}
+                      {t({ ru: 'Детали события', en: 'Event Details', tr: 'Etkinlik Detayları', uk: 'Деталі події' }, locale)}
                     </h3>
 
                     {/* Date */}
@@ -285,7 +292,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                         <Calendar size={20} className={styles.detailIcon} />
                         <div className={styles.detailContent}>
                           <span className={styles.detailLabel}>
-                            {locale === 'ru' ? 'Дата' : 'Date'}
+                            {t({ ru: 'Дата', en: 'Date', tr: 'Tarih', uk: 'Дата' }, locale)}
                           </span>
                           <span className={styles.detailValue}>{formatDate(event.date, event.endDate)}</span>
                         </div>
@@ -298,7 +305,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                         <MapPin size={20} className={styles.detailIcon} />
                         <div className={styles.detailContent}>
                           <span className={styles.detailLabel}>
-                            {locale === 'ru' ? 'Место проведения' : 'Location'}
+                            {t({ ru: 'Место проведения', en: 'Location', tr: 'Konum', uk: 'Місце проведення' }, locale)}
                           </span>
                           <span className={styles.detailValue}>
                             {countryInfo && <span className={styles.countryFlag}>{countryInfo.emoji}</span>}
@@ -314,7 +321,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                         <DollarSign size={20} className={styles.detailIcon} />
                         <div className={styles.detailContent}>
                           <span className={styles.detailLabel}>
-                            {locale === 'ru' ? 'Стоимость' : 'Price'}
+                            {t({ ru: 'Стоимость', en: 'Price', tr: 'Fiyat', uk: 'Вартість' }, locale)}
                           </span>
                           <span className={styles.detailValue}>{formatPrice(event.price)}</span>
                         </div>
@@ -325,7 +332,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                   {/* Payment Button */}
                   {event.price && (
                     <button onClick={handlePayment} className={styles.paymentButton}>
-                      {locale === 'ru' ? 'Записаться на событие' : 'Register for the event'}
+                      {t({ ru: 'Записаться на событие', en: 'Register for the event', tr: 'Etkinliğe kayıt ol', uk: 'Записатися на подію' }, locale)}
                     </button>
                   )}
                 </div>
@@ -345,19 +352,25 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
               
               <div className={styles.modalHeader}>
                 <h2 className={styles.modalTitle}>
-                  {locale === 'ru' ? 'Регистрация на событие' : 'Event Registration'}
+                  {t({ ru: 'Регистрация на событие', en: 'Event Registration', tr: 'Etkinlik Kaydı', uk: 'Реєстрація на подію' }, locale)}
                 </h2>
                 <p className={styles.modalSubtitle}>
-                  {locale === 'ru' 
-                    ? 'Заполните форму, чтобы зарегистрироваться на событие'
-                    : 'Fill out the form to register for the event'}
+                  {t(
+                    {
+                      ru: 'Заполните форму, чтобы зарегистрироваться на событие',
+                      en: 'Fill out the form to register for the event',
+                      tr: 'Etkinliğe kayıt olmak için formu doldurun',
+                      uk: 'Заповніть форму, щоб зареєструватися на подію',
+                    },
+                    locale
+                  )}
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className={styles.registrationForm}>
                 <div className={styles.formGroup}>
                   <label htmlFor="reg-name" className={styles.formLabel}>
-                    {locale === 'ru' ? 'Ваши ФИО' : 'Your Full Name'} *
+                    {t({ ru: 'Ваши ФИО', en: 'Your Full Name', tr: 'Adınız Soyadınız', uk: 'Ваше ПІБ' }, locale)} *
                   </label>
                   <input
                     type="text"
@@ -366,14 +379,14 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    placeholder={locale === 'ru' ? 'Введите ваше имя' : 'Enter your name'}
+                    placeholder={t({ ru: 'Введите ваше имя', en: 'Enter your name', tr: 'Adınızı girin', uk: 'Введіть ваше ім\'я' }, locale)}
                     className={styles.formInput}
                   />
                 </div>
 
                 <div className={styles.formGroup}>
                   <label htmlFor="reg-phone" className={styles.formLabel}>
-                    {locale === 'ru' ? 'Телефон' : 'Phone'} *
+                    {t({ ru: 'Телефон', en: 'Phone', tr: 'Telefon', uk: 'Телефон' }, locale)} *
                   </label>
                   <input
                     type="tel"
@@ -405,7 +418,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
 
                 <div className={styles.formGroup}>
                   <label htmlFor="reg-specialty" className={styles.formLabel}>
-                    {locale === 'ru' ? 'Ваша специальность' : 'Your specialty'}
+                    {t({ ru: 'Ваша специальность', en: 'Your specialty', tr: 'Uzmanlığınız', uk: 'Ваша спеціальність' }, locale)}
                   </label>
                   <input
                     type="text"
@@ -413,14 +426,14 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                     name="specialty"
                     value={formData.specialty || ''}
                     onChange={handleChange}
-                    placeholder={locale === 'ru' ? 'Введите вашу специальность (необязательно)' : 'Enter your specialty (optional)'}
+                    placeholder={t({ ru: 'Введите вашу специальность (необязательно)', en: 'Enter your specialty (optional)', tr: 'Uzmanlığınızı girin (isteğe bağlı)', uk: 'Введіть вашу спеціальність (необов\'язково)' }, locale)}
                     className={styles.formInput}
                   />
                 </div>
 
                 <div className={styles.formGroup}>
                   <label className={styles.formLabel}>
-                    {locale === 'ru' ? 'Тип оплаты' : 'Payment Type'} *
+                    {t({ ru: 'Тип оплаты', en: 'Payment Type', tr: 'Ödeme Türü', uk: 'Тип оплати' }, locale)} *
                   </label>
                   <div className={styles.radioGroup}>
                     <label className={styles.radioLabel}>
@@ -433,11 +446,11 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                         className={styles.radioInput}
                       />
                       <span>
-                        {locale === 'ru' ? 'Предоплата (30%)' : 'Prepayment (30%)'}
+                        {t({ ru: 'Предоплата (30%)', en: 'Prepayment (30%)', tr: 'Ön Ödeme (%30)', uk: 'Передоплата (30%)' }, locale)}
                         {event.price && (
                           <span className={styles.priceHint}>
                             {' - '}
-                            {new Intl.NumberFormat(locale === 'ru' ? 'ru-RU' : 'en-US', {
+                            {new Intl.NumberFormat(locale === 'ru' ? 'ru-RU' : locale === 'tr' ? 'tr-TR' : locale === 'uk' ? 'uk-UA' : 'en-US', {
                               style: 'currency',
                               currency: 'USD',
                               minimumFractionDigits: 2,
@@ -456,7 +469,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                         className={styles.radioInput}
                       />
                       <span>
-                        {locale === 'ru' ? 'Полная оплата' : 'Full Payment'}
+                        {t({ ru: 'Полная оплата', en: 'Full Payment', tr: 'Tam Ödeme', uk: 'Повна оплата' }, locale)}
                         {event.price && (
                           <span className={styles.priceHint}>
                             {' - '}
@@ -470,7 +483,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
 
                 <div className={styles.formGroup}>
                   <label htmlFor="reg-message" className={styles.formLabel}>
-                    {locale === 'ru' ? 'Дополнительная информация' : 'Additional Information'}
+                    {t({ ru: 'Дополнительная информация', en: 'Additional Information', tr: 'Ek Bilgiler', uk: 'Додаткова інформація' }, locale)}
                   </label>
                   <textarea
                     id="reg-message"
@@ -478,7 +491,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                     value={formData.message}
                     onChange={handleChange}
                     rows={4}
-                    placeholder={locale === 'ru' ? 'Ваши вопросы или комментарии (необязательно)' : 'Your questions or comments (optional)'}
+                    placeholder={t({ ru: 'Ваши вопросы или комментарии (необязательно)', en: 'Your questions or comments (optional)', tr: 'Sorularınız veya yorumlarınız (isteğe bağlı)', uk: 'Ваші запитання або коментарі (необов\'язково)' }, locale)}
                     className={styles.formTextarea}
                   />
                 </div>
@@ -496,7 +509,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                     className={styles.cancelButton}
                     disabled={isSubmitting}
                   >
-                    {locale === 'ru' ? 'Отмена' : 'Cancel'}
+                    {t({ ru: 'Отмена', en: 'Cancel', tr: 'İptal', uk: 'Скасувати' }, locale)}
                   </button>
                   <button
                     type="submit"
@@ -504,8 +517,8 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                     disabled={isSubmitting}
                   >
                     {isSubmitting
-                      ? (locale === 'ru' ? 'Отправка...' : 'Submitting...')
-                      : (locale === 'ru' ? 'Продолжить к оплате' : 'Continue to Payment')}
+                      ? t({ ru: 'Отправка...', en: 'Submitting...', tr: 'Gönderiliyor...', uk: 'Відправка...' }, locale)
+                      : t({ ru: 'Продолжить к оплате', en: 'Continue to Payment', tr: 'Ödemeye Devam Et', uk: 'Продовжити до оплати' }, locale)}
                   </button>
                 </div>
               </form>
@@ -550,11 +563,15 @@ export const getServerSideProps: GetServerSideProps<EventDetailPageProps> = asyn
       title: {
         ru: eventData.title_ru,
         en: eventData.title_en,
+        ...(eventData.title_tr ? { tr: eventData.title_tr } : {}),
+        ...(eventData.title_uk ? { uk: eventData.title_uk } : {}),
       },
       ...(eventData.description_ru || eventData.description_en ? {
         description: {
           ru: eventData.description_ru || '',
           en: eventData.description_en || '',
+          ...(eventData.description_tr ? { tr: eventData.description_tr } : {}),
+          ...(eventData.description_uk ? { uk: eventData.description_uk } : {}),
         }
       } : {}),
       ...(eventData.date ? { date: eventData.date } : {}),
@@ -563,6 +580,8 @@ export const getServerSideProps: GetServerSideProps<EventDetailPageProps> = asyn
         location: {
           ru: eventData.location_ru || '',
           en: eventData.location_en || '',
+          ...(eventData.location_tr ? { tr: eventData.location_tr } : {}),
+          ...(eventData.location_uk ? { uk: eventData.location_uk } : {}),
         }
       } : {}),
       ...(eventData.price !== null && eventData.price !== undefined ? { price: eventData.price } : {}),

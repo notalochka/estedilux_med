@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { ArrowRight } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import { t } from '@/lib/translations';
 import type { EventCategory } from '@/types/events';
 import styles from './Events.module.css';
 
@@ -29,15 +30,19 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
     <>
       <Head>
         <title>
-          {locale === 'ru' ? 'События - Estedilux Med' : 'Events - Estedilux Med'}
+          {t({ ru: 'События - Estedilux Med', en: 'Events - Estedilux Med', tr: 'Etkinlikler - Estedilux Med', uk: 'Події - Estedilux Med' }, locale)}
         </title>
         <meta
           name="description"
-          content={
-            locale === 'ru'
-              ? 'Направления обучения и стажировок Estedilux Med'
-              : 'Estedilux Med training and internship directions'
-          }
+          content={t(
+            {
+              ru: 'Направления обучения и стажировок Estedilux Med',
+              en: 'Estedilux Med training and internship directions',
+              tr: 'Estedilux Med eğitim ve staj yönleri',
+              uk: 'Напрямки навчання та стажувань Estedilux Med',
+            },
+            locale
+          )}
         />
       </Head>
 
@@ -61,7 +66,7 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
               <div className={styles.heroContent}>
                 <div className={styles.heroTitleWrapper}>
                   <h1 className={styles.heroTitle}>
-                    {locale === 'ru' ? 'Направления стажировок и обучения' : 'Training and Internship Directions'}
+                    {t({ ru: 'Направления стажировок и обучения', en: 'Training and Internship Directions', tr: 'Eğitim ve Staj Yönleri', uk: 'Напрямки стажувань та навчання' }, locale)}
                   </h1>
                   <div className={styles.heroChevron} onClick={scrollToCategories}>
                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -79,12 +84,18 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
               {/* Header Section */}
               <div className={styles.categoriesHeader}>
                 <h2 className={styles.categoriesTitle}>
-                  {locale === 'ru' ? 'Выберите направление' : 'Choose a direction'}
+                  {t({ ru: 'Выберите направление', en: 'Choose a direction', tr: 'Bir yön seçin', uk: 'Виберіть напрямок' }, locale)}
                 </h2>
                 <p className={styles.categoriesSubtitle}>
-                  {locale === 'ru'
-                    ? 'Мы не просто обучаем - мы открываем врачам двери в международное профессиональное пространство, где важны компетентность, глубина подготовки и безупречный уровень безопасности.'
-                    : 'We don\'t just teach - we open doors for doctors to the international professional space, where competence, depth of training and impeccable level of safety are important.'}
+                  {t(
+                    {
+                      ru: 'Мы не просто обучаем - мы открываем врачам двери в международное профессиональное пространство, где важны компетентность, глубина подготовки и безупречный уровень безопасности.',
+                      en: 'We don\'t just teach - we open doors for doctors to the international professional space, where competence, depth of training and impeccable level of safety are important.',
+                      tr: 'Sadece öğretmiyoruz - doktorlara yetkinlik, eğitim derinliği ve kusursuz güvenlik seviyesinin önemli olduğu uluslararası profesyonel alana kapılar açıyoruz.',
+                      uk: 'Ми не просто навчаємо - ми відкриваємо лікарям двері в міжнародний професійний простір, де важливі компетентність, глибина підготовки та бездоганний рівень безпеки.',
+                    },
+                    locale
+                  )}
                 </p>
               </div>
 
@@ -121,7 +132,7 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
                       <div className={styles.categoryImageWrapper}>
                         <Image
                           src={categoryImage}
-                          alt={locale === 'ru' ? category.title.ru : category.title.en}
+                          alt={locale === 'ru' ? category.title.ru : locale === 'tr' ? (category.title.tr || category.title.en) : locale === 'uk' ? (category.title.uk || category.title.ru) : category.title.en}
                           fill
                           className={styles.categoryImage}
                         />
@@ -133,7 +144,7 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
                       <div className={styles.categoryContent}>
                         {/* Title */}
                         <h3 className={styles.categoryTitle}>
-                          {locale === 'ru' ? category.title.ru : category.title.en}
+                          {locale === 'ru' ? category.title.ru : locale === 'tr' ? (category.title.tr || category.title.en) : locale === 'uk' ? (category.title.uk || category.title.ru) : category.title.en}
                         </h3>
 
                         {/* Subcategories List */}
@@ -142,7 +153,7 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
                             <div key={subIndex} className={styles.subcategoryItem}>
                               <div className={styles.subcategoryDot} />
                               <span className={styles.subcategoryText}>
-                                {locale === 'ru' ? subcategory.ru : subcategory.en}
+                                {locale === 'ru' ? subcategory.ru : locale === 'tr' ? (subcategory.tr || subcategory.en) : locale === 'uk' ? (subcategory.uk || subcategory.ru) : subcategory.en}
                               </span>
                             </div>
                           ))}
@@ -150,7 +161,7 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
                             <div className={styles.subcategoryItem}>
                               <div className={styles.subcategoryDot} />
                               <span className={styles.subcategoryText}>
-                                {locale === 'ru' ? `+${category.subcategories.length - 4} еще` : `+${category.subcategories.length - 4} more`}
+                                {t({ ru: `+${category.subcategories.length - 4} еще`, en: `+${category.subcategories.length - 4} more`, tr: `+${category.subcategories.length - 4} daha`, uk: `+${category.subcategories.length - 4} ще` }, locale)}
                               </span>
                             </div>
                           )}
@@ -158,7 +169,7 @@ const Events: NextPage<EventsPageProps> = ({ categories }) => {
 
                         {/* Learn More Button - appears on hover */}
                         <div className={styles.learnMoreButton}>
-                          <span>{locale === 'ru' ? 'Узнать больше' : 'Learn More'}</span>
+                          <span>{t({ ru: 'Узнать больше', en: 'Learn More', tr: 'Daha Fazla Bilgi', uk: 'Дізнатися більше' }, locale)}</span>
                           <ArrowRight size={18} className={styles.arrowIcon} />
                         </div>
                       </div>
@@ -185,10 +196,14 @@ export const getServerSideProps: GetServerSideProps<EventsPageProps> = async () 
       title: {
         ru: category.title_ru,
         en: category.title_en,
+        ...(category.title_tr ? { tr: category.title_tr } : {}),
+        ...(category.title_uk ? { uk: category.title_uk } : {}),
       },
       description: {
         ru: category.description_ru,
         en: category.description_en,
+        ...(category.description_tr ? { tr: category.description_tr } : {}),
+        ...(category.description_uk ? { uk: category.description_uk } : {}),
       },
       subcategories: JSON.parse(category.subcategories),
       ...(category.icon ? { icon: category.icon } : {}),

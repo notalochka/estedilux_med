@@ -7,6 +7,7 @@ import { Mail, Phone, MapPin } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import { useAnimation } from '@/lib/useAnimation';
+import { t } from '@/lib/translations';
 import type { ContactFormData } from '@/types/index';
 import styles from './Contact.module.css';
 
@@ -65,7 +66,7 @@ const Contact: NextPage = () => {
       const result = await response.json();
 
       if (!response.ok || !result.success) {
-        throw new Error(result.error || (locale === 'ru' ? 'Ошибка отправки сообщения' : 'Failed to send message'));
+        throw new Error(result.error || t({ ru: 'Ошибка отправки сообщения', en: 'Failed to send message', tr: 'Mesaj gönderilemedi', uk: 'Помилка відправки повідомлення' }, locale));
       }
 
       setIsSubmitting(false);
@@ -82,15 +83,19 @@ const Contact: NextPage = () => {
     <>
       <Head>
         <title>
-          {locale === 'ru' ? 'Контакты - Estedilux Med' : 'Contact - Estedilux Med'}
+          {t({ ru: 'Контакты - Estedilux Med', en: 'Contact - Estedilux Med', tr: 'İletişim - Estedilux Med', uk: 'Контакти - Estedilux Med' }, locale)}
         </title>
         <meta
           name="description"
-          content={
-            locale === 'ru'
-              ? 'Свяжитесь с нами для получения дополнительной информации'
-              : 'Contact us for more information'
-          }
+          content={t(
+            {
+              ru: 'Свяжитесь с нами для получения дополнительной информации',
+              en: 'Contact us for more information',
+              tr: 'Daha fazla bilgi için bizimle iletişime geçin',
+              uk: 'Зв\'яжіться з нами для отримання додаткової інформації',
+            },
+            locale
+          )}
         />
       </Head>
 
@@ -114,7 +119,7 @@ const Contact: NextPage = () => {
               <div className={styles.heroContent}>
                 <div className={styles.heroTitleWrapper}>
                   <h1 className={styles.heroTitle}>
-                    {locale === 'ru' ? 'Связаться с нами' : 'Contact Us'}
+                    {t({ ru: 'Связаться с нами', en: 'Contact Us', tr: 'Bizimle İletişime Geçin', uk: 'Зв\'язатися з нами' }, locale)}
                   </h1>
                   <div className={styles.heroChevron} onClick={scrollToContactForm}>
                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -134,18 +139,24 @@ const Contact: NextPage = () => {
               >
               <div className={styles.formHeader}>
                 <h2 className={styles.formTitle}>
-                  {locale === 'ru' ? 'Свяжитесь с командой Estedilux\u00A0Med' : 'Contact the Estedilux\u00A0Med team'}
+                  {t({ ru: 'Свяжитесь с командой Estedilux\u00A0Med', en: 'Contact the Estedilux\u00A0Med team', tr: 'Estedilux\u00A0Med ekibiyle iletişime geçin', uk: 'Зв\'яжіться з командою Estedilux\u00A0Med' }, locale)}
                 </h2>
                 <p className={styles.formDescription}>
-                  {locale === 'ru'
-                    ? 'Если у вас есть вопросы, пожалуйста, заполните форму, и мы свяжемся с вами в ближайшее время.'
-                    : 'If you have questions, please fill out the form, and we will contact you shortly.'}
+                  {t(
+                    {
+                      ru: 'Если у вас есть вопросы, пожалуйста, заполните форму, и мы свяжемся с вами в ближайшее время.',
+                      en: 'If you have questions, please fill out the form, and we will contact you shortly.',
+                      tr: 'Sorularınız varsa, lütfen formu doldurun, kısa süre içinde sizinle iletişime geçeceğiz.',
+                      uk: 'Якщо у вас є запитання, будь ласка, заповніть форму, і ми зв\'яжемося з вами найближчим часом.',
+                    },
+                    locale
+                  )}
                 </p>
               </div>
               <form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.formGroup}>
                   <label htmlFor="name" className={styles.label}>
-                    {locale === 'ru' ? 'Ваши ФИО' : 'Your Full Name'}
+                    {t({ ru: 'Ваши ФИО', en: 'Your Full Name', tr: 'Adınız Soyadınız', uk: 'Ваше ПІБ' }, locale)}
                   </label>
                   <input
                     type="text"
@@ -154,14 +165,14 @@ const Contact: NextPage = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    placeholder={locale === 'ru' ? 'Введите текст...' : 'Enter text...'}
+                    placeholder={t({ ru: 'Введите текст...', en: 'Enter text...', tr: 'Metin girin...', uk: 'Введіть текст...' }, locale)}
                     className={styles.input}
                   />
                 </div>
 
                 <div className={styles.formGroup}>
                   <label htmlFor="phone" className={styles.label}>
-                    {locale === 'ru' ? 'Телефон' : 'Phone'}
+                    {t({ ru: 'Телефон', en: 'Phone', tr: 'Telefon', uk: 'Телефон' }, locale)}
                   </label>
                   <input
                     type="tel"
@@ -184,14 +195,14 @@ const Contact: NextPage = () => {
                     name="email"
                     value={formData.email || ''}
                     onChange={handleChange}
-                    placeholder={locale === 'ru' ? 'your.email@example.com' : 'your.email@example.com'}
+                    placeholder='your.email@example.com'
                     className={styles.input}
                   />
                 </div>
 
                 <div className={styles.formGroup}>
                   <label htmlFor="message" className={styles.label}>
-                    {locale === 'ru' ? 'Поставьте свой вопрос' : 'Ask Your Question'}
+                    {t({ ru: 'Поставьте свой вопрос', en: 'Ask Your Question', tr: 'Sorunuzu Sorun', uk: 'Поставте своє питання' }, locale)}
                   </label>
                   <textarea
                     id="message"
@@ -199,7 +210,7 @@ const Contact: NextPage = () => {
                     value={formData.message}
                     onChange={handleChange}
                     required
-                    placeholder={locale === 'ru' ? 'Введите текст...' : 'Enter text...'}
+                    placeholder={t({ ru: 'Введите текст...', en: 'Enter text...', tr: 'Metin girin...', uk: 'Введіть текст...' }, locale)}
                     className={styles.textarea}
                   />
                 </div>
@@ -210,26 +221,34 @@ const Contact: NextPage = () => {
                   className={styles.submitButton}
                 >
                   {isSubmitting
-                    ? locale === 'ru'
-                      ? 'Отправка...'
-                      : 'Sending...'
-                    : locale === 'ru'
-                    ? 'Отправить'
-                    : 'Send'}
+                    ? t({ ru: 'Отправка...', en: 'Sending...', tr: 'Gönderiliyor...', uk: 'Відправка...' }, locale)
+                    : t({ ru: 'Отправить', en: 'Send', tr: 'Gönder', uk: 'Відправити' }, locale)}
                 </button>
               </form>
               {submitStatus === 'success' && (
                 <div className={styles.successMessage}>
-                  {locale === 'ru'
-                    ? 'Спасибо! Ваше сообщение отправлено.'
-                    : 'Thank you! Your message has been sent.'}
+                  {t(
+                    {
+                      ru: 'Спасибо! Ваше сообщение отправлено.',
+                      en: 'Thank you! Your message has been sent.',
+                      tr: 'Teşekkürler! Mesajınız gönderildi.',
+                      uk: 'Дякуємо! Ваше повідомлення відправлено.',
+                    },
+                    locale
+                  )}
                 </div>
               )}
               {submitStatus === 'error' && (
                 <div className={styles.errorMessage}>
-                  {locale === 'ru'
-                    ? 'Ошибка отправки сообщения. Пожалуйста, попробуйте еще раз.'
-                    : 'Error sending message. Please try again.'}
+                  {t(
+                    {
+                      ru: 'Ошибка отправки сообщения. Пожалуйста, попробуйте еще раз.',
+                      en: 'Error sending message. Please try again.',
+                      tr: 'Mesaj gönderme hatası. Lütfen tekrar deneyin.',
+                      uk: 'Помилка відправки повідомлення. Будь ласка, спробуйте ще раз.',
+                    },
+                    locale
+                  )}
                 </div>
               )}
               </div>
@@ -240,7 +259,7 @@ const Contact: NextPage = () => {
               >
                 <div className={styles.contactInfoCard}>
                   <h3 className={styles.contactInfoTitle}>
-                    {locale === 'ru' ? 'Контактная информация' : 'Contact Information'}
+                    {t({ ru: 'Контактная информация', en: 'Contact Information', tr: 'İletişim Bilgileri', uk: 'Контактна інформація' }, locale)}
                   </h3>
                   <div className={styles.contactInfoList}>
                     <a href="mailto:estediluxmed@ukr.net" className={styles.contactInfoItem}>
@@ -249,7 +268,7 @@ const Contact: NextPage = () => {
                       </div>
                       <div className={styles.contactInfoContent}>
                         <span className={styles.contactInfoLabel}>
-                          {locale === 'ru' ? 'Email' : 'Email'}
+                          Email
                         </span>
                         <span className={styles.contactInfoText}>estediluxmed@ukr.net</span>
                       </div>
@@ -260,7 +279,7 @@ const Contact: NextPage = () => {
                       </div>
                       <div className={styles.contactInfoContent}>
                         <span className={styles.contactInfoLabel}>
-                          {locale === 'ru' ? 'Телефон' : 'Phone'}
+                          {t({ ru: 'Телефон', en: 'Phone', tr: 'Telefon', uk: 'Телефон' }, locale)}
                         </span>
                         <span className={styles.contactInfoText}>+380 50 999 43 49</span>
                       </div>

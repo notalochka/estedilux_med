@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useAnimation } from '@/lib/useAnimation';
+import { t } from '@/lib/translations';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import styles from './About.module.css';
@@ -121,15 +122,19 @@ const About: NextPage = () => {
     <>
       <Head>
         <title>
-          {locale === 'ru' ? 'О нас - Estedilux Med' : 'About Us - Estedilux Med'}
+          {t({ ru: 'О нас - Estedilux Med', en: 'About Us - Estedilux Med', tr: 'Hakkımızda - Estedilux Med', uk: 'Про нас - Estedilux Med' }, locale)}
         </title>
         <meta
           name="description"
-          content={
-            locale === 'ru'
-              ? 'Узнайте больше о Estedilux Med - международной образовательной платформе для врачей'
-              : 'Learn more about Estedilux Med - international educational platform for doctors'
-          }
+          content={t(
+            {
+              ru: 'Узнайте больше о Estedilux Med - международной образовательной платформе для врачей',
+              en: 'Learn more about Estedilux Med - international educational platform for doctors',
+              tr: 'Estedilux Med hakkında daha fazla bilgi edinin - doktorlar için uluslararası eğitim platformu',
+              uk: 'Дізнайтеся більше про Estedilux Med - міжнародну освітню платформу для лікарів',
+            },
+            locale
+          )}
         />
       </Head>
 
@@ -157,7 +162,7 @@ const About: NextPage = () => {
                   className={`${styles.heroTitleWrapper} ${heroVisible ? styles.animateFadeInUp : ''}`}
                 >
                   <h1 className={styles.heroTitle}>
-                    {locale === 'ru' ? 'Про компанию' : 'About the Company'}
+                    {t({ ru: 'Про компанию', en: 'About the Company', tr: 'Şirket Hakkında', uk: 'Про компанію' }, locale)}
             </h1>
                   <div className={styles.heroChevron} onClick={scrollToAboutText}>
                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -177,12 +182,18 @@ const About: NextPage = () => {
                 className={`${styles.aboutTextContent} ${aboutTextVisible ? styles.animateFadeInUp : ''}`}
               >
                 <h2 className={styles.aboutTextTitle}>
-                  {locale === 'ru' ? 'Про компанию Estedilux\u00A0Med' : 'About Estedilux\u00A0Med Company'}
+                  {t({ ru: 'Про компанию Estedilux\u00A0Med', en: 'About Estedilux\u00A0Med Company', tr: 'Estedilux\u00A0Med Şirketi Hakkında', uk: 'Про компанію Estedilux\u00A0Med' }, locale)}
                 </h2>
                 <p className={styles.aboutTextDescription}>
-                  {locale === 'ru'
-                    ? 'Estedilux\u00A0Med — это международная образовательная платформа, которая объединяет обучение, стажировки, развитие врачей и организацию медицинских мероприятий под ключ. Мы не просто обучаем - мы открываем врачам двери в международное профессиональное пространство, где важны компетентность, глубина подготовки и безупречный уровень безопасности.'
-                    : 'Estedilux\u00A0Med is an international educational platform that combines training, internships, doctor development and turnkey medical event organization. We don\'t just teach - we open doors for doctors to the international professional space, where competence, depth of training and impeccable level of safety are important.'}
+                  {t(
+                    {
+                      ru: 'Estedilux\u00A0Med — это международная образовательная платформа, которая объединяет обучение, стажировки, развитие врачей и организацию медицинских мероприятий под ключ. Мы не просто обучаем - мы открываем врачам двери в международное профессиональное пространство, где важны компетентность, глубина подготовки и безупречный уровень безопасности.',
+                      en: 'Estedilux\u00A0Med is an international educational platform that combines training, internships, doctor development and turnkey medical event organization. We don\'t just teach - we open doors for doctors to the international professional space, where competence, depth of training and impeccable level of safety are important.',
+                      tr: 'Estedilux\u00A0Med, eğitim, stajlar, doktor gelişimi ve anahtar teslim tıbbi etkinlik organizasyonunu birleştiren uluslararası bir eğitim platformudur. Sadece öğretmiyoruz - doktorlara yetkinlik, eğitim derinliği ve kusursuz güvenlik seviyesinin önemli olduğu uluslararası profesyonel alana kapılar açıyoruz.',
+                      uk: 'Estedilux\u00A0Med — це міжнародна освітня платформа, яка об\'єднує навчання, стажування, розвиток лікарів та організацію медичних заходів під ключ. Ми не просто навчаємо - ми відкриваємо лікарям двері в міжнародний професійний простір, де важливі компетентність, глибина підготовки та бездоганний рівень безпеки.',
+                    },
+                    locale
+                  )}
                 </p>
               </div>
             </div>
@@ -195,7 +206,7 @@ const About: NextPage = () => {
           >
             <div className={styles.container}>
               <h2 className={styles.graduatesTitle}>
-                {locale === 'ru' ? 'Выпускники Estedilux\u00A0Med' : 'Estedilux\u00A0Med Graduates'}
+                {t({ ru: 'Выпускники Estedilux\u00A0Med', en: 'Estedilux\u00A0Med Graduates', tr: 'Estedilux\u00A0Med Mezunları', uk: 'Випускники Estedilux\u00A0Med' }, locale)}
               </h2>
               <div className={styles.carouselWrapper}>
                 <button className={styles.carouselButton} onClick={prevSlide} aria-label="Previous slide">
@@ -253,7 +264,7 @@ const About: NextPage = () => {
           <section className={styles.aboutTextSection}>
             <div className={styles.container}>
               <h2 className={styles.partnersTitle}>
-                {locale === 'ru' ? 'Наши партнеры' : 'Our Partners'}
+                {t({ ru: 'Наши партнеры', en: 'Our Partners', tr: 'Ortaklarımız', uk: 'Наші партнери' }, locale)}
               </h2>
               <div className={styles.partnersGrid}>
                 {[1, 2, 3, 4].map((num) => (
@@ -278,12 +289,18 @@ const About: NextPage = () => {
             <div className={styles.aboutTextContainer}>
               <div className={styles.aboutTextContent}>
                 <h2 className={styles.aboutTextTitle}>
-                  {locale === 'ru' ? 'Что мы предлагаем' : 'What We Offer'}
+                  {t({ ru: 'Что мы предлагаем', en: 'What We Offer', tr: 'Ne Sunuyoruz', uk: 'Що ми пропонуємо' }, locale)}
                 </h2>
                 <p className={styles.aboutTextDescription}>
-                  {locale === 'ru'
-                    ? 'Estedilux\u00A0Med предлагает широкий спектр международных образовательных программ, стажировок и медицинских мероприятий, которые соответствуют высочайшим стандартам качества. Мы открываем врачам доступ к лучшим международным практикам и способствуем их профессиональному росту.'
-                    : 'Estedilux\u00A0Med offers a wide range of international educational programs, internships and medical events that meet the highest quality standards. We open doors for doctors to the best international practices and help them grow professionally.'}
+                  {t(
+                    {
+                      ru: 'Estedilux\u00A0Med предлагает широкий спектр международных образовательных программ, стажировок и медицинских мероприятий, которые соответствуют высочайшим стандартам качества. Мы открываем врачам доступ к лучшим международным практикам и способствуем их профессиональному росту.',
+                      en: 'Estedilux\u00A0Med offers a wide range of international educational programs, internships and medical events that meet the highest quality standards. We open doors for doctors to the best international practices and help them grow professionally.',
+                      tr: 'Estedilux\u00A0Med, en yüksek kalite standartlarına uygun geniş bir uluslararası eğitim programları, stajlar ve tıbbi etkinlikler yelpazesi sunar. Doktorlara en iyi uluslararası uygulamalara erişim sağlıyor ve profesyonel olarak büyümelerine yardımcı oluyoruz.',
+                      uk: 'Estedilux\u00A0Med пропонує широкий спектр міжнародних освітніх програм, стажувань та медичних заходів, які відповідають найвищим стандартам якості. Ми відкриваємо лікарям доступ до найкращих міжнародних практик та сприяємо їхньому професійному зростанню.',
+                    },
+                    locale
+                  )}
                 </p>
               </div>
             </div>
@@ -298,33 +315,39 @@ const About: NextPage = () => {
                     <div className={styles.serviceContent}>
                       <div>
                         <span className={styles.serviceBadge}>
-                          {locale === 'ru' ? 'Услуга' : 'Service'}
+                          {t({ ru: 'Услуга', en: 'Service', tr: 'Hizmet', uk: 'Послуга' }, locale)}
                         </span>
                         <h3 className={styles.serviceTitle}>
-                          {locale === 'ru' ? 'Международное обучение для врачей' : 'International Training for Doctors'}
+                          {t({ ru: 'Международное обучение для врачей', en: 'International Training for Doctors', tr: 'Doktorlar için Uluslararası Eğitim', uk: 'Міжнародне навчання для лікарів' }, locale)}
                         </h3>
                       </div>
                       <p className={styles.serviceDescription}>
-                        {locale === 'ru'
-                          ? 'Мы проводим профессиональные программы и стажировки в трёх ключевых медицинских центрах мира. Наши программы разработаны с учётом международных стандартов и обеспечивают врачам доступ к передовым методикам и практикам.'
-                          : 'We conduct professional programs and internships in three key medical centers of the world. Our programs are designed with international standards in mind and provide doctors with access to advanced methods and practices.'}
+                        {t(
+                          {
+                            ru: 'Мы проводим профессиональные программы и стажировки в трёх ключевых медицинских центрах мира. Наши программы разработаны с учётом международных стандартов и обеспечивают врачам доступ к передовым методикам и практикам.',
+                            en: 'We conduct professional programs and internships in three key medical centers of the world. Our programs are designed with international standards in mind and provide doctors with access to advanced methods and practices.',
+                            tr: 'Dünyanın üç önemli tıp merkezinde profesyonel programlar ve stajlar yürütüyoruz. Programlarımız uluslararası standartlar göz önünde bulundurularak tasarlanmıştır ve doktorlara ileri metodlar ve uygulamalara erişim sağlar.',
+                            uk: 'Ми проводимо професійні програми та стажування в трьох ключових медичних центрах світу. Наші програми розроблені з урахуванням міжнародних стандартів та забезпечують лікарям доступ до передових методик та практик.',
+                          },
+                          locale
+                        )}
                       </p>
                       <div className={styles.locations}>
                         <span className={styles.locationTag}>
-                          🇹🇷 {locale === 'ru' ? 'Турция (Стамбул)' : 'Turkey (Istanbul)'}
+                          🇹🇷 {t({ ru: 'Турция (Стамбул)', en: 'Turkey (Istanbul)', tr: 'Türkiye (İstanbul)', uk: 'Туреччина (Стамбул)' }, locale)}
                         </span>
                         <span className={styles.locationTag}>
-                          🇦🇪 {locale === 'ru' ? 'ОАЭ (Дубай)' : 'UAE (Dubai)'}
+                          🇦🇪 {t({ ru: 'ОАЭ (Дубай)', en: 'UAE (Dubai)', tr: 'BAE (Dubai)', uk: 'ОАЕ (Дубай)' }, locale)}
                         </span>
                         <span className={styles.locationTag}>
-                          🇬🇪 {locale === 'ru' ? 'Грузия (Тбилиси, Батуми)' : 'Georgia (Tbilisi, Batumi)'}
+                          🇬🇪 {t({ ru: 'Грузия (Тбилиси, Батуми)', en: 'Georgia (Tbilisi, Batumi)', tr: 'Gürcistan (Tiflis, Batum)', uk: 'Грузія (Тбілісі, Батумі)' }, locale)}
                         </span>
                       </div>
                     </div>
                     <div className={styles.serviceImageWrapper}>
                       <Image
                         src="/photo1.jpg"
-                        alt={locale === 'ru' ? 'Международное обучение для врачей' : 'International Training for Doctors'}
+                        alt={t({ ru: 'Международное обучение для врачей', en: 'International Training for Doctors', tr: 'Doktorlar için Uluslararası Eğitim', uk: 'Міжнародне навчання для лікарів' }, locale)}
                         fill
                         className={styles.serviceImage}
                         quality={90}
@@ -338,41 +361,47 @@ const About: NextPage = () => {
                       <div className={styles.serviceIconWrapper}>
                         <img
                           src="/about/Qualification.svg"
-                          alt={locale === 'ru' ? 'Повышение квалификации врачей' : 'Doctor Qualification Enhancement'}
+                          alt={t({ ru: 'Повышение квалификации врачей', en: 'Doctor Qualification Enhancement', tr: 'Doktor Nitelik Geliştirme', uk: 'Підвищення кваліфікації лікарів' }, locale)}
                           className={styles.serviceIcon}
                         />
                       </div>
                       <div>
                         <span className={styles.serviceBadge}>
-                          {locale === 'ru' ? 'Услуга' : 'Service'}
+                          {t({ ru: 'Услуга', en: 'Service', tr: 'Hizmet', uk: 'Послуга' }, locale)}
                         </span>
                         <h3 className={styles.serviceTitle}>
-                          {locale === 'ru' ? 'Повышение квалификации врачей' : 'Doctor Qualification Enhancement'}
+                          {t({ ru: 'Повышение квалификации врачей', en: 'Doctor Qualification Enhancement', tr: 'Doktor Nitelik Geliştirme', uk: 'Підвищення кваліфікації лікарів' }, locale)}
                         </h3>
                       </div>
                       <p className={styles.serviceDescription}>
-                        {locale === 'ru'
-                          ? 'Актуальные программы на сегодня по различным медицинским специальностям. Наши курсы основаны на клинической практике и соответствуют международным протоколам.'
-                          : 'Current programs today in various medical specialties. Our courses are based on clinical practice and comply with international protocols.'}
+                        {t(
+                          {
+                            ru: 'Актуальные программы на сегодня по различным медицинским специальностям. Наши курсы основаны на клинической практике и соответствуют международным протоколам.',
+                            en: 'Current programs today in various medical specialties. Our courses are based on clinical practice and comply with international protocols.',
+                            tr: 'Çeşitli tıp uzmanlık alanlarında güncel programlar. Kurslarımız klinik uygulamaya dayanmaktadır ve uluslararası protokollere uygundur.',
+                            uk: 'Актуальні програми на сьогодні з різних медичних спеціальностей. Наші курси засновані на клінічній практиці та відповідають міжнародним протоколам.',
+                          },
+                          locale
+                        )}
                       </p>
                       <div className={styles.specialties}>
                         <span className={styles.specialtyTag}>
-                          {locale === 'ru' ? 'Инъекционная косметология' : 'Injectable Cosmetology'}
+                          {t({ ru: 'Инъекционная косметология', en: 'Injectable Cosmetology', tr: 'Enjeksiyonlu Kozmetoloji', uk: 'Ін\'єкційна косметологія' }, locale)}
                         </span>
                         <span className={styles.specialtyTag}>
-                          {locale === 'ru' ? 'Хирургия' : 'Surgery'}
+                          {t({ ru: 'Хирургия', en: 'Surgery', tr: 'Cerrahi', uk: 'Хірургія' }, locale)}
                         </span>
                         <span className={styles.specialtyTag}>
-                          {locale === 'ru' ? 'Гинекология' : 'Gynecology'}
+                          {t({ ru: 'Гинекология', en: 'Gynecology', tr: 'Jinekoloji', uk: 'Гінекологія' }, locale)}
                         </span>
                         <span className={styles.specialtyTag}>
-                          {locale === 'ru' ? 'Стоматология' : 'Dentistry'}
+                          {t({ ru: 'Стоматология', en: 'Dentistry', tr: 'Diş Hekimliği', uk: 'Стоматологія' }, locale)}
                         </span>
                         <span className={styles.specialtyTag}>
-                          {locale === 'ru' ? 'Имплантология' : 'Implantology'}
+                          {t({ ru: 'Имплантология', en: 'Implantology', tr: 'İmplantoloji', uk: 'Імплантологія' }, locale)}
                         </span>
                         <span className={styles.specialtyTag}>
-                          {locale === 'ru' ? 'Анатомия и безопасные техники' : 'Anatomy and Safe Techniques'}
+                          {t({ ru: 'Анатомия и безопасные техники', en: 'Anatomy and Safe Techniques', tr: 'Anatomi ve Güvenli Teknikler', uk: 'Анатомія та безпечні техніки' }, locale)}
                         </span>
                       </div>
                     </div>
@@ -384,32 +413,38 @@ const About: NextPage = () => {
                       <div className={styles.serviceIconWrapper}>
                         <img
                           src="/about/Cadaver.svg"
-                          alt={locale === 'ru' ? 'Cadaver курсы' : 'Cadaver Courses'}
+                          alt={t({ ru: 'Cadaver курсы', en: 'Cadaver Courses', tr: 'Kadavra Kursları', uk: 'Cadaver курси' }, locale)}
                           className={styles.serviceIcon}
                         />
                       </div>
                       <div>
                         <span className={styles.serviceBadge}>
-                          {locale === 'ru' ? 'Услуга' : 'Service'}
+                          {t({ ru: 'Услуга', en: 'Service', tr: 'Hizmet', uk: 'Послуга' }, locale)}
                         </span>
                         <h3 className={styles.serviceTitle}>
-                          {locale === 'ru' ? 'Cadaver курсы' : 'Cadaver Courses'}
+                          {t({ ru: 'Cadaver курсы', en: 'Cadaver Courses', tr: 'Kadavra Kursları', uk: 'Cadaver курси' }, locale)}
                         </h3>
                       </div>
                       <p className={styles.serviceDescription}>
-                        {locale === 'ru'
-                          ? 'Мы организуем и проводим профессиональные программы по анатомии и практическим навыкам. Все курсы проходят в университетах и лабораториях, оснащённых по мировым стандартам.'
-                          : 'We organize and conduct professional programs in anatomy and practical skills. All courses are held in universities and laboratories equipped to world standards.'}
+                        {t(
+                          {
+                            ru: 'Мы организуем и проводим профессиональные программы по анатомии и практическим навыкам. Все курсы проходят в университетах и лабораториях, оснащённых по мировым стандартам.',
+                            en: 'We organize and conduct professional programs in anatomy and practical skills. All courses are held in universities and laboratories equipped to world standards.',
+                            tr: 'Anatomi ve pratik beceriler konusunda profesyonel programlar düzenliyor ve yürütüyoruz. Tüm kurslar dünya standartlarına göre donatılmış üniversitelerde ve laboratuvarlarda yapılmaktadır.',
+                            uk: 'Ми організовуємо та проводимо професійні програми з анатомії та практичних навичок. Всі курси проходять в університетах та лабораторіях, оснащених за світовими стандартами.',
+                          },
+                          locale
+                        )}
                       </p>
                       <ul className={styles.serviceList}>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'индивидуальные и групповые кадевер курсы' : 'individual and group cadaver courses'}
+                          {t({ ru: 'индивидуальные и групповые кадевер курсы', en: 'individual and group cadaver courses', tr: 'bireysel ve grup kadavra kursları', uk: 'індивідуальні та групові кадевер курси' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'практические диссекционные программы' : 'practical dissection programs'}
+                          {t({ ru: 'практические диссекционные программы', en: 'practical dissection programs', tr: 'pratik diseksiyon programları', uk: 'практичні диссекційні програми' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'обучение по анатомии и инъекциям на кадаверах' : 'training in anatomy and injections on cadavers'}
+                          {t({ ru: 'обучение по анатомии и инъекциям на кадаверах', en: 'training in anatomy and injections on cadavers', tr: 'kadavralarda anatomi ve enjeksiyon eğitimi', uk: 'навчання з анатомії та ін\'єкцій на кадаверах' }, locale)}
                         </li>
                       </ul>
                     </div>
@@ -421,41 +456,47 @@ const About: NextPage = () => {
                       <div className={styles.serviceIconWrapper}>
                         <img
                           src="/about/Cadaver_Organization.svg"
-                          alt={locale === 'ru' ? 'Организация кадавер курсов под ключ' : 'Turnkey Cadaver Course Organization'}
+                          alt={t({ ru: 'Организация кадавер курсов под ключ', en: 'Turnkey Cadaver Course Organization', tr: 'Anahtar Teslim Kadavra Kursu Organizasyonu', uk: 'Організація кадавер курсів під ключ' }, locale)}
                           className={styles.serviceIcon}
                         />
                       </div>
                       <div>
                         <span className={styles.serviceBadge}>
-                          {locale === 'ru' ? 'Услуга' : 'Service'}
+                          {t({ ru: 'Услуга', en: 'Service', tr: 'Hizmet', uk: 'Послуга' }, locale)}
                         </span>
                         <h3 className={styles.serviceTitle}>
-                          {locale === 'ru' ? 'Организация кадавер курсов под ключ' : 'Turnkey Cadaver Course Organization'}
+                          {t({ ru: 'Организация кадавер курсов под ключ', en: 'Turnkey Cadaver Course Organization', tr: 'Anahtar Teslim Kadavra Kursu Organizasyonu', uk: 'Організація кадавер курсів під ключ' }, locale)}
                         </h3>
                       </div>
                       <p className={styles.serviceDescription}>
-                        {locale === 'ru'
-                          ? 'Мы берём на себя полностью весь процесс организации. Врач получает готовое мероприятие без организационных сложностей.'
-                          : 'We take on the entire organization process. The doctor receives a ready-made event without organizational difficulties.'}
+                        {t(
+                          {
+                            ru: 'Мы берём на себя полностью весь процесс организации. Врач получает готовое мероприятие без организационных сложностей.',
+                            en: 'We take on the entire organization process. The doctor receives a ready-made event without organizational difficulties.',
+                            tr: 'Tüm organizasyon sürecini üstleniyoruz. Doktor, organizasyonel zorluklar olmadan hazır bir etkinlik alır.',
+                            uk: 'Ми беремо на себе повністю весь процес організації. Лікар отримує готову подію без організаційних складнощів.',
+                          },
+                          locale
+                        )}
                       </p>
                       <ul className={styles.serviceList}>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'переговоры с университетами' : 'negotiations with universities'}
+                          {t({ ru: 'переговоры с университетами', en: 'negotiations with universities', tr: 'üniversitelerle müzakereler', uk: 'переговори з університетами' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'аренда лабораторий' : 'laboratory rental'}
+                          {t({ ru: 'аренда лабораторий', en: 'laboratory rental', tr: 'laboratuvar kiralama', uk: 'оренда лабораторій' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'преподаватели' : 'instructors'}
+                          {t({ ru: 'преподаватели', en: 'instructors', tr: 'eğitmenler', uk: 'викладачі' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'расходные материалы' : 'supplies'}
+                          {t({ ru: 'расходные материалы', en: 'supplies', tr: 'sarf malzemeleri', uk: 'витратні матеріали' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'программа' : 'program'}
+                          {t({ ru: 'программа', en: 'program', tr: 'program', uk: 'програма' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'логистика и сопровождение' : 'logistics and support'}
+                          {t({ ru: 'логистика и сопровождение', en: 'logistics and support', tr: 'lojistik ve destek', uk: 'логістика та супровід' }, locale)}
                         </li>
                       </ul>
                     </div>
@@ -467,38 +508,44 @@ const About: NextPage = () => {
                       <div className={styles.serviceIconWrapper}>
                         <img
                           src="/about/Medical_Organization.svg"
-                          alt={locale === 'ru' ? 'Организация медицинских мероприятий под ключ' : 'Turnkey Medical Event Organization'}
+                          alt={t({ ru: 'Организация медицинских мероприятий под ключ', en: 'Turnkey Medical Event Organization', tr: 'Anahtar Teslim Tıbbi Etkinlik Organizasyonu', uk: 'Організація медичних заходів під ключ' }, locale)}
                           className={styles.serviceIcon}
                         />
                       </div>
                       <div>
                         <span className={styles.serviceBadge}>
-                          {locale === 'ru' ? 'Услуга' : 'Service'}
+                          {t({ ru: 'Услуга', en: 'Service', tr: 'Hizmet', uk: 'Послуга' }, locale)}
                         </span>
                         <h3 className={styles.serviceTitle}>
-                          {locale === 'ru' ? 'Организация медицинских мероприятий под ключ' : 'Turnkey Medical Event Organization'}
+                          {t({ ru: 'Организация медицинских мероприятий под ключ', en: 'Turnkey Medical Event Organization', tr: 'Anahtar Teslim Tıbbi Etkinlik Organizasyonu', uk: 'Організація медичних заходів під ключ' }, locale)}
                         </h3>
                       </div>
                       <p className={styles.serviceDescription}>
-                        {locale === 'ru'
-                          ? 'Мы создаём профессиональные медицинские мероприятия с полной организацией и сопровождением. От идеи до реализации - всё под нашим контролем.'
-                          : 'We create professional medical events with full organization and support. From idea to implementation - everything under our control.'}
+                        {t(
+                          {
+                            ru: 'Мы создаём профессиональные медицинские мероприятия с полной организацией и сопровождением. От идеи до реализации - всё под нашим контролем.',
+                            en: 'We create professional medical events with full organization and support. From idea to implementation - everything under our control.',
+                            tr: 'Tam organizasyon ve destekle profesyonel tıbbi etkinlikler oluşturuyoruz. Fikirden uygulamaya - her şey bizim kontrolümüz altında.',
+                            uk: 'Ми створюємо професійні медичні заходи з повною організацією та супроводом. Від ідеї до реалізації - все під нашим контролем.',
+                          },
+                          locale
+                        )}
                       </p>
                       <ul className={styles.serviceList}>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'профессиональные конгрессы' : 'professional congresses'}
+                          {t({ ru: 'профессиональные конгрессы', en: 'professional congresses', tr: 'profesyonel kongreler', uk: 'професійні конгреси' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'мастер-классы' : 'master classes'}
+                          {t({ ru: 'мастер-классы', en: 'master classes', tr: 'usta sınıfları', uk: 'майстер-класи' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'воркшопы' : 'workshops'}
+                          {t({ ru: 'воркшопы', en: 'workshops', tr: 'atölyeler', uk: 'воркшопи' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'узконаправленные медицинские события' : 'specialized medical events'}
+                          {t({ ru: 'узконаправленные медицинские события', en: 'specialized medical events', tr: 'uzmanlaşmış tıbbi etkinlikler', uk: 'вузьконаправлені медичні події' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'авторские закрытые обучающие проекты' : 'custom closed educational projects'}
+                          {t({ ru: 'авторские закрытые обучающие проекты', en: 'custom closed educational projects', tr: 'özel kapalı eğitim projeleri', uk: 'авторські закриті навчальні проекти' }, locale)}
                         </li>
                       </ul>
                     </div>
@@ -510,32 +557,38 @@ const About: NextPage = () => {
                       <div className={styles.serviceIconWrapper}>
                         <img
                           src="/about/Clinical_Internships.svg"
-                          alt={locale === 'ru' ? 'Стажировки в клиниках' : 'Clinical Internships'}
+                          alt={t({ ru: 'Стажировки в клиниках', en: 'Clinical Internships', tr: 'Klinik Stajları', uk: 'Стажування в клініках' }, locale)}
                           className={styles.serviceIcon}
                         />
                       </div>
                       <div>
                         <span className={styles.serviceBadge}>
-                          {locale === 'ru' ? 'Услуга' : 'Service'}
+                          {t({ ru: 'Услуга', en: 'Service', tr: 'Hizmet', uk: 'Послуга' }, locale)}
                         </span>
                         <h3 className={styles.serviceTitle}>
-                          {locale === 'ru' ? 'Стажировки в клиниках' : 'Clinical Internships'}
+                          {t({ ru: 'Стажировки в клиниках', en: 'Clinical Internships', tr: 'Klinik Stajları', uk: 'Стажування в клініках' }, locale)}
                         </h3>
                       </div>
                       <p className={styles.serviceDescription}>
-                        {locale === 'ru'
-                          ? 'Официальные стажировки в ведущих клиниках мира. Программы адаптированы под потребности конкретного врача или группы, обеспечивая максимальную практическую пользу.'
-                          : 'Official internships in leading clinics worldwide. Programs are adapted to the needs of a specific doctor or group, ensuring maximum practical benefit.'}
+                        {t(
+                          {
+                            ru: 'Официальные стажировки в ведущих клиниках мира. Программы адаптированы под потребности конкретного врача или группы, обеспечивая максимальную практическую пользу.',
+                            en: 'Official internships in leading clinics worldwide. Programs are adapted to the needs of a specific doctor or group, ensuring maximum practical benefit.',
+                            tr: 'Dünyanın önde gelen kliniklerinde resmi stajlar. Programlar, belirli bir doktorun veya grubun ihtiyaçlarına göre uyarlanmıştır ve maksimum pratik fayda sağlar.',
+                            uk: 'Офіційні стажування в провідних клініках світу. Програми адаптовані під потреби конкретного лікаря або групи, забезпечуючи максимальну практичну користь.',
+                          },
+                          locale
+                        )}
                       </p>
                       <div className={styles.locations}>
                         <span className={styles.locationTag}>
-                          {locale === 'ru' ? 'Дубай' : 'Dubai'}
+                          {t({ ru: 'Дубай', en: 'Dubai', tr: 'Dubai', uk: 'Дубай' }, locale)}
                         </span>
                         <span className={styles.locationTag}>
-                          {locale === 'ru' ? 'Стамбул' : 'Istanbul'}
+                          {t({ ru: 'Стамбул', en: 'Istanbul', tr: 'İstanbul', uk: 'Стамбул' }, locale)}
                         </span>
                         <span className={styles.locationTag}>
-                          {locale === 'ru' ? 'Грузия' : 'Georgia'}
+                          {t({ ru: 'Грузия', en: 'Georgia', tr: 'Gürcistan', uk: 'Грузія' }, locale)}
                         </span>
                       </div>
                     </div>
@@ -547,35 +600,41 @@ const About: NextPage = () => {
                       <div className={styles.serviceIconWrapper}>
                         <img
                           src="/about/University_Internships.svg"
-                          alt={locale === 'ru' ? 'Стажировки в университетах' : 'University Internships'}
+                          alt={t({ ru: 'Стажировки в университетах', en: 'University Internships', tr: 'Üniversite Stajları', uk: 'Стажування в університетах' }, locale)}
                           className={styles.serviceIcon}
                         />
                       </div>
                       <div>
                         <span className={styles.serviceBadge}>
-                          {locale === 'ru' ? 'Услуга' : 'Service'}
+                          {t({ ru: 'Услуга', en: 'Service', tr: 'Hizmet', uk: 'Послуга' }, locale)}
                         </span>
                         <h3 className={styles.serviceTitle}>
-                          {locale === 'ru' ? 'Стажировки в университетах' : 'University Internships'}
+                          {t({ ru: 'Стажировки в университетах', en: 'University Internships', tr: 'Üniversite Stajları', uk: 'Стажування в університетах' }, locale)}
                         </h3>
                       </div>
                       <p className={styles.serviceDescription}>
-                        {locale === 'ru'
-                          ? 'Уникальный доступ к лучшим образовательным ресурсам ведущих университетов мира. Практический опыт в сочетании с теоретической подготовкой.'
-                          : 'Unique access to the best educational resources of leading universities worldwide. Practical experience combined with theoretical training.'}
+                        {t(
+                          {
+                            ru: 'Уникальный доступ к лучшим образовательным ресурсам ведущих университетов мира. Практический опыт в сочетании с теоретической подготовкой.',
+                            en: 'Unique access to the best educational resources of leading universities worldwide. Practical experience combined with theoretical training.',
+                            tr: 'Dünyanın önde gelen üniversitelerinin en iyi eğitim kaynaklarına benzersiz erişim. Teorik eğitimle birleştirilmiş pratik deneyim.',
+                            uk: 'Унікальний доступ до найкращих освітніх ресурсів провідних університетів світу. Практичний досвід у поєднанні з теоретичною підготовкою.',
+                          },
+                          locale
+                        )}
                       </p>
                       <ul className={styles.serviceList}>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'диссекционным лабораториям' : 'dissection laboratories'}
+                          {t({ ru: 'диссекционным лабораториям', en: 'dissection laboratories', tr: 'diseksiyon laboratuvarlarına', uk: 'дисекційним лабораторіям' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'кафедрам хирургии и анатомии' : 'surgery and anatomy departments'}
+                          {t({ ru: 'кафедрам хирургии и анатомии', en: 'surgery and anatomy departments', tr: 'cerrahi ve anatomi bölümlerine', uk: 'кафедрам хірургії та анатомії' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'наблюдению за операциями' : 'observation of operations'}
+                          {t({ ru: 'наблюдению за операциями', en: 'observation of operations', tr: 'operasyonları gözlemlemeye', uk: 'спостереженню за операціями' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'теоретическим и практическим модулям' : 'theoretical and practical modules'}
+                          {t({ ru: 'теоретическим и практическим модулям', en: 'theoretical and practical modules', tr: 'teorik ve pratik modüllere', uk: 'теоретичним та практичним модулям' }, locale)}
                         </li>
                       </ul>
                     </div>
@@ -587,38 +646,44 @@ const About: NextPage = () => {
                       <div className={styles.serviceIconWrapper}>
                         <img
                           src="/about/Doctor_Relocation.svg"
-                          alt={locale === 'ru' ? 'Реолокация врачей в Дубай' : 'Doctor Relocation to Dubai'}
+                          alt={t({ ru: 'Реолокация врачей в Дубай', en: 'Doctor Relocation to Dubai', tr: 'Doktorların Dubai\'ye Taşınması', uk: 'Релокація лікарів у Дубай' }, locale)}
                           className={styles.serviceIcon}
                         />
                       </div>
                       <div>
                         <span className={styles.serviceBadge}>
-                          {locale === 'ru' ? 'Услуга' : 'Service'}
+                          {t({ ru: 'Услуга', en: 'Service', tr: 'Hizmet', uk: 'Послуга' }, locale)}
                         </span>
                         <h3 className={styles.serviceTitle}>
-                          {locale === 'ru' ? 'Реолокация врачей в Дубай' : 'Doctor Relocation to Dubai'}
+                          {t({ ru: 'Реолокация врачей в Дубай', en: 'Doctor Relocation to Dubai', tr: 'Doktorların Dubai\'ye Taşınması', uk: 'Релокація лікарів у Дубай' }, locale)}
                         </h3>
                       </div>
                       <p className={styles.serviceDescription}>
-                        {locale === 'ru'
-                          ? 'Комплексное сопровождение врачей в процессе релокации в ОАЭ. От консультаций до трудоустройства - мы обеспечиваем полную поддержку на каждом этапе.'
-                          : 'Comprehensive support for doctors in the relocation process to the UAE. From consultations to employment - we provide full support at every stage.'}
+                        {t(
+                          {
+                            ru: 'Комплексное сопровождение врачей в процессе релокации в ОАЭ. От консультаций до трудоустройства - мы обеспечиваем полную поддержку на каждом этапе.',
+                            en: 'Comprehensive support for doctors in the relocation process to the UAE. From consultations to employment - we provide full support at every stage.',
+                            tr: 'BAE\'ye taşınma sürecinde doktorlara kapsamlı destek. Danışmanlıktan istihdama kadar - her aşamada tam destek sağlıyoruz.',
+                            uk: 'Комплексний супровід лікарів у процесі релокації в ОАЕ. Від консультацій до працевлаштування - ми забезпечуємо повну підтримку на кожному етапі.',
+                          },
+                          locale
+                        )}
                       </p>
                       <ul className={styles.serviceList}>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'консультации по требованиям рынка ОАЭ' : 'consultations on UAE market requirements'}
+                          {t({ ru: 'консультации по требованиям рынка ОАЭ', en: 'consultations on UAE market requirements', tr: 'BAE pazar gereksinimleri hakkında danışmanlık', uk: 'консультації з вимог ринку ОАЕ' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'подбор клиник и работодателей' : 'clinic and employer selection'}
+                          {t({ ru: 'подбор клиник и работодателей', en: 'clinic and employer selection', tr: 'klinik ve işveren seçimi', uk: 'підбір клінік та роботодавців' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'подготовка к экзаменам' : 'exam preparation'}
+                          {t({ ru: 'подготовка к экзаменам', en: 'exam preparation', tr: 'sınav hazırlığı', uk: 'підготовка до іспитів' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'анализ документов' : 'document analysis'}
+                          {t({ ru: 'анализ документов', en: 'document analysis', tr: 'belge analizi', uk: 'аналіз документів' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'сопровождение до момента трудоустройства' : 'support until employment'}
+                          {t({ ru: 'сопровождение до момента трудоустройства', en: 'support until employment', tr: 'istihdama kadar destek', uk: 'супровід до моменту працевлаштування' }, locale)}
                         </li>
                       </ul>
                     </div>
@@ -630,41 +695,47 @@ const About: NextPage = () => {
                       <div className={styles.serviceIconWrapper}>
                         <img
                           src="/about/Relocation_Document.svg"
-                          alt={locale === 'ru' ? 'Помощь с документами для релокации' : 'Relocation Document Assistance'}
+                          alt={t({ ru: 'Помощь с документами для релокации', en: 'Relocation Document Assistance', tr: 'Taşınma Belge Desteği', uk: 'Допомога з документами для релокації' }, locale)}
                           className={styles.serviceIcon}
                         />
                       </div>
                       <div>
                         <span className={styles.serviceBadge}>
-                          {locale === 'ru' ? 'Услуга' : 'Service'}
+                          {t({ ru: 'Услуга', en: 'Service', tr: 'Hizmet', uk: 'Послуга' }, locale)}
                         </span>
                         <h3 className={styles.serviceTitle}>
-                          {locale === 'ru' ? 'Помощь с документами для релокации' : 'Relocation Document Assistance'}
+                          {t({ ru: 'Помощь с документами для релокации', en: 'Relocation Document Assistance', tr: 'Taşınma Belge Desteği', uk: 'Допомога з документами для релокації' }, locale)}
                         </h3>
                       </div>
                       <p className={styles.serviceDescription}>
-                        {locale === 'ru'
-                          ? 'Профессиональная подготовка и сопровождение всех необходимых документов для успешной релокации. Мы знаем все требования и поможем пройти процесс максимально быстро и эффективно.'
-                          : 'Professional preparation and support of all necessary documents for successful relocation. We know all the requirements and will help you go through the process as quickly and efficiently as possible.'}
+                        {t(
+                          {
+                            ru: 'Профессиональная подготовка и сопровождение всех необходимых документов для успешной релокации. Мы знаем все требования и поможем пройти процесс максимально быстро и эффективно.',
+                            en: 'Professional preparation and support of all necessary documents for successful relocation. We know all the requirements and will help you go through the process as quickly and efficiently as possible.',
+                            tr: 'Başarılı bir taşınma için gerekli tüm belgelerin profesyonel hazırlanması ve desteği. Tüm gereksinimleri biliyoruz ve süreci mümkün olduğunca hızlı ve verimli bir şekilde geçmenize yardımcı olacağız.',
+                            uk: 'Професійна підготовка та супровід усіх необхідних документів для успішної релокації. Ми знаємо всі вимоги та допоможемо пройти процес максимально швидко та ефективно.',
+                          },
+                          locale
+                        )}
                       </p>
                       <ul className={styles.serviceList}>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'нострификация' : 'nostrification'}
+                          {t({ ru: 'нострификация', en: 'nostrification', tr: 'nostrifikasyon', uk: 'нострифікація' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'экзамены' : 'examinations'}
+                          {t({ ru: 'экзамены', en: 'examinations', tr: 'sınavlar', uk: 'іспити' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'лицензирование' : 'licensing'}
+                          {t({ ru: 'лицензирование', en: 'licensing', tr: 'lisanslama', uk: 'ліцензування' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'медицинские документы' : 'medical documents'}
+                          {t({ ru: 'медицинские документы', en: 'medical documents', tr: 'tıbbi belgeler', uk: 'медичні документи' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'административные формы' : 'administrative forms'}
+                          {t({ ru: 'административные формы', en: 'administrative forms', tr: 'idari formlar', uk: 'адміністративні форми' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'личные документы врача для MOH/DOH/DHA' : 'doctor personal documents for MOH/DOH/DHA'}
+                          {t({ ru: 'личные документы врача для MOH/DOH/DHA', en: 'doctor personal documents for MOH/DOH/DHA', tr: 'MOH/DOH/DHA için doktor kişisel belgeleri', uk: 'особисті документи лікаря для MOH/DOH/DHA' }, locale)}
                         </li>
                       </ul>
                     </div>
@@ -676,38 +747,44 @@ const About: NextPage = () => {
                       <div className={styles.serviceIconWrapper}>
                         <img
                           src="/about/Custom_Courses.svg"
-                          alt={locale === 'ru' ? 'Создание авторских курсов, программ и методик' : 'Creating Custom Courses, Programs and Methodologies'}
+                          alt={t({ ru: 'Создание авторских курсов, программ и методик', en: 'Creating Custom Courses, Programs and Methodologies', tr: 'Özel Kurslar, Programlar ve Metodolojiler Oluşturma', uk: 'Створення авторських курсів, програм та методик' }, locale)}
                           className={styles.serviceIcon}
                         />
                       </div>
                       <div>
                         <span className={styles.serviceBadge}>
-                          {locale === 'ru' ? 'Услуга' : 'Service'}
+                          {t({ ru: 'Услуга', en: 'Service', tr: 'Hizmet', uk: 'Послуга' }, locale)}
                         </span>
                         <h3 className={styles.serviceTitle}>
-                          {locale === 'ru' ? 'Создание авторских курсов, программ и методик' : 'Creating Custom Courses, Programs and Methodologies'}
+                          {t({ ru: 'Создание авторских курсов, программ и методик', en: 'Creating Custom Courses, Programs and Methodologies', tr: 'Özel Kurslar, Programlar ve Metodolojiler Oluşturma', uk: 'Створення авторських курсів, програм та методик' }, locale)}
                         </h3>
                       </div>
                       <p className={styles.serviceDescription}>
-                        {locale === 'ru'
-                          ? 'Для врачей, клиник, школ и образовательных проектов мы разрабатываем уникальные обучающие продукты с индивидуальным подходом к каждому клиенту.'
-                          : 'For doctors, clinics, schools and educational projects, we develop unique educational products with an individual approach to each client.'}
+                        {t(
+                          {
+                            ru: 'Для врачей, клиник, школ и образовательных проектов мы разрабатываем уникальные обучающие продукты с индивидуальным подходом к каждому клиенту.',
+                            en: 'For doctors, clinics, schools and educational projects, we develop unique educational products with an individual approach to each client.',
+                            tr: 'Doktorlar, klinikler, okullar ve eğitim projeleri için her müşteriye bireysel yaklaşımla benzersiz eğitim ürünleri geliştiriyoruz.',
+                            uk: 'Для лікарів, клінік, шкіл та освітніх проектів ми розробляємо унікальні навчальні продукти з індивідуальним підходом до кожного клієнта.',
+                          },
+                          locale
+                        )}
                       </p>
                       <ul className={styles.serviceList}>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'Разрабатываем уникальные обучающие продукты' : 'We develop unique educational products'}
+                          {t({ ru: 'Разрабатываем уникальные обучающие продукты', en: 'We develop unique educational products', tr: 'Benzersiz eğitim ürünleri geliştiriyoruz', uk: 'Розробляємо унікальні навчальні продукти' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'Создаём методологию' : 'We create methodology'}
+                          {t({ ru: 'Создаём методологию', en: 'We create methodology', tr: 'Metodoloji oluşturuyoruz', uk: 'Створюємо методологію' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'Строим структуру курса' : 'We build course structure'}
+                          {t({ ru: 'Строим структуру курса', en: 'We build course structure', tr: 'Kurs yapısı oluşturuyoruz', uk: 'Будуємо структуру курсу' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'Подготавливаем программу под ключ' : 'We prepare turnkey programs'}
+                          {t({ ru: 'Подготавливаем программу под ключ', en: 'We prepare turnkey programs', tr: 'Anahtar teslim programlar hazırlıyoruz', uk: 'Підготовлюємо програму під ключ' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'Помогаем с внедрением и реализацией' : 'We help with implementation and execution'}
+                          {t({ ru: 'Помогаем с внедрением и реализацией', en: 'We help with implementation and execution', tr: 'Uygulama ve yürütmede yardımcı oluyoruz', uk: 'Допомагаємо з впровадженням та реалізацією' }, locale)}
                         </li>
                       </ul>
                     </div>
@@ -719,38 +796,44 @@ const About: NextPage = () => {
                       <div className={styles.serviceIconWrapper}>
                         <img
                           src="/about/Individual.svg"
-                          alt={locale === 'ru' ? 'Индивидуальные образовательные программы под ключ' : 'Turnkey Individual Educational Programs'}
+                          alt={t({ ru: 'Индивидуальные образовательные программы под ключ', en: 'Turnkey Individual Educational Programs', tr: 'Anahtar Teslim Bireysel Eğitim Programları', uk: 'Індивідуальні освітні програми під ключ' }, locale)}
                           className={styles.serviceIcon}
                         />
                       </div>
                       <div>
                         <span className={styles.serviceBadge}>
-                          {locale === 'ru' ? 'Услуга' : 'Service'}
+                          {t({ ru: 'Услуга', en: 'Service', tr: 'Hizmet', uk: 'Послуга' }, locale)}
                         </span>
                         <h3 className={styles.serviceTitle}>
-                          {locale === 'ru' ? 'Индивидуальные образовательные программы под ключ' : 'Turnkey Individual Educational Programs'}
+                          {t({ ru: 'Индивидуальные образовательные программы под ключ', en: 'Turnkey Individual Educational Programs', tr: 'Anahtar Teslim Bireysel Eğitim Programları', uk: 'Індивідуальні освітні програми під ключ' }, locale)}
                         </h3>
                       </div>
                       <p className={styles.serviceDescription}>
-                        {locale === 'ru'
-                          ? 'Персонализированные программы обучения, разработанные специально под цели и потребности конкретного врача. Индивидуальный подход на каждом этапе.'
-                          : 'Personalized training programs designed specifically for the goals and needs of a particular doctor. Individual approach at every stage.'}
+                        {t(
+                          {
+                            ru: 'Персонализированные программы обучения, разработанные специально под цели и потребности конкретного врача. Индивидуальный подход на каждом этапе.',
+                            en: 'Personalized training programs designed specifically for the goals and needs of a particular doctor. Individual approach at every stage.',
+                            tr: 'Belirli bir doktorun hedefleri ve ihtiyaçları için özel olarak tasarlanmış kişiselleştirilmiş eğitim programları. Her aşamada bireysel yaklaşım.',
+                            uk: 'Персоналізовані програми навчання, розроблені спеціально під цілі та потреби конкретного лікаря. Індивідуальний підхід на кожному етапі.',
+                          },
+                          locale
+                        )}
                       </p>
                       <ul className={styles.serviceList}>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'наставничество' : 'mentoring'}
+                          {t({ ru: 'наставничество', en: 'mentoring', tr: 'mentörlük', uk: 'наставництво' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'индивидуальные стажировки' : 'individual internships'}
+                          {t({ ru: 'индивидуальные стажировки', en: 'individual internships', tr: 'bireysel stajlar', uk: 'індивідуальні стажування' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'персональные диссекции' : 'personal dissections'}
+                          {t({ ru: 'персональные диссекции', en: 'personal dissections', tr: 'kişisel diseksiyonlar', uk: 'персональні диссекції' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'обучение в формате 1:1' : '1:1 training format'}
+                          {t({ ru: 'обучение в формате 1:1', en: '1:1 training format', tr: '1:1 eğitim formatı', uk: 'навчання у форматі 1:1' }, locale)}
                         </li>
                         <li className={styles.serviceListItem}>
-                          {locale === 'ru' ? 'маршруты развития под конкретную цель врача' : 'development paths tailored to specific doctor goals'}
+                          {t({ ru: 'маршруты развития под конкретную цель врача', en: 'development paths tailored to specific doctor goals', tr: 'belirli doktor hedeflerine göre uyarlanmış gelişim yolları', uk: 'маршрути розвитку під конкретну мету лікаря' }, locale)}
                         </li>
                       </ul>
                     </div>
@@ -762,7 +845,7 @@ const About: NextPage = () => {
               <section className={styles.videoGallerySection}>
                 <div className={styles.container}>
                   <h2 className={styles.videoGalleryTitle}>
-                    {locale === 'ru' ? 'Видеогалерея' : 'Video Gallery'}
+                    {t({ ru: 'Видеогалерея', en: 'Video Gallery', tr: 'Video Galerisi', uk: 'Відеогалерея' }, locale)}
                   </h2>
                   <div className={styles.videoCarouselWrapper}>
                     <button 
