@@ -106,7 +106,7 @@ const Contact: NextPage = () => {
           <section className={styles.hero}>
             <div className={styles.heroBackground}>
               <Image
-                src="/contact_image.jpg"
+                src="/contact_hero.jpg"
                 alt="Estedilux Med Background"
                 fill
                 className={styles.heroBannerImage}

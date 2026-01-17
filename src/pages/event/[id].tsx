@@ -226,7 +226,7 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                 />
               ) : (
                 <Image
-                  src="/hero_background.jpg"
+                  src="/main_hero.jpg"
                   alt="Estedilux Med Background"
                   fill
                   className={styles.heroBannerImage}

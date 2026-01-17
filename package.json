@@ -12,7 +12,8 @@
     "import-blog": "node scripts/import-blog-data.js",
     "import-events": "node scripts/import-events-data.js",
     "clear-db": "node scripts/clear-db.js",
-    "rename-images": "node scripts/rename-images.js"
+    "rename-images": "node scripts/rename-images.js",
+    "replace-hero-images": "node scripts/replace-hero-images.js"
   },
   "dependencies": {
     "@types/bcryptjs": "^3.0.0",
