@@ -198,6 +198,17 @@ export function initDatabase() {
     CREATE INDEX IF NOT EXISTS idx_registration_order_ref ON event_registrations(order_reference)
   `);
 
+  try {
+    db.exec(`ALTER TABLE event_registrations ADD COLUMN mono_invoice_id TEXT`);
+  } catch (e: unknown) {
+    if (!(e instanceof Error) || !e.message.includes('duplicate column name')) throw e;
+  }
+  try {
+    db.exec(`CREATE UNIQUE INDEX IF NOT EXISTS idx_registration_mono_invoice ON event_registrations(mono_invoice_id) WHERE mono_invoice_id IS NOT NULL`);
+  } catch {
+    // ігноруємо якщо вже є
+  }
+
   const adminCount = db.prepare('SELECT COUNT(*) as count FROM users').get() as { count: number };
   
   if (adminCount.count === 0) {
@@ -352,6 +363,14 @@ export const createEventRegistration = db.prepare(`
 
 export const getEventRegistrationByOrderReference = db.prepare(`
   SELECT * FROM event_registrations WHERE order_reference = ?
+`);
+
+export const getEventRegistrationByMonoInvoiceId = db.prepare(`
+  SELECT * FROM event_registrations WHERE mono_invoice_id = ?
+`);
+
+export const updateEventRegistrationMonoInvoiceId = db.prepare(`
+  UPDATE event_registrations SET mono_invoice_id = ? WHERE order_reference = ?
 `);
 
 export const updateEventRegistrationStatus = db.prepare(`

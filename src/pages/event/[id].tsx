@@ -112,31 +112,13 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
         throw new Error(result.error || t({ ru: 'Ошибка создания платежа', en: 'Payment creation error', tr: 'Ödeme oluşturma hatası', uk: 'Помилка створення платежу' }, locale));
       }
 
-      // Створюємо форму для WayForPay
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = 'https://secure.wayforpay.com/pay';
-      form.target = '_self';
-
-      // Додаємо всі поля з даних WayForPay
-      Object.keys(result.data).forEach((key) => {
-        const value = result.data[key];
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        
-        // WayForPay очікує масиви як рядки через крапку з комою
-        if (Array.isArray(value)) {
-          input.value = value.join(';');
-        } else {
-          input.value = String(value);
-        }
-        
-        form.appendChild(input);
-      });
-
-      document.body.appendChild(form);
-      form.submit();
+      // Редірект на сторінку оплати Monobank
+      const invoiceUrl = result.invoiceUrl;
+      if (invoiceUrl) {
+        window.location.href = invoiceUrl;
+      } else {
+        throw new Error(t({ ru: 'Не получена ссылка на оплату', en: 'Payment link not received', tr: 'Ödeme bağlantısı alınmadı', uk: 'Не отримано посилання на оплату' }, locale));
+      }
     } catch (err: any) {
       console.error('Payment error:', err);
       setError(err.message || t({ ru: 'Ошибка при создании платежа. Попробуйте позже.', en: 'Error creating payment. Please try again later.', tr: 'Ödeme oluşturulurken hata. Lütfen daha sonra tekrar deneyin.', uk: 'Помилка при створенні платежу. Спробуйте пізніше.' }, locale));
@@ -329,12 +311,10 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                     )}
                   </div>
 
-                  {/* Payment Button */}
-                  {event.price && (
-                    <button onClick={handlePayment} className={styles.paymentButton}>
-                      {t({ ru: 'Записаться на событие', en: 'Register for the event', tr: 'Etkinliğe kayıt ol', uk: 'Записатися на подію' }, locale)}
-                    </button>
-                  )}
+                  {/* Кнопка реєстрації та оплати — завжди активна */}
+                  <button onClick={handlePayment} className={styles.paymentButton}>
+                    {t({ ru: 'Записаться на событие', en: 'Register for the event', tr: 'Etkinliğe kayıt ol', uk: 'Записатися на подію' }, locale)}
+                  </button>
                 </div>
               </div>
             </div>

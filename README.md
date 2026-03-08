@@ -79,11 +79,10 @@ npm run type-check
 TELEGRAM_BOT_TOKEN=your_telegram_bot_token
 TELEGRAM_CHAT_ID=your_telegram_chat_id
 
-# WayForPay налаштування (якщо використовується)
-MERCHANT_LOGIN=your_merchant_login
-MERCHANT_SECRET_KEY=your_merchant_secret_key
+# Monobank (оплата за події). Токен з https://api.monobank.ua/ або https://web.monobank.ua/
+NEXT_PUBLIC_MONO_TOKEN=your_mono_merchant_token
 
-# URL сайту
+# URL сайту (потрібен для redirectUrl та webHookUrl Mono)
 NEXT_PUBLIC_SITE_URL=https://your-domain.com
 ```
 
