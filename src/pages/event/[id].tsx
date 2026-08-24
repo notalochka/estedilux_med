@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { Calendar, MapPin, DollarSign, X } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import PhoneInput from '@/components/PhoneInput/PhoneInput';
 import { getImageUrl } from '@/lib/imageUtils';
 import { getCountryFromLocation } from '@/lib/countryUtils';
 import { t } from '@/lib/translations';
@@ -368,15 +369,15 @@ const EventDetailPage: NextPage<EventDetailPageProps> = ({ event }) => {
                   <label htmlFor="reg-phone" className={styles.formLabel}>
                     {t({ ru: 'Телефон', en: 'Phone', tr: 'Telefon', uk: 'Телефон' }, locale)} *
                   </label>
-                  <input
-                    type="tel"
+                  <PhoneInput
                     id="reg-phone"
                     name="phone"
                     value={formData.phone}
-                    onChange={handleChange}
+                    onChange={(fullPhone) =>
+                      setFormData((prev) => ({ ...prev, phone: fullPhone }))
+                    }
+                    locale={locale}
                     required
-                    placeholder="+380 (00) 000-00-00"
-                    className={styles.formInput}
                   />
                 </div>
 

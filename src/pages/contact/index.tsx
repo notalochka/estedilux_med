@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import PhoneInput from '@/components/PhoneInput/PhoneInput';
 import { useAnimation } from '@/lib/useAnimation';
 import { t } from '@/lib/translations';
 import type { ContactFormData } from '@/types/index';
@@ -174,14 +175,14 @@ const Contact: NextPage = () => {
                   <label htmlFor="phone" className={styles.label}>
                     {t({ ru: 'Телефон', en: 'Phone', tr: 'Telefon', uk: 'Телефон' }, locale)}
                   </label>
-                  <input
-                    type="tel"
+                  <PhoneInput
                     id="phone"
                     name="phone"
                     value={formData.phone || ''}
-                    onChange={handleChange}
-                    placeholder='+380 (00) 000-00-00'
-                    className={styles.input}
+                    onChange={(fullPhone) =>
+                      setFormData((prev) => ({ ...prev, phone: fullPhone }))
+                    }
+                    locale={locale}
                   />
                 </div>
 

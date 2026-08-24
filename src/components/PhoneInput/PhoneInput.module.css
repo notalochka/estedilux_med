@@ -1,0 +1,177 @@
+.phoneInput {
+  position: relative;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.row:focus-within {
+  border-color: #1e76aa;
+  box-shadow: 0 0 0 3px rgba(30, 118, 170, 0.1);
+}
+
+.countryBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  padding: 0.75rem 0.75rem;
+  border: none;
+  border-right: 1px solid #e2e8f0;
+  background: #f8fafc;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  color: #0f172a;
+  transition: background 0.15s ease;
+}
+
+.countryBtn:hover:not(:disabled) {
+  background: #f1f5f9;
+}
+
+.countryBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.flag {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.dial {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.chevron {
+  color: #64748b;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.numberInput {
+  flex: 1;
+  min-width: 0;
+  padding: 0.75rem 1rem;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #0f172a;
+  background: transparent;
+}
+
+.numberInput::placeholder {
+  color: #94a3b8;
+}
+
+.dropdown {
+  z-index: 10050;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+  overflow: hidden;
+  max-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.search {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-bottom: 1px solid #e2e8f0;
+  outline: none;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+.search:focus {
+  background: white;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 0;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  color: #0f172a;
+  text-align: left;
+  transition: background 0.1s ease;
+}
+
+.option:hover {
+  background: #f1f5f9;
+}
+
+.optionActive {
+  background: #eff6ff;
+}
+
+.optionName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.optionDial {
+  color: #64748b;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.empty {
+  padding: 1rem;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 480px) {
+  .countryBtn {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .dial {
+    font-size: 0.875rem;
+  }
+
+  .numberInput {
+    padding: 0.75rem 0.75rem;
+  }
+}
