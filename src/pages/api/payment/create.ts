@@ -122,36 +122,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Зв’язуємо invoiceId з реєстрацією для webhook
     updateEventRegistrationMonoInvoiceId.run(invoiceId, orderReference);
 
-    try {
-      const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-      const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
-      if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
-        const telegramMessage = `
-🎯 <b>Нова реєстрація на подію</b>
-
-📋 <b>Подія:</b> ${eventTitle}
-👤 <b>Ім'я:</b> ${userName}
-📧 <b>Email:</b> ${userEmail}
-📱 <b>Телефон:</b> ${userPhone}
-${specialty ? `🏥 <b>Спеціальність:</b> ${specialty}` : ''}
-💰 <b>Тип оплати:</b> ${paymentType === 'prepayment' ? 'Передоплата (30%)' : 'Повна оплата'}
-💵 <b>Сума:</b> ${amount.toFixed(2)} USD
-🆔 <b>Рахунок Mono:</b> ${invoiceId}
-        `.trim();
-        await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: TELEGRAM_CHAT_ID,
-            text: telegramMessage,
-            parse_mode: 'HTML',
-          }),
-        }).catch((err) => console.error('Telegram notification failed:', err));
-      }
-    } catch {
-      // не блокуємо процес
-    }
-
     res.status(200).json({
       success: true,
       invoiceId,
