@@ -83,24 +83,6 @@
     0 8px 28px rgba(0, 0, 0, 0.45);
   opacity: 0;
   max-width: 900px;
-  position: relative;
-}
-
-.title::after {
-  content: '';
-  position: absolute;
-  bottom: -12px;
-  left: 0;
-  width: 72px;
-  height: 3px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.9), rgba(36, 129, 235, 0.6), transparent);
-  border-radius: 2px;
-  opacity: 0;
-  transition: opacity 0.8s ease 0.5s;
-}
-
-.title.animateFadeInUp::after {
-  opacity: 1;
 }
 
 .subtitle {
