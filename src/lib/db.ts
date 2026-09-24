@@ -279,6 +279,14 @@ export const getEventCategoryById = db.prepare(`
 `);
 
 export const createEventCategory = db.prepare(`
+  INSERT INTO event_categories (
+    title_ru, title_en, title_tr, title_uk,
+    description_ru, description_en, description_tr, description_uk,
+    subcategories, icon
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`);
+
+export const createEventCategoryWithId = db.prepare(`
   INSERT INTO event_categories (id, title_ru, title_en, description_ru, description_en, subcategories, icon)
   VALUES (?, ?, ?, ?, ?, ?, ?)
 `);
