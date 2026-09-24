@@ -8,16 +8,36 @@
  * Запуск:
  *   npm run add-new-categories
  *   або: node scripts/add-new-categories.js
+ *
+ * Потрібен better-sqlite3 (npm install).
  */
 const path = require('path');
 const fs = require('fs');
-const { execFileSync } = require('child_process');
 
 const dbPath = path.join(process.cwd(), 'data', 'admin.db');
 
 if (!fs.existsSync(dbPath)) {
   console.error('❌ Database not found:', dbPath);
   process.exit(1);
+}
+
+let Database;
+try {
+  Database = require('better-sqlite3');
+} catch (err) {
+  console.error('❌ Не знайдено better-sqlite3. Виконай: npm install');
+  console.error(err.message);
+  process.exit(1);
+}
+
+const db = new Database(dbPath);
+
+for (const col of ['title_tr', 'title_uk', 'description_tr', 'description_uk']) {
+  try {
+    db.exec(`ALTER TABLE event_categories ADD COLUMN ${col} TEXT`);
+  } catch (_) {
+    // already exists
+  }
 }
 
 const categories = [
@@ -103,90 +123,77 @@ const categories = [
   },
 ];
 
-function sqlEscape(value) {
-  if (value == null) return 'NULL';
-  return `'${String(value).replace(/'/g, "''")}'`;
-}
+const findByTitle = db.prepare(
+  `SELECT id FROM event_categories WHERE title_ru = ? COLLATE NOCASE LIMIT 1`
+);
 
-function runSql(sql, { ignoreErrors = false } = {}) {
-  try {
-    return execFileSync('sqlite3', [dbPath, sql], {
-      encoding: 'utf8',
-      stdio: ['pipe', 'pipe', ignoreErrors ? 'pipe' : 'pipe'],
-    }).trim();
-  } catch (err) {
-    if (ignoreErrors) return '';
-    throw err;
-  }
-}
+const insert = db.prepare(`
+  INSERT INTO event_categories (
+    title_ru, title_en, title_tr, title_uk,
+    description_ru, description_en, description_tr, description_uk,
+    subcategories, icon
+  ) VALUES (
+    @title_ru, @title_en, @title_tr, @title_uk,
+    @description_ru, @description_en, @description_tr, @description_uk,
+    @subcategories, @icon
+  )
+`);
 
-// Ensure optional columns exist
-for (const col of ['title_tr', 'title_uk', 'description_tr', 'description_uk']) {
-  runSql(`ALTER TABLE event_categories ADD COLUMN ${col} TEXT;`, { ignoreErrors: true });
-}
+const update = db.prepare(`
+  UPDATE event_categories SET
+    title_en = @title_en,
+    title_tr = @title_tr,
+    title_uk = @title_uk,
+    description_ru = @description_ru,
+    description_en = @description_en,
+    description_tr = @description_tr,
+    description_uk = @description_uk,
+    subcategories = @subcategories,
+    icon = @icon,
+    updated_at = CURRENT_TIMESTAMP
+  WHERE id = @id
+`);
 
 let created = 0;
 let updated = 0;
 
-for (const cat of categories) {
-  const existingId = runSql(
-    `SELECT id FROM event_categories WHERE title_ru = ${sqlEscape(cat.title_ru)} COLLATE NOCASE LIMIT 1;`
-  );
-  const subcategories = sqlEscape(JSON.stringify(cat.subcategories));
-
-  if (existingId) {
-    runSql(`
-      UPDATE event_categories SET
-        title_en = ${sqlEscape(cat.title_en)},
-        title_tr = ${sqlEscape(cat.title_tr)},
-        title_uk = ${sqlEscape(cat.title_uk)},
-        description_ru = ${sqlEscape(cat.description_ru)},
-        description_en = ${sqlEscape(cat.description_en)},
-        description_tr = ${sqlEscape(cat.description_tr)},
-        description_uk = ${sqlEscape(cat.description_uk)},
-        subcategories = ${subcategories},
-        icon = ${sqlEscape(cat.icon)},
-        updated_at = CURRENT_TIMESTAMP
-      WHERE id = ${existingId};
-    `);
-    updated += 1;
-    console.log(`↻ Оновлено: ${cat.title_ru} (id=${existingId})`);
-  } else {
-    runSql(`
-      INSERT INTO event_categories (
-        title_ru, title_en, title_tr, title_uk,
-        description_ru, description_en, description_tr, description_uk,
-        subcategories, icon
-      ) VALUES (
-        ${sqlEscape(cat.title_ru)},
-        ${sqlEscape(cat.title_en)},
-        ${sqlEscape(cat.title_tr)},
-        ${sqlEscape(cat.title_uk)},
-        ${sqlEscape(cat.description_ru)},
-        ${sqlEscape(cat.description_en)},
-        ${sqlEscape(cat.description_tr)},
-        ${sqlEscape(cat.description_uk)},
-        ${subcategories},
-        ${sqlEscape(cat.icon)}
-      );
-    `);
-    const newId = runSql(`SELECT id FROM event_categories WHERE title_ru = ${sqlEscape(cat.title_ru)} LIMIT 1;`);
-    created += 1;
-    console.log(`✓ Додано: ${cat.title_ru} (id=${newId})`);
+const run = db.transaction((rows) => {
+  for (const cat of rows) {
+    const payload = {
+      ...cat,
+      subcategories: JSON.stringify(cat.subcategories),
+    };
+    const existing = findByTitle.get(cat.title_ru);
+    if (existing) {
+      update.run({ ...payload, id: existing.id });
+      updated += 1;
+      console.log(`↻ Оновлено: ${cat.title_ru} (id=${existing.id})`);
+    } else {
+      const result = insert.run(payload);
+      created += 1;
+      console.log(`✓ Додано: ${cat.title_ru} (id=${result.lastInsertRowid})`);
+    }
   }
-}
+});
+
+run(categories);
 
 console.log('\nГотово.');
 console.log(`Додано: ${created}, оновлено: ${updated}`);
 console.log('\nКатегорії в БД:');
-const list = runSql(`
-  SELECT id || '. ' || title_ru FROM event_categories
-  WHERE title_ru IN (
+const list = db
+  .prepare(
+    `SELECT id, title_ru FROM event_categories
+     WHERE title_ru IN (?, ?, ?, ?)
+     ORDER BY id`
+  )
+  .all(
     'Кадавер курс с анатомией',
     'Стажировка в Дубае',
     'Бизнес тур в Шанхай',
     'Бизнес тур в Южную Корею'
-  )
-  ORDER BY id;
-`);
-console.log(list || '(порожньо)');
+  );
+
+list.forEach((row) => console.log(`  ${row.id}. ${row.title_ru}`));
+
+db.close();
