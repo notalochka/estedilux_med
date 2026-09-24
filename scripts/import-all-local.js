@@ -109,6 +109,10 @@ const categoryToImageMap = {
   'Психиатрия и психотерапия': '/categories/Psychiatry.jpg',
   'Паллиативная медицина': '/categories/Palliative.jpg',
   'Специальные программы Estedilux Med': '/categories/Special_programs.jpg',
+  'Кадавер курс с анатомией': '/categories/Cadaver.jpg',
+  'Стажировка в Дубае': '/categories/Special_programs.jpg',
+  'Бизнес тур в Шанхай': '/categories/category_fallback_1.jpg',
+  'Бизнес тур в Южную Корею': '/categories/category_fallback_2.jpg',
 };
 
 // Функція для завантаження TypeScript модулів через require з ts-node

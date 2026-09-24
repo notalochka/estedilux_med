@@ -425,4 +425,88 @@ export const eventCategories: EventCategory[] = [
       { ru: 'Подготовка документов и лицензирование (DHA / DOH / MOH)', en: 'Document Preparation and Licensing (DHA / DOH / MOH)' },
     ],
   },
+  {
+    id: 21,
+    title: {
+      ru: 'Кадавер курс с анатомией',
+      en: 'Cadaver Course with Anatomy',
+      tr: 'Anatomili Kadavra Kursu',
+      uk: 'Кадавер курс з анатомією',
+    },
+    description: {
+      ru: 'Практические кадавер-курсы с углубленным изучением анатомии. Участники работают на биологических материалах под руководством опытных специалистов, осваивая безопасные техники и современные хирургические подходы.',
+      en: 'Practical cadaver courses with in-depth anatomy study. Participants work on biological materials under the guidance of experienced specialists, mastering safe techniques and modern surgical approaches.',
+      tr: 'Derinlemesine anatomi çalışması içeren pratik kadavra kursları. Katılımcılar deneyimli uzmanların rehberliğinde biyolojik materyaller üzerinde çalışarak güvenli teknikleri ve modern cerrahi yaklaşımları öğrenir.',
+      uk: 'Практичні кадавер-курси з поглибленим вивченням анатомії. Учасники працюють на біологічних матеріалах під керівництвом досвідчених спеціалістів, опановуючи безпечні техніки та сучасні хірургічні підходи.',
+    },
+    subcategories: [
+      { ru: 'Анатомия лица и шеи', en: 'Face and Neck Anatomy' },
+      { ru: 'Хирургические техники на кадаверах', en: 'Surgical Techniques on Cadavers' },
+      { ru: 'Безопасные инъекционные протоколы', en: 'Safe Injection Protocols' },
+    ],
+    icon: '/categories/Cadaver.jpg',
+  },
+  {
+    id: 22,
+    title: {
+      ru: 'Стажировка в Дубае',
+      en: 'Internship in Dubai',
+      tr: 'Dubai Stajı',
+      uk: 'Стажування в Дубаї',
+    },
+    description: {
+      ru: 'Программы стажировок в ведущих клиниках Дубая. Врачи получают практический опыт в международной среде, знакомятся с стандартами ОАЭ и расширяют профессиональную сеть контактов.',
+      en: 'Internship programs in leading Dubai clinics. Doctors gain practical experience in an international environment, learn UAE standards and expand their professional network.',
+      tr: 'Dubai\'nin önde gelen kliniklerinde staj programları. Doktorlar uluslararası ortamda pratik deneyim kazanır, BAE standartlarını öğrenir ve profesyonel ağlarını genişletir.',
+      uk: 'Програми стажувань у провідних клініках Дубая. Лікарі отримують практичний досвід у міжнародному середовищі, знайомляться зі стандартами ОАЕ та розширюють професійну мережу контактів.',
+    },
+    subcategories: [
+      { ru: 'Клинические стажировки', en: 'Clinical Internships' },
+      { ru: 'Наблюдение за операциями', en: 'Surgical Observation' },
+      { ru: 'Лицензирование и релокация', en: 'Licensing and Relocation' },
+    ],
+    icon: '/categories/Special_programs.jpg',
+  },
+  {
+    id: 23,
+    title: {
+      ru: 'Бизнес тур в Шанхай',
+      en: 'Business Tour to Shanghai',
+      tr: 'Şanghay İş Turu',
+      uk: 'Бізнес-тур до Шанхаю',
+    },
+    description: {
+      ru: 'Бизнес-туры в Шанхай для врачей и владельцев клиник. Знакомство с медицинским рынком Китая, визиты в клиники и образовательные центры, обмен опытом и поиск партнеров.',
+      en: 'Business tours to Shanghai for doctors and clinic owners. Exploring China’s medical market, visiting clinics and educational centers, exchanging experience and finding partners.',
+      tr: 'Doktorlar ve klinik sahipleri için Şanghay iş turları. Çin sağlık pazarını keşfetme, klinik ve eğitim merkezlerini ziyaret etme, deneyim paylaşımı ve ortak bulma.',
+      uk: 'Бізнес-тури до Шанхаю для лікарів і власників клінік. Знайомство з медичним ринком Китаю, візити до клінік і освітніх центрів, обмін досвідом і пошук партнерів.',
+    },
+    subcategories: [
+      { ru: 'Визиты в клиники', en: 'Clinic Visits' },
+      { ru: 'Нетворкинг и партнерства', en: 'Networking and Partnerships' },
+      { ru: 'Медицинский бизнес в Китае', en: 'Medical Business in China' },
+    ],
+    icon: '/categories/category_fallback_1.jpg',
+  },
+  {
+    id: 24,
+    title: {
+      ru: 'Бизнес тур в Южную Корею',
+      en: 'Business Tour to South Korea',
+      tr: 'Güney Kore İş Turu',
+      uk: 'Бізнес-тур до Південної Кореї',
+    },
+    description: {
+      ru: 'Бизнес-туры в Южную Корею: знакомство с передовыми эстетическими и медицинскими технологиями, визиты в клиники Сеула и обмен опытом с корейскими специалистами.',
+      en: 'Business tours to South Korea: exploring advanced aesthetic and medical technologies, visiting clinics in Seoul and exchanging experience with Korean specialists.',
+      tr: 'Güney Kore iş turları: ileri estetik ve tıbbi teknolojileri keşfetme, Seul kliniklerini ziyaret etme ve Koreli uzmanlarla deneyim paylaşımı.',
+      uk: 'Бізнес-тури до Південної Кореї: знайомство з передовими естетичними та медичними технологіями, візити до клінік Сеула та обмін досвідом з корейськими спеціалістами.',
+    },
+    subcategories: [
+      { ru: 'Эстетическая медицина Кореи', en: 'Korean Aesthetic Medicine' },
+      { ru: 'Визиты в клиники Сеула', en: 'Seoul Clinic Visits' },
+      { ru: 'Технологии и оборудование', en: 'Technologies and Equipment' },
+    ],
+    icon: '/categories/category_fallback_2.jpg',
+  },
 ];
